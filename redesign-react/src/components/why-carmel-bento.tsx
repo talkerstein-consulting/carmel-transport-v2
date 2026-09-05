@@ -1,165 +1,179 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
-import { Clock, Container, ShieldCheck, Warehouse } from "lucide-react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { motion, useScroll, useSpring, useTransform, type Variants } from "motion/react";
 import { whyCarmel } from "@/content";
+import { usePinned } from "@/hooks/use-pinned";
 
-const container: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+/** White cards: image on top, text below, swept across the heading. */
+const cards = [
+  { ...whyCarmel.partner, image: "/img/truck7.jpg", tag: "Asset-based" },
+  { ...whyCarmel.specialized, image: "/img/refrigerated.jpg", tag: "Reefer & intermodal" },
+  { ...whyCarmel.dispatch, image: "/img/intermodal-trucking.jpg", tag: "24 / 7 / 365" },
+  { ...whyCarmel.storage, image: "/img/storage-facility.jpg", tag: "Secured yard" },
+  { ...whyCarmel.containers, image: "/img/containers-3.jpg", tag: "Every type" },
+];
+
+/** >1 lengthens the pinned section, slowing the sweep relative to page scroll. */
+const SCROLL_STRETCH = 2.1;
+
+const fade: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
-const cell: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-};
-
-const cardCx =
-  "flex flex-col rounded-2xl border border-neutral-200 bg-white p-7 transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(16,30,54,0.13)] dark:border-neutral-800 dark:bg-neutral-950";
-
-const iconCx =
-  "mb-5 grid h-10 w-10 place-items-center rounded-xl bg-brand-wash text-brand";
-
-/** Photo cell with the heading laid over the image. */
-function PhotoCell({
-  image,
-  title,
-  body,
-  className = "",
-}: {
-  image: string;
-  title: string;
-  body: string;
-  className?: string;
-}) {
+function Card({ c }: { c: (typeof cards)[number] }) {
   return (
-    <motion.article
-      variants={cell}
-      className={`group relative flex min-h-[270px] flex-col justify-end overflow-hidden rounded-2xl p-7 ${className}`}
-    >
-      <img
-        src={image}
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,20,38,0.06)_30%,rgba(8,20,38,0.88)_100%)]"
-      />
-      <div className="relative">
-        <h3 className="font-display text-lg font-bold tracking-tight text-white">
-          {title}
-        </h3>
-        <p className="mt-2 text-[0.92rem] leading-relaxed text-white/78">{body}</p>
+    <article className="group w-[82%] shrink-0 snap-start rounded-3xl border border-neutral-200 bg-white p-4 shadow-[0_18px_44px_rgba(16,30,54,0.10)] sm:w-[48%] lg:w-[420px] dark:border-neutral-800 dark:bg-neutral-900">
+      <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
+        <img
+          src={c.image}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          draggable={false}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        />
+        <span className="absolute left-4 top-4 rounded-full bg-white/92 px-3 py-1 text-[0.72rem] font-semibold text-ink backdrop-blur-sm">
+          {c.tag}
+        </span>
       </div>
-    </motion.article>
+      <div className="px-2 pb-2 pt-5">
+        <h3 className="font-display text-lg font-bold leading-snug tracking-tight text-ink dark:text-white">
+          {c.title}
+        </h3>
+        <p className="mt-2.5 text-[0.93rem] leading-relaxed text-steel">{c.body}</p>
+      </div>
+    </article>
+  );
+}
+
+/** The heading that the cards pass over. Lowest layer. */
+function SuperHeading() {
+  return (
+    <h2 className="text-center font-display text-[13vw] font-bold leading-[0.92] tracking-[-0.05em] text-ink lg:text-[9.5vw] dark:text-white">
+      Built to Take
+      <br />
+      the <span className="text-steel">Whole Job</span>
+    </h2>
   );
 }
 
 export default function WhyCarmelBento() {
+  const pinned = usePinned();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [{ travel, startX, endX }, setGeo] = useState({ travel: 0, startX: 0, endX: 0 });
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const stage = stageRef.current;
+      const track = trackRef.current;
+      if (!stage || !track) return;
+      const stageW = stage.clientWidth;
+      const trackW = track.scrollWidth;
+      // start fully off the right edge, finish with the last card flush left-of-right.
+      // travel is stretched past the actual distance so the sweep reads slower —
+      // more page scroll for the same horizontal movement.
+      setGeo({
+        travel: Math.round(trackW * SCROLL_STRETCH),
+        startX: stageW,
+        endX: -(trackW - stageW),
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+
+    // images and webfonts land after mount and change the track width, so keep
+    // measuring until it settles rather than trusting the first pass
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    if (stageRef.current) ro.observe(stageRef.current);
+
+    return () => {
+      window.removeEventListener("resize", measure);
+      ro.disconnect();
+    };
+  }, [pinned]);
+
+  const { scrollYProgress } = useScroll({
+    target: wrapperRef,
+    offset: ["start start", "end end"],
+  });
+  const smooth = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 26,
+    restDelta: 0.001,
+  });
+  const x = useTransform(smooth, [0, 1], [startX, endX]);
+
+  const label = (
+    <div className="col-grid items-end">
+      <p className="inline-flex items-center gap-2.5 text-[0.87rem] text-steel">
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+        {whyCarmel.eyebrow}
+      </p>
+      <p className="max-w-[34ch] text-[0.95rem] leading-relaxed text-steel lg:col-span-2 lg:justify-self-end lg:text-right">
+        {whyCarmel.note}
+      </p>
+    </div>
+  );
+
+  /* ---------- below lg, or reduced motion: heading then a plain swipe row ---------- */
+  if (!pinned) {
+    return (
+      <section className="section-y w-full overflow-hidden">
+        <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">{label}</div>
+
+        <motion.div
+          variants={fade}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="mx-auto mt-10 w-full max-w-[1400px] px-4 sm:px-6 lg:px-8"
+        >
+          <SuperHeading />
+        </motion.div>
+
+        <div
+          role="region"
+          aria-label="Why Carmel"
+          tabIndex={0}
+          className="mt-10 flex snap-x snap-mandatory gap-8 overflow-x-auto overscroll-x-contain px-4 pb-6 [-ms-overflow-style:none] [scrollbar-width:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:px-6 lg:px-8 [&::-webkit-scrollbar]:hidden"
+        >
+          {cards.map((c) => (
+            <Card key={c.title} c={c} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  /* ---------- pinned: cards sweep in from the right, over the heading ---------- */
   return (
-    <section className="section-y w-full px-4 sm:px-6 lg:px-8 ">
-      <div className="mx-auto w-full max-w-[1400px]">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-10 grid items-center gap-6 sm:mb-14 lg:grid-cols-[1fr_auto_1fr]"
-        >
-          <p className="inline-flex items-center gap-2.5 text-[0.87rem] text-steel">
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
-            {whyCarmel.eyebrow}
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-center lg:text-5xl dark:text-white">
-            {whyCarmel.title}
-          </h2>
-          <p className="max-w-[30ch] text-[0.9rem] text-steel lg:justify-self-end lg:text-right">
-            {whyCarmel.note}
-          </p>
-        </motion.div>
+    <div ref={wrapperRef} style={{ height: `calc(100svh + ${travel}px)` }}>
+      <section className="sticky top-0 flex h-svh w-full flex-col justify-center overflow-hidden">
+        <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">{label}</div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
-        >
-          {/* wide: the long verbatim partner statement */}
-          <motion.article
-            variants={cell}
-            className={`${cardCx} md:col-span-2`}
+        <div ref={stageRef} className="relative mt-12 w-full">
+          {/* lowest layer: the heading the cards travel across */}
+          <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+            <SuperHeading />
+          </div>
+
+          {/* upper layer: the cards, entering from the right edge */}
+          <motion.div
+            ref={trackRef}
+            style={{ x }}
+            className="relative z-10 flex gap-12 will-change-transform lg:gap-24"
           >
-            <span className={iconCx}>
-              <ShieldCheck size={19} strokeWidth={1.8} />
-            </span>
-            <h3 className="font-display text-lg font-bold tracking-tight text-ink dark:text-white">
-              {whyCarmel.partner.title}
-            </h3>
-            <p className="mt-2.5 text-[0.94rem] leading-relaxed text-steel">
-              {whyCarmel.partner.body}
-            </p>
-          </motion.article>
-
-          {/* dark: dispatch */}
-          <motion.article
-            variants={cell}
-            className="flex flex-col rounded-2xl border border-ink bg-ink p-7 text-white transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(16,30,54,0.3)]"
-          >
-            <span className="mb-5 grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-signal">
-              <Clock size={19} strokeWidth={1.8} />
-            </span>
-            <h3 className="font-display text-lg font-bold tracking-tight text-white">
-              {whyCarmel.dispatch.title}
-            </h3>
-            <p className="mt-2.5 text-[0.94rem] leading-relaxed text-white/70">
-              {whyCarmel.dispatch.body}
-            </p>
-          </motion.article>
-
-          {/* photo: specialized services */}
-          <PhotoCell
-            image={whyCarmel.specialized.image}
-            title={whyCarmel.specialized.title}
-            body={whyCarmel.specialized.body}
-          />
-
-          {/* storage */}
-          <motion.article variants={cell} className={cardCx}>
-            <span className={iconCx}>
-              <Warehouse size={19} strokeWidth={1.8} />
-            </span>
-            <h3 className="font-display text-lg font-bold tracking-tight text-ink dark:text-white">
-              {whyCarmel.storage.title}
-            </h3>
-            <p className="mt-2.5 text-[0.94rem] leading-relaxed text-steel">
-              {whyCarmel.storage.body}
-            </p>
-          </motion.article>
-
-          {/* photo: container types */}
-          <PhotoCell
-            image={whyCarmel.containers.image}
-            title={whyCarmel.containers.title}
-            body={whyCarmel.containers.body}
-          />
-        </motion.div>
-
-        <motion.p
-          variants={cell}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="mt-6 flex items-center gap-2.5 text-[0.87rem] text-steel"
-        >
-          <Container size={16} strokeWidth={1.8} className="text-signal-dk" />
-          20&rsquo;, 40&rsquo;, 45&rsquo; &middot; dry, overweight, refrigerated,
-          open top, flat rack
-        </motion.p>
-      </div>
-    </section>
+            {cards.map((c) => (
+              <Card key={c.title} c={c} />
+            ))}
+          </motion.div>
+        </div>
+      </section>
+    </div>
   );
 }

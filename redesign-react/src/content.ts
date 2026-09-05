@@ -52,10 +52,19 @@ export const welcome = {
   ],
 };
 
+/** The headline figure, pulled out on its own. */
+export const leadStat = {
+  value: 50,
+  suffix: "",
+  label: "Years of experience",
+  note: "In Drayage trucking, from it's owners.",
+};
+
+/** The supporting figures — a 2 x 2. All four are stated on the site. */
 export const stats = [
-  { value: 50, suffix: "", label: "Years of experience", note: "In Drayage trucking, from our owners" },
   { value: 300, suffix: "", label: "Power units", note: "Across North America" },
   { value: 800, suffix: "+", label: "Chassis", note: "20', 40', 45' and Genset" },
+  { value: 30, suffix: "", label: "Reefer slots", note: "Powered, simultaneous, on site" },
   { value: 24, suffix: "/7", label: "Open 365 days", note: "Dispatch and container tracking" },
 ];
 
@@ -179,6 +188,18 @@ export const faqs = [
     q: "Are you available outside business hours?",
     a: "We are open 24 / 7 / 365. Our emergency line is (646) 808-7266, answered around the clock, and our team monitors every shipment day and night.",
   },
+  {
+    q: "Do you handle overweight containers?",
+    a: "Yes. Our chassis pool covers 20', 40' and 45', and we handle any kind of container delivery: dry, overweight, refrigerated, open top and flat rack.",
+  },
+  {
+    q: "Do you handle cross-border freight?",
+    a: "Yes. Our 24/7 customer service manages everything from transportation and rail reservations through to cross-border freight, and we handle all documentation and border clearances for US shipments.",
+  },
+  {
+    q: "How are export shipments secured?",
+    a: "We fit high-security bolt seals on export shipments, arrange rail reservations ahead of time, and our yards are fully secured with 24/7 surveillance.",
+  },
 ];
 
 /** We Are Here To Help — verbatim */
@@ -211,4 +232,19 @@ export const serviceOptions = [
   "Refrigerated Containers",
   "Intermodal Trucking",
   "Storage Facility",
+];
+
+/**
+ * Six figures for the Tresmares-style sticky number grid (`component--gridnumbers`).
+ * Every number is already stated elsewhere on the site; `display` is the
+ * literal string so ranges and slashes survive, `count` drives the count-up
+ * where a plain integer makes sense.
+ */
+export const scaleStats = [
+  { display: "50", count: 50, label: "Years of experience", note: "In drayage trucking, from our owners" },
+  { display: "300", count: 300, label: "Power units", note: "Across North America" },
+  { display: "800+", count: 800, suffix: "+", label: "Chassis", note: "20', 40', 45' and Genset" },
+  { display: "30", count: 30, label: "Reefers at once", note: "Genset capacity at the yard" },
+  { display: "24/7", label: "Dispatch, 365 days", note: "Emergency line answered at any hour" },
+  { display: "4", count: 4, label: "Core states", note: "New York, Michigan, Ohio, Pennsylvania" },
 ];

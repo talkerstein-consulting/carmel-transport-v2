@@ -151,6 +151,19 @@
   padding-block: clamp(3.5rem, 5vw, 4.5rem);
 }
 
+/* The page's one column system. Everything sits on these three columns,
+   centred in the 1400px shell, so sections line up down the whole page. */
+@utility col-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 2.6vw, 2.5rem);
+}
+@media (min-width: 1024px) {
+  .col-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

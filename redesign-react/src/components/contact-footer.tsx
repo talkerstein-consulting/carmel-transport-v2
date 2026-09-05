@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowRight, ArrowUp, Clock, FileCheck2 } from "lucide-react";
+import { ArrowRight, ArrowUp, Clock, FileCheck2, Mail, MapPin, Phone } from "lucide-react";
 import { company, contact, navLinks, serviceLinks, serviceOptions } from "@/content";
 
 const fieldCx =
@@ -12,7 +12,7 @@ export default function ContactFooter() {
   return (
     /* The whole block sits on the footer's grey, so the form card can rise
        out of the top of the photo band and still have a ground to sit on. */
-    <section id="contact" className="relative w-full bg-neutral-50 dark:bg-neutral-950">
+    <section id="contact" className="relative w-full">
       {/* grey strip the card overlaps into */}
       <div className="pt-10 lg:pt-24">
         {/* band — deliberately NOT overflow-hidden, or it would clip the card */}
@@ -62,38 +62,73 @@ export default function ContactFooter() {
                 </span>
               </motion.div>
 
-              <motion.div
+              {/* the contact details, listed out */}
+              <motion.dl
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-12 w-full max-w-[272px] rounded-2xl bg-white p-5 shadow-[0_18px_44px_rgba(16,30,54,0.22)] lg:mt-32 dark:bg-neutral-900"
+                className="mt-12 grid max-w-xl gap-px overflow-hidden rounded-2xl border border-white/12 bg-white/12 sm:grid-cols-2 lg:mt-16"
               >
-                <div className="flex items-center gap-3">
-                  <img
-                    src="/img/carmel-team.jpg"
-                    alt=""
-                    aria-hidden="true"
-                    className="h-14 w-14 shrink-0 rounded-lg object-cover"
-                  />
-                  <div className="min-w-0">
-                    <p className="text-[0.95rem] font-medium text-ink dark:text-white">
-                      The Carmel dispatch team
-                    </p>
-                    <p className="text-[0.9rem] text-steel">Reach out anytime.</p>
-                  </div>
+                <div className="bg-ink/70 p-5 backdrop-blur-sm">
+                  <dt className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-signal">
+                    <MapPin size={14} strokeWidth={2} /> Address
+                  </dt>
+                  <dd className="mt-2.5 text-[0.95rem] leading-relaxed text-white/85">
+                    {company.address}
+                  </dd>
                 </div>
-                <a
-                  href={company.phones.emergency.href}
-                  className="group mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3.5 text-[0.95rem] font-medium text-white transition-colors hover:bg-ink-2"
-                >
-                  Call Dispatch
-                  <ArrowRight
-                    size={15}
-                    className="transition-transform duration-200 group-hover:translate-x-0.5"
-                  />
-                </a>
-              </motion.div>
+
+                <div className="bg-ink/70 p-5 backdrop-blur-sm">
+                  <dt className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-signal">
+                    <Phone size={14} strokeWidth={2} /> Phones
+                  </dt>
+                  <dd className="mt-2.5 grid gap-1.5 text-[0.95rem] text-white/85">
+                    <a href={company.phones.emergency.href} className="hover:text-signal">
+                      Emergency: {company.phones.emergency.value} {company.phones.emergency.note}
+                    </a>
+                    <a href={company.phones.sales.href} className="hover:text-signal">
+                      Sales: {company.phones.sales.value}
+                    </a>
+                    <a href={company.phones.other.href} className="hover:text-signal">
+                      Other inquiries: {company.phones.other.value}
+                    </a>
+                  </dd>
+                </div>
+
+                <div className="bg-ink/70 p-5 backdrop-blur-sm">
+                  <dt className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-signal">
+                    <Mail size={14} strokeWidth={2} /> Email
+                  </dt>
+                  <dd className="mt-2.5 text-[0.95rem] text-white/85">
+                    <a href={`mailto:${company.email}`} className="hover:text-signal">
+                      {company.email}
+                    </a>
+                  </dd>
+                </div>
+
+                <div className="bg-ink/70 p-5 backdrop-blur-sm">
+                  <dt className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-signal">
+                    <Clock size={14} strokeWidth={2} /> Opening Hours
+                  </dt>
+                  <dd className="mt-2.5 text-[0.95rem] text-white/85">{company.hours}</dd>
+                </div>
+              </motion.dl>
+
+              <motion.a
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                href={company.phones.emergency.href}
+                className="group mt-6 inline-flex items-center gap-2 rounded-full bg-signal px-7 py-3.5 text-[0.95rem] font-semibold text-ink transition-colors hover:bg-signal-dk"
+              >
+                Call Dispatch
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </motion.a>
             </div>
 
             {/* right: the form, lifted out of the top of the band */}

@@ -43,49 +43,45 @@ const listVariants: Variants = {
 };
 
 const rowVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-  },
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export function Showcase7() {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="section-y w-full px-4 sm:px-6 lg:px-8 ">
-      <div className="max-w-[1400px] mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-16 xl:gap-20 items-start">
+    <section className="section-y w-full px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[1400px]">
+        <div className="col-grid items-start">
+          {/* columns 1-2 — the heading block, sticky */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:sticky lg:top-16"
+            className="lg:sticky lg:top-28 lg:col-span-2"
           >
-            <p className="mb-4 inline-flex items-center gap-2.5 text-[0.87rem] text-steel">
+            <p className="mb-5 inline-flex items-center gap-2.5 text-[0.87rem] text-steel">
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />
               {welcome.eyebrow}
             </p>
-            <h2 className="font-display text-3xl font-bold leading-[1.05] tracking-tight text-ink text-balance sm:text-4xl lg:text-5xl dark:text-white">
-              {welcome.title}{" "}
-              <span className="text-steel">{welcome.titleMuted}</span>
+            <h2 className="font-display text-4xl font-bold leading-[1.04] tracking-tight text-ink text-balance sm:text-5xl lg:text-6xl dark:text-white">
+              {welcome.title} <span className="text-steel">{welcome.titleMuted}</span>
             </h2>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-steel text-pretty sm:text-lg">
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-steel text-pretty">
               Carmel USA brings 50 years of experience in Drayage trucking from
               it&rsquo;s owners.
             </p>
             <a
               href="#contact"
-              className="mt-6 inline-flex cursor-pointer items-center gap-1.5 text-sm font-semibold text-brand transition-colors duration-200 hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand dark:text-white"
+              className="mt-6 inline-flex cursor-pointer items-center gap-1.5 text-sm font-semibold text-brand transition-colors duration-200 hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
             >
               More About Us
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="h-4 w-4" />
             </a>
 
-            <div className="relative mt-10 sm:mt-12 aspect-[4/3] overflow-hidden rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900">
+            <div className="relative mt-8 aspect-16/10 max-w-xl overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900">
               {studies.map((study, index) => (
                 <motion.div
                   key={study.title}
@@ -102,24 +98,21 @@ export function Showcase7() {
                     src={study.image}
                     alt={study.title}
                     draggable={false}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-neutral-950/80 via-neutral-950/25 to-transparent px-5 sm:px-6 pb-5 sm:pb-6 pt-16">
-                    <p className="text-sm font-medium text-white">
-                      {study.title}
-                    </p>
-                    <p className="mt-1 text-xs text-neutral-300">
-                      {study.metric}
-                    </p>
+                  <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/85 via-ink/25 to-transparent px-5 pb-5 pt-16">
+                    <p className="text-sm font-medium text-white">{study.title}</p>
+                    <p className="mt-1 text-xs text-white/70">{study.metric}</p>
                   </div>
                 </motion.div>
               ))}
-              <span className="absolute left-4 top-4 rounded-full bg-white/90 dark:bg-neutral-950/80 px-3 py-1 font-mono text-[11px] tracking-[0.12em] text-neutral-900 dark:text-white backdrop-blur-sm">
+              <span className="absolute left-4 top-4 rounded-full bg-white/92 px-3 py-1 font-mono text-[11px] tracking-[0.12em] text-ink backdrop-blur-sm">
                 {studies[active].tag}
               </span>
             </div>
           </motion.div>
 
+          {/* column 3 — the text, scrolling past the sticky column */}
           <motion.div
             variants={listVariants}
             initial="hidden"
@@ -136,7 +129,7 @@ export function Showcase7() {
                 onFocus={() => setActive(index)}
                 onClick={() => setActive(index)}
                 aria-pressed={active === index}
-                className="group grid w-full grid-cols-[auto_1fr] items-start gap-5 border-b border-neutral-200 py-7 text-left sm:gap-8 sm:py-9 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand dark:border-neutral-800"
+                className="group grid w-full grid-cols-[auto_1fr] items-start gap-5 border-b border-neutral-200 py-7 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand dark:border-neutral-800"
               >
                 <span
                   className={`mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-200 ${
@@ -144,13 +137,13 @@ export function Showcase7() {
                   }`}
                 />
                 <div className="min-w-0">
-                  <h3 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl lg:text-4xl dark:text-white">
+                  <h3 className="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl dark:text-white">
                     {study.title}
                   </h3>
                   <p className="mt-2 text-sm text-steel">
                     {study.tag} &middot; {study.metric}
                   </p>
-                  <p className="mt-3 max-w-lg text-sm sm:text-base leading-relaxed text-neutral-600 dark:text-neutral-400 text-pretty">
+                  <p className="mt-3 text-sm leading-relaxed text-steel text-pretty">
                     {study.summary}
                   </p>
                 </div>

@@ -1,5 +1,41 @@
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import Lenis from "lenis";
+
+/* ------------------------------------------------------------------ *
+ * Scroll position store.
+ *
+ * Lenis emits no native `scroll` events, so window scroll listeners and
+ * IntersectionObserver sentinels never fire. Lenis's own event is the one
+ * reliable signal, so we publish from there and let components subscribe.
+ * ------------------------------------------------------------------ */
+
+let scrollPos = 0;
+const listeners = new Set<() => void>();
+
+function publish(y: number) {
+  if (y === scrollPos) return;
+  scrollPos = y;
+  listeners.forEach((l) => l());
+}
+
+function subscribe(l: () => void) {
+  listeners.add(l);
+  return () => listeners.delete(l);
+}
+
+/** Current scroll offset, kept in step with Lenis. */
+export function useScrollY() {
+  return useSyncExternalStore(
+    subscribe,
+    () => scrollPos,
+    () => 0,
+  );
+}
+
+/** True once scrolled past `threshold`. */
+export function useScrolledPast(threshold = 24) {
+  return useScrollY() > threshold;
+}
 
 /**
  * Momentum scrolling.
@@ -9,15 +45,28 @@ import Lenis from "lenis";
 export function useLenis() {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduced.matches) return;
+
+    // Without Lenis nothing publishes, so fall back to native scroll events.
+    if (reduced.matches) {
+      const onScroll = () => publish(window.scrollY);
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return () => window.removeEventListener("scroll", onScroll);
+    }
 
     const lenis = new Lenis({
       duration: 1.05,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      // leave touch alone: native momentum is better than anything we'd fake
       touchMultiplier: 1,
     });
+
+    lenis.on("scroll", ({ scroll }: { scroll: number }) => publish(scroll));
+    publish(window.scrollY);
+
+    if (import.meta.env.DEV) {
+      (window as unknown as { lenis?: Lenis }).lenis = lenis;
+    }
 
     let frame = 0;
     const raf = (time: number) => {
@@ -39,7 +88,6 @@ export function useLenis() {
     };
     document.addEventListener("click", onClick);
 
-    // the footer's back-to-top button dispatches this
     const toTop = () => lenis.scrollTo(0);
     window.addEventListener("carmel:scroll-top", toTop);
 

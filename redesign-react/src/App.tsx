@@ -10,18 +10,22 @@ import FAQ9 from "@/components/faq-9";
 import ContactFooter from "@/components/contact-footer";
 import { useLenis } from "@/hooks/use-lenis";
 
+/* Note: src/components/tresmares/* is left on disk but not rendered here.
+   Swap it back into this file if that opening sequence is wanted again. */
+
 export default function App() {
   useLenis();
 
   return (
     <main className="relative min-h-screen bg-neutral-100 dark:bg-neutral-950">
-      {/* sticky, and the hero is pulled up to sit underneath it */}
       <Navigation9 />
 
+      {/* hero sits under the sticky nav */}
       <div className="-mt-[86px]">
         <Hero24 />
       </div>
 
+      {/* lifted panel that overlaps the bottom of the hero */}
       <Stats14 />
 
       <section id="services">

@@ -1,34 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { company, navLinks, serviceLinks } from "@/content";
+import { useScrolledPast } from "@/hooks/use-lenis";
 
 export default function Navigation9() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setScrolled(!entry.isIntersecting),
-      { threshold: 0 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  // Lenis emits no native `scroll` events, so scroll listeners and
+  // IntersectionObserver sentinels never fire. useLenis publishes position
+  // from Lenis's own event instead.
+  const scrolled = useScrolledPast(24);
 
-  // over the hero the nav is light-on-image; once stuck it inverts to ink-on-white
+  // The hero is a dark ground (bg-ink), the rest of the page is light, so the
+  // nav has to invert: light over the hero, ink once it sticks to the page.
   const linkCx = scrolled
     ? "text-ink-2 hover:text-ink dark:text-neutral-200 dark:hover:text-white"
     : "text-white/85 hover:text-white";
 
   return (
     <>
-      <div ref={sentinelRef} aria-hidden="true" className="absolute top-0 h-px w-full" />
       <div className="sticky top-3 z-50 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-[1400px]">
           <motion.nav
@@ -54,13 +47,6 @@ export default function Navigation9() {
                   }`}
                 >
                   {company.name}
-                </span>
-                <span
-                  className={`mt-1 block text-[0.58rem] font-medium uppercase tracking-[0.2em] transition-colors ${
-                    scrolled ? "text-steel" : "text-white/70"
-                  }`}
-                >
-                  {company.tagline}
                 </span>
               </span>
             </a>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { animate, motion, useReducedMotion, type Variants } from "motion/react";
-import { stats } from "@/content";
+import { leadStat, stats } from "@/content";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -42,52 +42,54 @@ function CountUp({ value }: { value: number }) {
 
 export default function Stats14() {
   return (
-    <section className="section-y w-full px-4 sm:px-6 lg:px-8 ">
+    /* lifted so the panel overlaps the bottom of the hero */
+    <section className="relative z-20 -mt-32 w-full px-4 sm:px-6 lg:-mt-44 lg:px-8">
       <div className="mx-auto w-full max-w-[1400px]">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: EASE }}
-          className="mb-8 inline-flex items-center gap-2.5 text-[0.87rem] text-steel"
-        >
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />
-          Fifty years of drayage experience, and the fleet to back it
-        </motion.p>
-
         <motion.div
           variants={gridVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 overflow-hidden rounded-2xl border border-neutral-200 bg-white dark:bg-neutral-900 sm:grid-cols-2 lg:grid-cols-4 dark:border-neutral-800"
+          viewport={{ once: true, margin: "-60px" }}
+          className="col-grid gap-0! overflow-hidden rounded-3xl bg-white ring-4 ring-white shadow-[0_30px_70px_rgba(16,30,54,0.18)] dark:bg-neutral-900 dark:ring-neutral-900"
         >
-          {stats.map((stat, i) => (
-            <motion.article
-              key={stat.label}
-              variants={cardVariants}
-              className={`flex flex-col p-7 sm:p-8 ${
-                i > 0
-                  ? "border-t border-neutral-200 sm:border-t-0 sm:border-l dark:border-neutral-800"
-                  : ""
-              } ${i === 2 ? "sm:border-t lg:border-t-0" : ""} ${
-                i === 1 ? "sm:border-l" : ""
-              }`}
-            >
-              <div className="flex items-baseline font-display text-4xl font-bold tracking-[-0.04em] tabular-nums text-ink sm:text-5xl dark:text-white">
-                <CountUp value={stat.value} />
-                {stat.suffix && (
-                  <span className="text-signal-dk">{stat.suffix}</span>
-                )}
-              </div>
-              <p className="mt-3 text-[0.9rem] font-medium text-ink-2 dark:text-neutral-200">
-                {stat.label}
-              </p>
-              <p className="mt-1 text-[0.85rem] leading-relaxed text-steel">
-                {stat.note}
-              </p>
-            </motion.article>
-          ))}
+          {/* column 1 — the headline figure */}
+          <motion.article
+            variants={cardVariants}
+            className="flex flex-col justify-center bg-ink p-8 text-white lg:p-10"
+          >
+            <div className="flex items-baseline font-display text-6xl font-bold tracking-[-0.04em] tabular-nums lg:text-7xl">
+              <CountUp value={leadStat.value} />
+              <span className="ml-1 text-signal">+</span>
+            </div>
+            <p className="mt-4 font-display text-xl font-bold tracking-tight text-signal">
+              {leadStat.label}
+            </p>
+            <p className="mt-2 text-[0.92rem] leading-relaxed text-white/65">
+              {leadStat.note}
+            </p>
+          </motion.article>
+
+          {/* columns 2-3 — the supporting figures, 2 x 2 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:col-span-2">
+            {stats.map((stat, i) => (
+              <motion.article
+                key={stat.label}
+                variants={cardVariants}
+                className={`border-neutral-200 p-7 lg:p-8 dark:border-neutral-800 ${
+                  i % 2 === 0 ? "sm:border-r" : ""
+                } ${i < 2 ? "sm:border-b" : ""} ${i > 0 ? "border-t sm:border-t-0" : ""}`}
+              >
+                <div className="flex items-baseline font-display text-4xl font-bold tracking-[-0.04em] tabular-nums text-ink lg:text-[2.75rem] dark:text-white">
+                  <CountUp value={stat.value} />
+                  {stat.suffix && <span className="text-signal-dk">{stat.suffix}</span>}
+                </div>
+                <p className="mt-2.5 text-[0.95rem] font-medium text-ink-2 dark:text-neutral-200">
+                  {stat.label}
+                </p>
+                <p className="mt-1 text-[0.85rem] leading-relaxed text-steel">{stat.note}</p>
+              </motion.article>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
