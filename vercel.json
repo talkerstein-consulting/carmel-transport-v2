@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm --prefix redesign-react ci",
+  "buildCommand": "npm --prefix redesign-react run build",
+  "outputDirectory": "redesign-react/dist"
+}
