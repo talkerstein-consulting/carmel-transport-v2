@@ -210,7 +210,16 @@
 /* --- one ground for everything past the footage --------------------------- */
 /* The sections below carry no background of their own; this continues the
    #D5E7F2 the clouds resolve into, all the way down. */
+/* Positioned and above the footage layers: .stage-edges and the other fixed
+   scrims never leave the viewport, and with these sections transparent they
+   were showing through as dark bands down the left and right. */
+/* No negative margin and no fade edge on this wrapper. The gradient is put up
+   by the fixed .svc-out veil while the clouds are still pinned; by the time
+   this arrives the screen is already flat #D5E7F2, which is exactly the colour
+   this gradient starts on, so its top edge is invisible. Pulling it up or
+   fading its edge turns the gradient into something that scrolls. */
 .act-three {
+  position: relative; z-index: 6;
   background: linear-gradient(180deg,
     #D5E7F2 0%, #E1EBF3 14%, #EBF1F5 34%, #F1F4F6 62%, #F4F6F7 100%);
 }
@@ -255,4 +264,22 @@
 }
 @media (max-width: 767px) {
   .stats-group { position: static; grid-template-columns: 1fr; }
+}
+
+/* --- clouds: edge gradient ------------------------------------------------
+   The same left/right darkening the hero uses, owned by this section rather
+   than inherited from the hero's fixed scrim. It holds the contrast under
+   "One partner." and "Every move." at the two margins. Sits under the copy
+   and under the #D5E7F2 handoff veil. */
+.svc-edges {
+  position: fixed; inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    rgba(10, 10, 9, .55) 0%,
+    rgba(10, 10, 9, .22) 18%,
+    rgba(10, 10, 9, 0)   38%,
+    rgba(10, 10, 9, 0)   62%,
+    rgba(10, 10, 9, .22) 82%,
+    rgba(10, 10, 9, .55) 100%);
 }

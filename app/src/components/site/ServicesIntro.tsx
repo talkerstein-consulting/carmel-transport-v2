@@ -137,7 +137,7 @@ export function ServicesIntro() {
       // stay closed. One quarter of the walkthrough range per service.
       const walk = ScrollTrigger.create({
         trigger: el,
-        start: () => "top top-=" + Math.round(window.innerHeight * 1.9),
+        start: () => "top top-=" + Math.round(window.innerHeight * 1.6),
         end: () => "+=" + Math.round(window.innerHeight * 2),
         scrub: true,
         invalidateOnRefresh: true,
@@ -151,7 +151,8 @@ export function ServicesIntro() {
       // The tail of the clouds resolves into the flat #D5E7F2 the next section
       // opens on, so the footage hands off to colour rather than cutting.
       // It starts only after the last card has finished expanding: the
-      // walkthrough runs from 1.9 to 3.4 screens, so this begins at 3.4.
+      // walkthrough runs from 1.6 to 2.8 screens, so this begins at 2.8 and
+      // the section ends at 4.2 — no dead scroll before the next one.
       const fadeOut = out
         ? gsap.fromTo(
             out,
@@ -165,7 +166,7 @@ export function ServicesIntro() {
                 // cards and the walkthrough use. "bottom bottom+=X" resolves
                 // in the opposite direction to what it reads like and kept
                 // starting this early.
-                start: () => "top top-=" + Math.round(window.innerHeight * 3.4),
+                start: () => "top top-=" + Math.round(window.innerHeight * 2.8),
                 end: () => "+=" + Math.round(window.innerHeight * 1),
                 scrub: true,
                 invalidateOnRefresh: true,
@@ -205,7 +206,7 @@ export function ServicesIntro() {
         height={0.95}
         width={4000}
         borderRadius={0}
-        scrollLength={3.6}
+        scrollLength={3.5}
         smooth={0.12}
         grain={0}
         vignette={0}
@@ -214,6 +215,7 @@ export function ServicesIntro() {
         className="fs-fill svc-scrub"
       />
 
+      <div className="svc-edges" aria-hidden="true" />
       <div className="svc-out" aria-hidden="true" />
 
       <div className="svc-overlay">
