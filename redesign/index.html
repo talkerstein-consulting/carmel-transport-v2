@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home | Carmel</title>
+<meta name="description" content="Carmel USA brings 50 years of experience in Drayage trucking. Drayage, refrigerated containers, intermodal trucking and storage facility services. Open 24 / 7 / 365.">
+<link rel="icon" href="assets/logo/carmel-logo-transparent.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="canvas">
+
+<!-- ============ STICKY NAV ============ -->
+<header class="topnav" id="topnav">
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="/">
+      <img src="assets/logo/carmel-logo-transparent.png" alt="Carmel Transport">
+      <span>
+        <span class="brand-name">Carmel Transport</span>
+        <span class="brand-sub">Drayage &amp; Intermodal</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" aria-current="page">Home</a></li>
+      <li class="has-sub">
+        <a href="#services">Services
+          <svg class="caret" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <ul class="sub">
+          <li><a href="#drayage">Drayage</a></li>
+          <li><a href="#refrigerated">Refridgerated Containers</a></li>
+          <li><a href="#intermodal">Intermodal Trucking</a></li>
+          <li><a href="#storage">Storage Facility</a></li>
+        </ul>
+      </li>
+      <li><a href="#company">Company</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#careers">Careers</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <a class="btn btn--primary nav-cta" href="#quote">Request a Quote
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+    </a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-card">
+    <div class="hero-bg"><img src="assets/img/slider.jpg" alt="" aria-hidden="true"></div>
+
+    <div class="hero-body">
+      <div class="hero-copy">
+        <span class="badge badge--glass">Leading Provider of Drayage Services</span>
+        <h1>We Don&rsquo;t Just Deliver, <b>We Excel</b></h1>
+        <p class="hero-sub">Carmel USA brings 50 years of experience in Drayage trucking from it&rsquo;s owners. We always prioritized punctuality and tailored customer service.</p>
+      </div>
+
+      <!-- ---------- intake card ---------- -->
+      <div class="intake">
+        <div class="intake-tabs" role="tablist" aria-label="Get in touch">
+          <button class="intake-tab" id="tab-quote" role="tab" aria-selected="true" aria-controls="panel-quote" type="button">Request a Quote</button>
+          <button class="intake-tab" id="tab-contact" role="tab" aria-selected="false" aria-controls="panel-contact" type="button">Contact Us</button>
+        </div>
+
+        <div class="intake-body">
+          <form class="intake-panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote" action="#" method="post">
+            <div class="f-row">
+              <div class="f">
+                <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+                <span class="f-txt">
+                  <label for="q-from">Pick up</label>
+                  <input id="q-from" name="pickup" type="text" placeholder="Port, terminal or city">
+                </span>
+              </div>
+              <button class="f-swap" type="button" id="swap" aria-label="Swap pick up and delivery">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></svg>
+              </button>
+              <div class="f">
+                <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h13v9H3z"/><path d="M16 11h3.4l1.6 3v3h-5"/><circle cx="7" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/></svg></span>
+                <span class="f-txt">
+                  <label for="q-to">Deliver to</label>
+                  <input id="q-to" name="delivery" type="text" placeholder="Destination or ZIP">
+                </span>
+              </div>
+            </div>
+
+            <div class="f-grid" style="margin-top:.45rem">
+              <div class="f">
+                <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="M7 6v12M11 6v12M15 6v12M19 6v12"/></svg></span>
+                <span class="f-txt">
+                  <label for="q-service">Service</label>
+                  <select id="q-service" name="service">
+                    <option>Drayage</option>
+                    <option>Refrigerated Containers</option>
+                    <option>Intermodal Trucking</option>
+                    <option>Storage Facility</option>
+                  </select>
+                </span>
+              </div>
+              <div class="f">
+                <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16v13H4z"/><path d="M4 11h16M9 3v4M15 3v4"/></svg></span>
+                <span class="f-txt">
+                  <label for="q-date">Date</label>
+                  <input id="q-date" name="date" type="date">
+                </span>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--wide" type="submit">Request a Quote
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </button>
+            <p class="intake-note">Precise quotes, no &lsquo;surprises&rsquo; on the invoice.</p>
+          </form>
+
+          <form class="intake-panel" id="panel-contact" role="tabpanel" aria-labelledby="tab-contact" action="#" method="post" hidden>
+            <div class="f-grid">
+              <div class="f"><span class="f-txt"><label for="c-name">Name</label>
+                <input id="c-name" name="name" type="text" autocomplete="name" placeholder="Your name"></span></div>
+              <div class="f"><span class="f-txt"><label for="c-phone">Phone</label>
+                <input id="c-phone" name="phone" type="tel" autocomplete="tel" placeholder="(000) 000-0000"></span></div>
+            </div>
+            <div class="f" style="margin-top:.45rem"><span class="f-txt"><label for="c-email">Email</label>
+              <input id="c-email" name="email" type="email" autocomplete="email" placeholder="you@company.com"></span></div>
+            <div class="f" style="margin-top:.45rem"><span class="f-txt"><label for="c-msg">Message</label>
+              <textarea id="c-msg" name="message" placeholder="How can we help?"></textarea></span></div>
+            <button class="btn btn--ink btn--wide" type="submit">Send Message
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </button>
+            <p class="intake-note">Or call dispatch on (646) 808-7266, any hour.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST STRIP ============ -->
+<section class="strip">
+  <div class="shell">
+    <p class="strip-title">Fifty years of drayage experience, and the fleet to back it</p>
+    <div class="strip-grid">
+      <div class="stat"><b><span class="count" data-to="50">0</span></b><span>Years of experience</span></div>
+      <div class="stat"><b><span class="count" data-to="300">0</span></b><span>Power units</span></div>
+      <div class="stat"><b><span class="count" data-to="800">0</span><i>+</i></b><span>Chassis</span></div>
+      <div class="stat"><b><span class="count" data-to="24">0</span><i>/7</i></b><span>Open 365 days</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPANY ============ -->
+<section class="section" id="company">
+  <div class="shell">
+    <div class="split">
+      <div class="reveal">
+        <span class="badge">Welcome to Carmel USA!</span>
+        <h2>A Transportation Partner<br><span class="h-mute">You Can Count On</span></h2>
+        <p class="lede" style="margin-top:1.15rem">We always prioritized punctuality and tailored customer service. Those principles shape our work in the Drayage industry.</p>
+        <p class="muted">We aim to give precise quotes that will end up on the invoice without any &lsquo;surprises&rsquo; nor any extra charges.</p>
+        <p class="muted">Carmel Transport manages a robust fleet of 300 power units across North America and over 800 chassis. This diversity means we can cater to various container types and sizes, from 20&rsquo;, 40&rsquo;, 45&rsquo;, and including any kind of container delivery: dry, overweight, refrigerated, open top, flat rack.</p>
+        <p class="muted">Our yards are close to major seaports and rail terminals which lets us offer Secured yard storage, perfect for both short-term and long-term needs.</p>
+        <a class="btn btn--ink" href="#">More About Us
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+        </a>
+      </div>
+      <div class="mosaic reveal">
+        <img class="tall" src="assets/img/carmel-team.jpg" alt="The Carmel Transport team">
+        <img src="assets/img/containers-3.jpg" alt="Containers">
+        <img src="assets/img/truck7.jpg" alt="Carmel Transport tractor">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section section--gray" id="services">
+  <div class="shell">
+    <div class="head-row reveal">
+      <span class="badge">What we do</span>
+      <h2>Services</h2>
+      <div class="head-end">
+        <p class="head-note">Four services, run on our own tractors, chassis and yards.</p>
+        <a class="btn btn--ink" href="#quote">Request a Quote</a>
+      </div>
+    </div>
+
+    <div class="svc-grid">
+      <article class="svc reveal" id="drayage">
+        <div class="svc-img"><img src="assets/img/drayage.jpg" alt="Drayage"></div>
+        <div class="svc-body">
+          <h3>Drayage</h3>
+          <p>We provide a full range asset-based drayage and full transload services</p>
+          <a class="svc-more" href="#">Read More
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="svc reveal" id="refrigerated">
+        <div class="svc-img"><img src="assets/img/refrigerated.jpg" alt="Refrigerated Containers"></div>
+        <div class="svc-body">
+          <h3>Refrigerated Containers</h3>
+          <p>We offer all-encompassing storage and transit of refrigerated containers</p>
+          <a class="svc-more" href="#">Read More
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="svc reveal" id="intermodal">
+        <div class="svc-img"><img src="assets/img/intermodal-trucking.jpg" alt="Intermodal Trucking"></div>
+        <div class="svc-body">
+          <h3>Intermodal Trucking</h3>
+          <p>We operate to ocean and rail container terminals, ensuring your goods reach their destination</p>
+          <a class="svc-more" href="#">Read More
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="svc reveal" id="storage">
+        <div class="svc-img"><img src="assets/img/storage-facility.jpg" alt="Storage Facility"></div>
+        <div class="svc-body">
+          <h3>Storage Facility</h3>
+          <p>We provide an all-inclusive storage solution for all sizes of dry-box and refrigerated containers</p>
+          <a class="svc-more" href="#">Read More
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROTATING TEXT + TESTIMONIAL ============ -->
+<section class="section">
+  <div class="shell">
+    <div class="rotate-band">
+      <div class="reveal">
+        <span class="badge">Any box, any size</span>
+        <p class="rotator">We move
+          <span class="rot-slot" id="rotator" aria-live="polite">
+            <span class="is-on">dry</span><span>overweight</span><span>refrigerated</span><span>open top</span><span>flat rack</span>
+          </span><br>containers from 20&rsquo;, 40&rsquo; and 45&rsquo;.
+        </p>
+        <ul class="chips">
+          <li class="chip chip--key">20&rsquo;</li>
+          <li class="chip chip--key">40&rsquo;</li>
+          <li class="chip chip--key">45&rsquo;</li>
+          <li class="chip">Genset chassis</li>
+          <li class="chip">Transload</li>
+          <li class="chip">Bolt seals</li>
+        </ul>
+      </div>
+
+      <figure class="quote reveal">
+        <blockquote>&ldquo;Client quote to be supplied.&rdquo;</blockquote>
+        <figcaption>
+          <span class="av" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg>
+          </span>
+          <span>
+            <span class="who">Name</span>
+            <span class="role">Role, Company</span>
+          </span>
+        </figcaption>
+        <p class="placeholder-note">Placeholder — send me two or three real customer quotes and I'll drop them in.</p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY CARMEL — BENTO ============ -->
+<section class="section section--gray">
+  <div class="shell">
+    <div class="head-row reveal">
+      <span class="badge badge--yellow">Why Carmel</span>
+      <h2>Built to Take the Whole Job</h2>
+      <div class="head-end">
+        <p class="head-note">Our own equipment, our own yards, our own drivers.</p>
+      </div>
+    </div>
+
+    <div class="bento">
+      <div class="bento-cell bento-cell--wide reveal">
+        <span class="n" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 3 7v6c0 4.4 3.8 7.6 9 8.5 5.2-.9 9-4.1 9-8.5V7z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <h3>A Transportation Partner You Can Count On</h3>
+        <p>As a trusted leader in logistics, we offer flexible and affordable solutions for large volumes of import and export containers. Our dedicated team diligently monitors every shipment round-the-clock, ensuring a seamless transition with services including transportation from regional terminals, pre-arranged rail reservations, and high-security bolt seals.</p>
+      </div>
+
+      <div class="bento-cell bento-cell--dark reveal">
+        <span class="n" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
+        <h3>Round-the-Clock Dispatch</h3>
+        <p>We are open 24 / 7 / 365, with an emergency line answered at any hour.</p>
+      </div>
+
+      <div class="bento-photo reveal">
+        <img src="assets/img/refrigerated.jpg" alt="Refrigerated containers">
+        <h3>Leading the Way in Specialized Transportation Services</h3>
+        <p>Skilled drivers and plentiful Genset chassis for temperature-sensitive freight, with documentation and border clearances handled.</p>
+      </div>
+
+      <div class="bento-cell reveal">
+        <span class="n" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10 12 4l8 6v10H4z"/><path d="M9 20v-6h6v6"/></svg></span>
+        <h3>Secured Yard Storage</h3>
+        <p>Our yards sit close to major seaports and rail terminals, under 24/7 surveillance — right for both short-term and long-term needs.</p>
+      </div>
+
+      <div class="bento-photo reveal">
+        <img src="assets/img/containers-3.jpg" alt="Container yard">
+        <h3>Every Container Type</h3>
+        <p>Dry, overweight, refrigerated, open top and flat rack — from 20&rsquo;, 40&rsquo; and 45&rsquo;.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT WE BRING — IMAGE CARDS ============ -->
+<section class="section">
+  <div class="shell">
+    <div class="head-row reveal">
+      <span class="badge">What we bring</span>
+      <h2>Your Partner in Efficient,<br><span class="h-mute">Secure Logistics</span></h2>
+      <div class="head-end"></div>
+    </div>
+    <div class="section-head reveal">
+      <p class="lede">At Carmel USA, we offer efficient, cost-effective solutions for your import and export needs, handling large volumes of cargo with ease. Our 24/7 customer service vigilantly tracks your containers, managing everything from transportation, rail reservations, to cross-border freight. We also ensure safety with our high-security bolt seals for export shipments. With us, experience transparent and efficient logistics solutions.</p>
+    </div>
+
+    <div class="imgcards">
+      <article class="imgcard reveal">
+        <div class="imgcard-img">
+          <img src="assets/img/refrigerated.jpg" alt="Refrigerated containers">
+          <span class="imgcard-tag">30 units at once</span>
+        </div>
+        <div class="imgcard-body">
+          <h3>Temperature-Controlled Solutions</h3>
+          <p>Carmel USA expertly manages refrigerated container transport and storage with our skilled drivers and robust Genset chassis. We can accommodate 30 units concurrently, fulfilling your temperature-sensitive cargo needs.</p>
+        </div>
+      </article>
+
+      <article class="imgcard reveal">
+        <div class="imgcard-img">
+          <img src="assets/img/intermodal-trucking.jpg" alt="Intermodal trucking">
+          <span class="imgcard-tag">NY · MI · OH · PA</span>
+        </div>
+        <div class="imgcard-body">
+          <h3>Shipment Services</h3>
+          <p>As a nationally recognized Carrier, we offer comprehensive shipment services. Our team expertly handles essential documentation and expedites border clearances, extending our expertise to key states like New York, Michigan, Ohio, and Pennsylvania. Trust Carmel USA for efficient transport solutions.</p>
+        </div>
+      </article>
+
+      <article class="imgcard reveal">
+        <div class="imgcard-img">
+          <img src="assets/img/careers-truck.jpg" alt="Driving for Carmel">
+          <span class="imgcard-tag">We're hiring</span>
+        </div>
+        <div class="imgcard-body">
+          <h3>Join the Carmel Team</h3>
+          <p>Carmel USA aims to exceed industry standards with exceptional service and operational excellence. Interested in joining our dedicated team? Visit our career page for more.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section section--gray" id="faq">
+  <div class="shell">
+    <div class="faq-grid">
+      <div class="reveal">
+        <span class="badge">FAQ</span>
+        <h2>Frequently Asked<br><span class="h-mute">Questions</span></h2>
+        <p class="lede" style="margin-top:1.1rem">Questions? We have answers. Here&rsquo;s what you need to know about working with us.</p>
+
+        <div class="faq-ask">
+          <div class="who">
+            <span class="av"><img src="assets/img/carmel-team.jpg" alt=""></span>
+            <span>
+              <b>Need to ask something else?</b>
+              <small>Our team is reachable any hour.</small>
+            </span>
+          </div>
+          <a class="btn btn--ink btn--wide" href="#contact">Ask a Question
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="faq-list reveal">
+        <details class="faq-item" open>
+          <summary class="faq-q"><span>What container types and sizes can you handle?</span>
+            <span class="faq-tog" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span>
+          </summary>
+          <p class="faq-a">We cater to various container types and sizes, from 20&rsquo;, 40&rsquo;, 45&rsquo;, and including any kind of container delivery: dry, overweight, refrigerated, open top and flat rack.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q"><span>Which areas do you serve?</span>
+            <span class="faq-tog" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span>
+          </summary>
+          <p class="faq-a">We operate a fleet of 300 power units across North America, extending our expertise to key states like New York, Michigan, Ohio and Pennsylvania. We also handle all documentation and border clearances for US shipments.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q"><span>Do you handle refrigerated containers?</span>
+            <span class="faq-tog" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span>
+          </summary>
+          <p class="faq-a">Yes. Our drivers are proficiently trained in transporting refrigerated items and we hold a substantial number of Genset chassis. Our storage facility is outfitted to accommodate up to 30 refrigerated containers simultaneously.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q"><span>Where is your storage facility?</span>
+            <span class="faq-tog" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span>
+          </summary>
+          <p class="faq-a">Our yards are close to major seaports and rail terminals, conveniently near the NJ ports. The site is fully secured with 24/7 surveillance, offering peace of mind against cargo theft for both short-term and long-term storage.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q"><span>Will the quote match the invoice?</span>
+            <span class="faq-tog" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span>
+          </summary>
+          <p class="faq-a">Yes. We aim to give precise quotes that will end up on the invoice without any &lsquo;surprises&rsquo; nor any extra charges.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q"><span>Are you available outside business hours?</span>
+            <span class="faq-tog" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span>
+          </summary>
+          <p class="faq-a">We are open 24 / 7 / 365. Our emergency line is (646) 808-7266, answered around the clock, and our team monitors every shipment day and night.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section" id="contact">
+  <div class="shell">
+    <div class="head-row reveal">
+      <span class="badge">We Are Here To Help</span>
+      <h2>Get in Touch</h2>
+      <div class="head-end">
+        <p class="head-note">Directions, sales or billing — reach us any hour.</p>
+      </div>
+    </div>
+
+    <div class="section-head reveal">
+      <p class="lede">Reach out to one of our knowledgeable team members. If you have any queries or need assistance with directions, sales, or have questions regarding billing, don&rsquo;t hesitate to contact us right away!</p>
+      <p class="muted" style="margin-top:1rem">Contact us today to request a quote or click the link a custom freight quote online. We look forward to being the full-service company you trust for all of your transport needs.</p>
+    </div>
+
+    <dl class="cards" style="grid-template-columns:repeat(4,1fr);margin-top:0">
+      <div class="ccard reveal">
+        <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+        <dt>Address</dt>
+        <dd>78 John Miller Way, Kearny, NJ 07032 unit #408</dd>
+      </div>
+      <div class="ccard reveal">
+        <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 5.5c0 8 6 14 14 14l2-3-4-2.5-2 2a14 14 0 0 1-6.5-6.5l2-2L7.5 3.5z"/></svg></span>
+        <dt>Phones</dt>
+        <dd>
+          <a href="tel:+16468087266">Emergency: (646) 808-7266</a> (24/7)
+          <small>Sales: <a href="tel:+12012995416">(201) 299-5416</a></small>
+          <small>Other inquiries: <a href="tel:+12012995417">(201) 299-5417</a></small>
+        </dd>
+      </div>
+      <div class="ccard reveal">
+        <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg></span>
+        <dt>Email</dt>
+        <dd><a href="mailto:quotes@carmel-usa.com">quotes@carmel-usa.com</a></dd>
+      </div>
+      <div class="ccard reveal">
+        <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
+        <dt>Opening Hours</dt>
+        <dd>We are open 24 / 7 / 365</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="cta" id="quote">
+  <div class="cta-in">
+    <div class="cta-bg"><img src="assets/img/containers-3.jpg" alt="" aria-hidden="true"></div>
+
+    <div class="cta-copy">
+      <h2>Let&rsquo;s Move Your Freight. <span class="h-mute">Request a Quote.</span></h2>
+      <div class="cta-marks">
+        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>Precise quotes, no extra charges</span>
+        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Answered 24 / 7 / 365</span>
+      </div>
+    </div>
+
+    <form class="cta-form" action="#" method="post">
+      <h3>Have freight to move?</h3>
+      <p class="sub">Send the details and a dispatcher gets back to you.</p>
+
+      <div class="f-grid">
+        <div class="f"><span class="f-txt"><label for="name">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" required></span></div>
+        <div class="f"><span class="f-txt"><label for="company-f">Company</label>
+          <input id="company-f" name="company" type="text" autocomplete="organization" placeholder="Company"></span></div>
+      </div>
+      <div class="f-grid" style="margin-top:.55rem">
+        <div class="f"><span class="f-txt"><label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required></span></div>
+        <div class="f"><span class="f-txt"><label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(000) 000-0000"></span></div>
+      </div>
+      <div class="f-grid" style="margin-top:.55rem">
+        <div class="f"><span class="f-txt"><label for="service">Service</label>
+          <select id="service" name="service">
+            <option>Drayage</option>
+            <option>Refrigerated Containers</option>
+            <option>Intermodal Trucking</option>
+            <option>Storage Facility</option>
+          </select></span></div>
+        <div class="f"><span class="f-txt"><label for="size">Container</label>
+          <select id="size" name="container">
+            <option>20&rsquo;</option><option>40&rsquo;</option><option>45&rsquo;</option>
+            <option>Dry</option><option>Overweight</option><option>Refrigerated</option>
+            <option>Open top</option><option>Flat rack</option>
+          </select></span></div>
+      </div>
+      <div class="f" style="margin-top:.55rem"><span class="f-txt"><label for="details">Message</label>
+        <textarea id="details" name="message" placeholder="Pick up, delivery and dates"></textarea></span></div>
+
+      <button class="btn btn--primary btn--wide" style="margin-top:.9rem" type="submit">Request a Quote
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+      </button>
+      <p class="form-msg form-msg--ok" role="status" hidden>Success! Your message has been sent to us.</p>
+      <p class="form-msg form-msg--err" role="alert" hidden>Error! There was an error sending your message.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer" id="careers">
+  <div class="shell">
+    <div class="foot-top">
+      <div>
+        <p class="wordmark">Carmel<sup>&trade;</sup></p>
+        <p class="muted" style="margin-top:1rem;max-width:34ch;font-size:.93rem">Drayage, refrigerated containers, intermodal trucking and secured storage. Kearny, New Jersey.</p>
+      </div>
+
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#company">Company</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#drayage">Drayage</a></li>
+          <li><a href="#refrigerated">Refrigerated Containers</a></li>
+          <li><a href="#intermodal">Intermodal Trucking</a></li>
+          <li><a href="#storage">Storage Facility</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Reach Us</h4>
+        <ul>
+          <li><a href="tel:+16468087266">(646) 808-7266</a></li>
+          <li><a href="tel:+12012995416">(201) 299-5416</a></li>
+          <li><a href="mailto:quotes@carmel-usa.com">quotes@carmel-usa.com</a></li>
+          <li><span class="hours">Open 24 / 7 / 365</span></li>
+        </ul>
+      </div>
+
+      <button class="to-top" id="toTop" aria-label="Back to top">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+    </div>
+
+    <div class="foot-bottom">
+      <span>Carmel Transport &copy; <span id="year">2023</span>. All Rights Reserved.</span>
+      <span>78 John Miller Way, Kearny, NJ 07032 unit #408</span>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /canvas -->
+<script src="js/main.js"></script>
+</body>
+</html>

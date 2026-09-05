@@ -1,0 +1,174 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Roboto Slab", Georgia, serif;
+  --font-heading: var(--font-display);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Carmel brand, available as Tailwind utilities: bg-ink, text-signal, etc. */
+  --color-ink: #0E1B2E;
+  --color-ink-2: #1B2A41;
+  --color-brand: #1763B8;
+  --color-brand-wash: #EAF1FA;
+  --color-signal: #FFC62B;
+  --color-signal-dk: #EDB000;
+  --color-signal-wash: #FFF6DE;
+  --color-steel: #68738A;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+}
+
+/* Carmel: white/gray ground, blue + yellow accents */
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.213 0.035 258);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.213 0.035 258);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.213 0.035 258);
+
+  /* signal yellow is the primary action colour */
+  --primary: oklch(0.842 0.158 86.5);
+  --primary-foreground: oklch(0.213 0.035 258);
+
+  --secondary: oklch(0.968 0.005 258);
+  --secondary-foreground: oklch(0.213 0.035 258);
+
+  --muted: oklch(0.968 0.005 258);
+  --muted-foreground: oklch(0.552 0.028 258);
+
+  --accent: oklch(0.951 0.017 250);
+  --accent-foreground: oklch(0.404 0.114 253);
+
+  --destructive: oklch(0.577 0.245 27.3);
+
+  --border: oklch(0.925 0.008 258);
+  --input: oklch(0.925 0.008 258);
+  --ring: oklch(0.52 0.114 253);
+
+  --chart-1: oklch(0.842 0.158 86.5);
+  --chart-2: oklch(0.52 0.114 253);
+  --chart-3: oklch(0.404 0.114 253);
+  --chart-4: oklch(0.7 0.09 250);
+  --chart-5: oklch(0.552 0.028 258);
+
+  --sidebar: oklch(0.985 0.002 258);
+  --sidebar-foreground: oklch(0.213 0.035 258);
+  --sidebar-primary: oklch(0.213 0.035 258);
+  --sidebar-primary-foreground: oklch(0.985 0.002 258);
+  --sidebar-accent: oklch(0.968 0.005 258);
+  --sidebar-accent-foreground: oklch(0.213 0.035 258);
+  --sidebar-border: oklch(0.925 0.008 258);
+  --sidebar-ring: oklch(0.52 0.114 253);
+}
+
+.dark {
+  --background: oklch(0.183 0.031 258);
+  --foreground: oklch(0.985 0.002 258);
+  --card: oklch(0.235 0.031 258);
+  --card-foreground: oklch(0.985 0.002 258);
+  --popover: oklch(0.235 0.031 258);
+  --popover-foreground: oklch(0.985 0.002 258);
+  --primary: oklch(0.842 0.158 86.5);
+  --primary-foreground: oklch(0.213 0.035 258);
+  --secondary: oklch(0.279 0.029 258);
+  --secondary-foreground: oklch(0.985 0.002 258);
+  --muted: oklch(0.279 0.029 258);
+  --muted-foreground: oklch(0.715 0.021 258);
+  --accent: oklch(0.279 0.029 258);
+  --accent-foreground: oklch(0.985 0.002 258);
+  --destructive: oklch(0.704 0.191 22.2);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.58 0.1 253);
+
+  --chart-1: oklch(0.842 0.158 86.5);
+  --chart-2: oklch(0.65 0.114 253);
+  --chart-3: oklch(0.55 0.114 253);
+  --chart-4: oklch(0.45 0.09 250);
+  --chart-5: oklch(0.715 0.021 258);
+
+  --sidebar: oklch(0.235 0.031 258);
+  --sidebar-foreground: oklch(0.985 0.002 258);
+  --sidebar-primary: oklch(0.842 0.158 86.5);
+  --sidebar-primary-foreground: oklch(0.213 0.035 258);
+  --sidebar-accent: oklch(0.279 0.029 258);
+  --sidebar-accent-foreground: oklch(0.985 0.002 258);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.58 0.1 253);
+}
+
+/* One vertical rhythm for every section.
+   Each section contributes half the gap, so adjacent sections settle at
+   ~112-144px instead of the 192px the stock blocks stacked up. */
+@utility section-y {
+  padding-block: clamp(3.5rem, 5vw, 4.5rem);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

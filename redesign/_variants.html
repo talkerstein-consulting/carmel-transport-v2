@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carmel — three directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700;800;900&family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   THROWAWAY comparison page. Not the implementation.
+   Same copy in all three so the comparison is design-only.
+   ========================================================= */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d0f12;color:#fff;font-family:Roboto,Arial,sans-serif}
+img{display:block;max-width:100%}
+a{color:inherit}
+
+/* --- page chrome --- */
+.pagebar{
+  position:sticky;top:0;z-index:200;background:#000;border-bottom:1px solid #2a2d33;
+  display:flex;align-items:center;gap:1.5rem;padding:.9rem 1.6rem;flex-wrap:wrap;
+}
+.pagebar h1{font:700 .8rem/1 Roboto;letter-spacing:.2em;text-transform:uppercase;margin:0;color:#7c8391}
+.pagebar .jump{display:flex;gap:.5rem;margin-left:auto;flex-wrap:wrap}
+.pagebar a,.pagebar button{
+  font:700 .72rem/1 Roboto;letter-spacing:.14em;text-transform:uppercase;
+  padding:.6rem .95rem;border:1px solid #33373f;background:#15181d;color:#cfd4dc;
+  border-radius:3px;text-decoration:none;cursor:pointer;
+}
+.pagebar a:hover,.pagebar button:hover{border-color:#FFC62B;color:#FFC62B}
+
+.mark{
+  padding:2.6rem 1.6rem 1.2rem;max-width:1300px;margin:0 auto;
+}
+.mark .tag{font:700 .7rem/1 Roboto;letter-spacing:.24em;text-transform:uppercase;color:#FFC62B}
+.mark h2{font:800 2rem/1.1 "Roboto Slab",serif;margin:.7rem 0 .5rem}
+.mark p{color:#8b929e;max-width:70ch;margin:0;font-size:.98rem;line-height:1.6}
+.stage{max-width:1300px;margin:0 auto 4rem;border:1px solid #23262c;overflow:hidden}
+
+/* =========================================================
+   A — STENCIL & STEEL
+   The container door is the design system. Placard data
+   blocks, hazard chevrons, hard mechanical motion.
+   ========================================================= */
+.A{--ink:#0B0D0F;--steel:#15181C;--hz:#FFC62B;--blue:#1D5CA8;
+   background:var(--ink);color:#fff;font-family:Roboto,sans-serif;position:relative}
+.A .chev{
+  height:14px;
+  background:repeating-linear-gradient(135deg,var(--hz) 0 22px,#0B0D0F 22px 44px);
+}
+.A .top{display:flex;align-items:center;gap:1.4rem;padding:1.1rem 2.2rem;border-bottom:1px solid #23262c}
+.A .plate{
+  font:900 1rem/1 "Roboto Slab",serif;letter-spacing:.02em;
+  border:2px solid #fff;padding:.5rem .7rem;
+}
+.A .top nav{margin-left:auto;display:flex;gap:1.6rem;font:700 .72rem/1 Roboto;letter-spacing:.16em;text-transform:uppercase;color:#7d8592}
+
+.A .hero{position:relative;padding:5rem 2.2rem 3rem;overflow:hidden}
+.A .hero::before{
+  content:"";position:absolute;inset:0;
+  background:url(assets/img/truck7.jpg) center/cover;opacity:.13;filter:grayscale(1) contrast(1.3);
+}
+.A .hero::after{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 5px);
+}
+.A .hero > *{position:relative;z-index:2}
+.A .kick{font:700 .74rem/1 Roboto;letter-spacing:.34em;text-transform:uppercase;color:var(--hz);margin:0 0 1.6rem}
+.A h3{
+  font:900 clamp(2.8rem,7.4vw,6.4rem)/.86 "Roboto Slab",serif;
+  letter-spacing:-.045em;text-transform:uppercase;margin:0;
+}
+.A h3 .out{
+  color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.45);
+}
+.A h3 em{font-style:normal;color:var(--hz)}
+
+/* the door placard — real container marking structure, Carmel's numbers */
+.A .placard{
+  margin-top:3.4rem;border:2px solid #fff;max-width:760px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.A .placard div{padding:1.1rem 1.2rem;border-right:1px solid rgba(255,255,255,.32)}
+.A .placard div:last-child{border-right:0}
+.A .placard dt{font:700 .62rem/1 "Roboto Mono",monospace;letter-spacing:.16em;color:#8d94a0;margin:0 0 .55rem}
+.A .placard dd{margin:0;font:900 1.9rem/1 "Roboto Slab",serif;letter-spacing:-.02em}
+.A .placard dd small{font-size:.9rem;color:var(--hz);font-weight:700}
+
+.A .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#23262c;margin-top:0}
+.A .card{background:var(--steel);padding:1.8rem 1.5rem 1.7rem;position:relative;transition:background .25s}
+.A .card:hover{background:#1c2028}
+.A .card .no{font:700 .62rem/1 "Roboto Mono",monospace;color:var(--hz);letter-spacing:.16em}
+.A .card h4{font:800 1.15rem/1.15 "Roboto Slab",serif;margin:.9rem 0 .6rem;text-transform:uppercase;letter-spacing:-.01em}
+.A .card p{margin:0;font-size:.88rem;line-height:1.6;color:#8d94a0}
+
+/* =========================================================
+   B — BAY PLAN
+   The ship stowage grid as the layout engine. Cells load
+   like a stow plan. Cold, precise, operational.
+   ========================================================= */
+.B{--bg:#04101F;--grid:rgba(120,170,235,.17);--hz:#FFC62B;--cyan:#4FA3E3;
+   background:var(--bg);color:#fff;position:relative;font-family:Roboto,sans-serif}
+.B .wrap{position:relative;padding:2rem 2.2rem 3rem}
+.B .wrap::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.B .wrap > *{position:relative;z-index:2}
+.B .top{display:flex;align-items:baseline;gap:1.5rem;padding-bottom:2.6rem;font:500 .72rem/1 "Roboto Mono",monospace;letter-spacing:.14em;color:#5f83ab;text-transform:uppercase}
+.B .top b{color:#fff;font:700 .95rem/1 "Roboto Slab",serif;letter-spacing:.04em}
+.B .top span{margin-left:auto}
+
+.B .head{display:grid;grid-template-columns:1.15fr .85fr;gap:3rem;align-items:end;padding-bottom:2.6rem}
+.B .kick{font:500 .72rem/1 "Roboto Mono",monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--hz);margin:0 0 1.3rem}
+.B h3{font:700 clamp(2.1rem,4.4vw,3.5rem)/1.04 "Roboto Slab",serif;margin:0;letter-spacing:-.025em}
+.B h3 em{font-style:normal;color:var(--cyan)}
+.B .head p{margin:0;color:#7e9bbb;font-size:.95rem;line-height:1.7}
+
+/* the stow grid — 300 cells, filling = the fleet */
+.B .stow{display:grid;grid-template-columns:repeat(30,1fr);gap:3px;margin-bottom:2.4rem}
+.B .cell{aspect-ratio:1;background:rgba(120,170,235,.09);border-radius:1px;transition:background .3s,transform .3s}
+.B .cell.on{background:var(--cyan)}
+.B .cell.hot{background:var(--hz)}
+
+.B .legend{display:flex;gap:2.6rem;flex-wrap:wrap;font:500 .7rem/1 "Roboto Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:#5f83ab;padding-bottom:2.8rem}
+.B .legend b{display:block;font:700 1.75rem/1 "Roboto Slab",serif;color:#fff;margin-bottom:.5rem;letter-spacing:-.02em}
+.B .legend i{width:9px;height:9px;display:inline-block;margin-right:.5rem}
+
+.B .bays{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.B .bay{border:1px solid var(--grid);padding:1.5rem 1.3rem;background:rgba(4,16,31,.75);transition:border-color .25s,background .25s}
+.B .bay:hover{border-color:var(--cyan);background:rgba(79,163,227,.07)}
+.B .bay .id{font:500 .64rem/1 "Roboto Mono",monospace;color:var(--hz);letter-spacing:.14em}
+.B .bay h4{font:700 1.02rem/1.2 "Roboto Slab",serif;margin:.85rem 0 .55rem}
+.B .bay p{margin:0;font-size:.85rem;line-height:1.6;color:#7e9bbb}
+
+/* =========================================================
+   C — NIGHT YARD
+   Cinematic. Sodium light, quiet type, yellow as the only
+   light source. Least "trucking website".
+   ========================================================= */
+.C{--hz:#FFC62B;background:#070A0E;color:#fff;position:relative;font-family:Roboto,sans-serif}
+.C .hero{position:relative;min-height:560px;display:flex;flex-direction:column;justify-content:flex-end;padding:2rem 3rem 3.2rem;overflow:hidden}
+.C .hero .bg{position:absolute;inset:-8%;background:url(assets/img/containers-3.jpg) center/cover;
+  filter:brightness(.42) saturate(.62) contrast(1.1);transform:scale(1.04)}
+.C .hero .veil{position:absolute;inset:0;
+  background:radial-gradient(120% 90% at 22% 78%,rgba(255,198,43,.16) 0%,transparent 52%),
+             linear-gradient(180deg,rgba(7,10,14,.85) 0%,rgba(7,10,14,.28) 42%,rgba(7,10,14,.96) 100%)}
+.C .hero > *{position:relative;z-index:2}
+.C .top{display:flex;align-items:center;gap:1.4rem;font:400 .72rem/1 Roboto;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:auto}
+.C .top b{font:700 .95rem/1 "Roboto Slab",serif;letter-spacing:.06em;color:#fff}
+.C .top span{margin-left:auto}
+.C .kick{font:400 .72rem/1 Roboto;letter-spacing:.42em;text-transform:uppercase;color:var(--hz);margin:0 0 1.9rem}
+.C h3{font:300 clamp(2.4rem,5.6vw,4.6rem)/1.08 "Roboto Slab",serif;margin:0;letter-spacing:-.03em;max-width:16ch}
+.C h3 b{font-weight:700}
+.C h3 em{font-style:normal;color:var(--hz);text-shadow:0 0 44px rgba(255,198,43,.55)}
+.C .under{display:flex;gap:3.2rem;flex-wrap:wrap;margin-top:3rem;padding-top:1.8rem;border-top:1px solid rgba(255,255,255,.13)}
+.C .under div b{display:block;font:700 1.9rem/1 "Roboto Slab",serif;letter-spacing:-.02em;margin-bottom:.35rem}
+.C .under div span{font:400 .68rem/1 Roboto;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+
+.C .rail{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.1)}
+.C .rail article{padding:2.4rem 1.9rem 2.6rem;border-right:1px solid rgba(255,255,255,.1);transition:background .4s}
+.C .rail article:last-child{border-right:0}
+.C .rail article:hover{background:rgba(255,198,43,.05)}
+.C .rail h4{font:400 1.15rem/1.25 "Roboto Slab",serif;margin:0 0 .8rem;letter-spacing:-.01em}
+.C .rail p{margin:0;font-size:.87rem;line-height:1.7;color:rgba(255,255,255,.55)}
+.C .rail .dot{width:6px;height:6px;background:var(--hz);border-radius:50%;margin-bottom:1.5rem;
+  box-shadow:0 0 18px rgba(255,198,43,.9)}
+
+/* --- shared reveal for the replay trigger --- */
+.anim{opacity:0;transform:translateY(18px)}
+.play .anim{opacity:1;transform:none;transition:opacity .6s cubic-bezier(.22,.61,.36,1),transform .6s cubic-bezier(.22,.61,.36,1)}
+.play .A .placard{clip-path:inset(0 0 0 0);transition:clip-path .7s cubic-bezier(.6,.02,.2,1) .2s}
+.A .placard{clip-path:inset(0 100% 0 0)}
+
+@media(max-width:900px){
+  .A .placard,.A .cards,.B .bays,.C .rail{grid-template-columns:repeat(2,1fr)}
+  .B .head{grid-template-columns:1fr;gap:1.6rem}
+  .B .stow{grid-template-columns:repeat(20,1fr)}
+  .C .rail article{border-right:0;border-bottom:1px solid rgba(255,255,255,.1)}
+}
+@media(prefers-reduced-motion:reduce){
+  .anim{opacity:1;transform:none}
+  .A .placard{clip-path:none}
+}
+</style>
+</head>
+<body>
+
+<div class="pagebar">
+  <h1>Carmel · three directions · throwaway comparison</h1>
+  <div class="jump">
+    <a href="#a">A · Stencil</a>
+    <a href="#b">B · Bay plan</a>
+    <a href="#c">C · Night yard</a>
+    <button id="replay">Replay all</button>
+    <a href="/">Current build</a>
+  </div>
+</div>
+
+<!-- ============ A ============ -->
+<div class="mark" id="a">
+  <p class="tag">Direction A</p>
+  <h2>Stencil &amp; Steel</h2>
+  <p>The container door becomes the design system. Stats sit in a real placard block — the bordered, hairline-ruled data panel stencilled on every container — instead of in cards. Hazard chevrons, hard edges, zero radius, outlined display type. Motion is mechanical: things slide and lock, with a hard stop, like a twistlock engaging.</p>
+</div>
+<div class="stage">
+  <section class="A">
+    <div class="chev"></div>
+    <div class="top">
+      <span class="plate">CARMEL</span>
+      <nav><span>Services</span><span>Company</span><span>Careers</span><span>Contact</span></nav>
+    </div>
+    <div class="hero">
+      <p class="kick anim">Leading Provider of Drayage Services</p>
+      <h3 class="anim">We Don't Just<br><span class="out">Deliver,</span> <em>We Excel</em></h3>
+      <dl class="placard">
+        <div><dt>FLEET</dt><dd>300</dd></div>
+        <div><dt>CHASSIS</dt><dd>800<small>+</small></dd></div>
+        <div><dt>REEFER SLOTS</dt><dd>30</dd></div>
+        <div><dt>HOURS</dt><dd>24<small>/7</small></dd></div>
+      </dl>
+    </div>
+    <div class="cards">
+      <div class="card"><span class="no">SVC 01</span><h4>Drayage</h4><p>We provide a full range asset-based drayage and full transload services</p></div>
+      <div class="card"><span class="no">SVC 02</span><h4>Refrigerated</h4><p>We offer all-encompassing storage and transit of refrigerated containers</p></div>
+      <div class="card"><span class="no">SVC 03</span><h4>Intermodal</h4><p>We operate to ocean and rail container terminals, ensuring your goods reach their destination</p></div>
+      <div class="card"><span class="no">SVC 04</span><h4>Storage</h4><p>We provide an all-inclusive storage solution for all sizes of dry-box and refrigerated containers</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ B ============ -->
+<div class="mark" id="b">
+  <p class="tag">Direction B</p>
+  <h2>Bay Plan</h2>
+  <p>The ship's stowage grid runs the whole layout. Every section sits on a visible container grid, and the fleet is drawn literally — 300 cells, filling in sequence like a load plan being committed. Reads like an operations screen rather than a brochure, which is the actual promise: these people track your box.</p>
+</div>
+<div class="stage">
+  <section class="B">
+    <div class="wrap">
+      <div class="top"><b>CARMEL TRANSPORT</b><span>KEARNY NJ · 24/7/365</span></div>
+      <div class="head">
+        <div>
+          <p class="kick anim">Leading Provider of Drayage Services</p>
+          <h3 class="anim">We Don't Just Deliver,<br><em>We Excel</em></h3>
+        </div>
+        <p class="anim">Carmel Transport manages a robust fleet of 300 power units across North America and over 800 chassis, catering to container types from 20', 40', 45' — dry, overweight, refrigerated, open top, flat rack.</p>
+      </div>
+      <div class="stow" id="stow"></div>
+      <div class="legend">
+        <div><b>300</b><i style="background:#4FA3E3"></i>Power units</div>
+        <div><b>800+</b><i style="background:#4FA3E3"></i>Chassis</div>
+        <div><b>30</b><i style="background:#FFC62B"></i>Reefer slots</div>
+        <div><b>24/7</b><i style="background:#FFC62B"></i>365 days</div>
+      </div>
+      <div class="bays">
+        <div class="bay"><span class="id">BAY 01</span><h4>Drayage</h4><p>We provide a full range asset-based drayage and full transload services</p></div>
+        <div class="bay"><span class="id">BAY 02</span><h4>Refrigerated Containers</h4><p>We offer all-encompassing storage and transit of refrigerated containers</p></div>
+        <div class="bay"><span class="id">BAY 03</span><h4>Intermodal Trucking</h4><p>We operate to ocean and rail container terminals, ensuring your goods reach their destination</p></div>
+        <div class="bay"><span class="id">BAY 04</span><h4>Storage Facility</h4><p>We provide an all-inclusive storage solution for all sizes of dry-box and refrigerated containers</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ C ============ -->
+<div class="mark" id="c">
+  <p class="tag">Direction C</p>
+  <h2>Night Yard</h2>
+  <p>Cinematic and quiet. Sodium light on wet steel, deep vignetting, and type that finally stops shouting — light-weight Roboto Slab at large size with one word carrying the emphasis. Yellow is the only light source in the palette; it glows rather than fills. The most premium of the three, and the least like a trucking website.</p>
+</div>
+<div class="stage">
+  <section class="C">
+    <div class="hero">
+      <div class="bg"></div><div class="veil"></div>
+      <div class="top"><b>CARMEL TRANSPORT</b><span>Kearny, New Jersey · Open 24 / 7 / 365</span></div>
+      <p class="kick anim">Leading Provider of Drayage Services</p>
+      <h3 class="anim">We Don't Just <b>Deliver,</b><br><em>We Excel</em></h3>
+      <div class="under anim">
+        <div><b>50</b><span>Years experience</span></div>
+        <div><b>300</b><span>Power units</span></div>
+        <div><b>800+</b><span>Chassis</span></div>
+        <div><b>24/7</b><span>365 days</span></div>
+      </div>
+    </div>
+    <div class="rail">
+      <article><div class="dot"></div><h4>Drayage</h4><p>We provide a full range asset-based drayage and full transload services</p></article>
+      <article><div class="dot"></div><h4>Refrigerated Containers</h4><p>We offer all-encompassing storage and transit of refrigerated containers</p></article>
+      <article><div class="dot"></div><h4>Intermodal Trucking</h4><p>We operate to ocean and rail container terminals, ensuring your goods reach their destination</p></article>
+      <article><div class="dot"></div><h4>Storage Facility</h4><p>We provide an all-inclusive storage solution for all sizes of dry-box and refrigerated containers</p></article>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Build the 300-cell stow grid for direction B
+  var stow = document.getElementById('stow');
+  for (var i = 0; i < 300; i++) {
+    var c = document.createElement('span');
+    c.className = 'cell';
+    stow.appendChild(c);
+  }
+  var cells = stow.querySelectorAll('.cell');
+
+  function fill(){
+    cells.forEach(function(c){ c.className = 'cell'; });
+    if (reduced){
+      cells.forEach(function(c,i){ c.className = 'cell ' + (i % 10 === 0 ? 'hot' : 'on'); });
+      return;
+    }
+    cells.forEach(function(c,i){
+      setTimeout(function(){
+        c.className = 'cell ' + (i % 10 === 0 ? 'hot' : 'on');
+      }, i * 5);
+    });
+  }
+
+  function play(){
+    document.body.classList.remove('play');
+    void document.body.offsetWidth;
+    document.body.classList.add('play');
+    fill();
+  }
+
+  document.getElementById('replay').addEventListener('click', play);
+  play();
+})();
+</script>
+</body>
+</html>
