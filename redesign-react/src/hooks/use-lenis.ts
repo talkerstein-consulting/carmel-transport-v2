@@ -91,10 +91,18 @@ export function useLenis() {
     const toTop = () => lenis.scrollTo(0);
     window.addEventListener("carmel:scroll-top", toTop);
 
+    // pinned sections nudge the page through Lenis rather than native scroll
+    const scrollBy = (e: Event) => {
+      const { top } = (e as CustomEvent<{ top: number }>).detail ?? { top: 0 };
+      lenis.scrollTo(lenis.scroll + top);
+    };
+    window.addEventListener("carmel:scroll-by", scrollBy);
+
     return () => {
       cancelAnimationFrame(frame);
       document.removeEventListener("click", onClick);
       window.removeEventListener("carmel:scroll-top", toTop);
+      window.removeEventListener("carmel:scroll-by", scrollBy);
       lenis.destroy();
     };
   }, []);
