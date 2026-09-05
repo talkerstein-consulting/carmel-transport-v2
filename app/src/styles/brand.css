@@ -1,0 +1,502 @@
+/* ==========================================================================
+   Carmel Transport — v2
+   Tokens are transcribed from BRANDING.md §6. Do not invent values.
+   ========================================================================== */
+
+:root{
+  /* type */
+  --font-mark:"Roboto Slab",Georgia,serif;
+  --font-sans:"Google Sans","DM Sans",Inter,-apple-system,"Segoe UI",sans-serif;
+  --fs-display-1:clamp(3.5rem,1.2rem + 9.4vw,8.5rem);
+  --fs-display-2:clamp(2.75rem,1.3rem + 6.1vw,6rem);
+  --fs-h1:clamp(2.25rem,1.4rem + 3.6vw,4.25rem);
+  --fs-h2:clamp(1.75rem,1.2rem + 2.3vw,3rem);
+  --fs-h3:clamp(1.375rem,1.1rem + 1.1vw,2rem);
+  --fs-h4:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --fs-body:1rem; --fs-small:.875rem; --fs-caption:.8125rem; --fs-eyebrow:.75rem;
+
+  /* colour */
+  --paper-50:#FFFFFF; --paper-100:#F7F7F6; --paper-200:#EFEFEE; --paper-300:#E3E3E1;
+  --ink-400:#B4B4B1; --ink-500:#8A8A87; --ink-600:#63635F;
+  --ink-700:#454542; --ink-800:#2A2A28; --ink-900:#151513;
+  --blue-50:#EDF3FC; --blue-200:#A9C6F0; --blue-500:#1F5FD0;
+  --blue-600:#194FAE; --blue-700:#143E88;
+
+  /* gradients — all light-ground */
+  --grad-paper:linear-gradient(160deg,#FFFFFF 0%,#F7F7F6 45%,#EFEFEE 100%);
+  --grad-paper-deep:linear-gradient(160deg,#F7F7F6 0%,#EFEFEE 55%,#E7E7E5 100%);
+  --grad-blue:linear-gradient(135deg,#2C74E8 0%,#1F5FD0 48%,#153F92 100%);
+  --grad-mark:linear-gradient(180deg,#3A3A37 0%,#151513 78%);
+  --grad-head:linear-gradient(180deg,#3A3A37 0%,#151513 82%);
+  --grad-head-accent:linear-gradient(180deg,#2C74E8 0%,#153F92 100%);
+  /* the accent clause over footage — same hue, lifted so it reads on video */
+  --grad-head-accent-bright:linear-gradient(180deg,#A9CCFF 0%,#4C90FF 62%,#2C74E8 100%);
+  --glow-blue:radial-gradient(900px 340px at 88% -12%,rgba(31,95,208,.10),transparent 70%);
+
+  /* space */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px; --sp-11:160px; --sp-12:240px;
+  --section-y:clamp(96px,6vw + 2rem,160px);
+  --block-y:clamp(48px,3vw + 1rem,64px);
+
+  /* form */
+  --r-sm:4px; --r-md:8px; --r-lg:16px; --r-full:999px;
+  --line:1px solid var(--paper-300);
+  --shadow-1:0 1px 2px rgba(21,21,19,.06),0 8px 24px rgba(21,21,19,.05);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --dur:240ms;
+
+  --maxw:1360px;
+  --gutter:clamp(24px,4vw,64px);
+}
+
+/* no dark theme by design — BRANDING.md §4 light-only rule */
+html{color-scheme:light;-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:var(--font-sans);
+  font-size:var(--fs-body);
+  line-height:1.6;
+  color:var(--ink-700);
+  background:var(--paper-100);
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:var(--blue-500);text-decoration:none}
+:focus-visible{outline:2px solid var(--blue-500);outline-offset:2px}
+
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+
+/* --- wordmark ------------------------------------------------------------ */
+/* Single line, caps. The stacked TRANSPORT lockup is retired. */
+.wm{
+  font-family:var(--font-mark);text-transform:uppercase;
+  font-weight:700;font-size:22px;letter-spacing:.02em;line-height:1;
+  background:var(--grad-mark);-webkit-background-clip:text;background-clip:text;
+  color:#151513;-webkit-text-fill-color:transparent;
+}
+
+/* --- caps text link — unboxed, tumbles per word on hover ----------------- */
+.w{
+  display:inline-block;position:relative;overflow:hidden;
+  vertical-align:top;
+}
+.w:not(:last-child){margin-right:.32em}
+.wa,.wb{
+  display:block;
+  transition:transform 420ms var(--ease);
+  transition-delay:var(--d,0ms);
+}
+.wb{position:absolute;left:0;top:0;width:100%;transform:translateY(110%)}
+
+a:hover .wa,a:focus-visible .wa{transform:translateY(-110%)}
+a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
+
+@media(prefers-reduced-motion:reduce){
+  .wa,.wb{transition:none}
+  .wb{display:none}
+  a:hover .wa,a:focus-visible .wa{transform:none}
+}
+
+.link-caps{
+  display:inline-block;
+  font-size:var(--fs-caption);font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:#fff;
+  padding-bottom:var(--sp-2);
+  border-bottom:1px solid rgba(255,255,255,.7);
+  transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease);
+}
+.link-caps:hover{color:#fff;border-bottom-color:#fff}
+
+.eyebrow{
+  font-size:var(--fs-eyebrow);font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-500);margin:0;
+}
+
+/* --- nav — outlined, not filled ------------------------------------------ */
+.nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:stretch;
+  height:80px;
+  background:transparent;
+  border-bottom:1px solid rgba(255,255,255,.45);
+}
+.nav a{display:flex;align-items:center;text-decoration:none}
+
+.nav-brand{padding-inline:clamp(24px,3vw,48px);border-right:1px solid rgba(255,255,255,.45)}
+.nav-brand .wm{background:none;-webkit-text-fill-color:#fff;color:#fff}
+
+.nav-links{display:flex;align-items:stretch;margin-inline:auto}
+.nav-links a{
+  padding-inline:clamp(16px,2vw,32px);
+  border-right:1px solid rgba(255,255,255,.45);
+  font-size:var(--fs-small);font-weight:500;color:#fff;
+  transition:background var(--dur) var(--ease);
+}
+.nav-links a:first-child{border-left:1px solid rgba(255,255,255,.45)}
+.nav-links a:hover{background:rgba(255,255,255,.12)}
+.nav-links a[aria-current="page"]{box-shadow:inset 0 -2px 0 #fff}
+
+.nav-phone{
+  padding-inline:clamp(16px,2vw,32px);border-left:1px solid rgba(255,255,255,.45);
+  font-size:var(--fs-small);font-weight:600;color:#fff;
+  font-variant-numeric:tabular-nums;
+}
+
+.nav-portal{
+  padding-inline:clamp(24px,3vw,48px);
+  border-left:1px solid rgba(255,255,255,.45);
+  background:transparent;color:#fff;
+  font-size:var(--fs-caption);font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  transition:background var(--dur) var(--ease);
+}
+.nav-portal:hover{background:rgba(255,255,255,.14)}
+
+@media(max-width:1199px){.nav-links,.nav-phone{display:none}}
+
+/* --- background stage ---------------------------------------------------- */
+/* Absolute, not fixed: FrameScrub derives its progress from its own bounding
+   rect, and a fixed element's rect does not move with scroll. The component
+   pins itself internally with a sticky canvas, so the picture holds still
+   while the content scrolls over it. */
+.stage{
+  position:absolute;top:0;left:0;right:0;
+  height:100%;
+  z-index:1;                 /* above the ship layer, which waits beneath */
+  pointer-events:none;
+}
+.stage-scrub{width:100%}
+/* --- FrameScrub full-bleed fixes (shared) --------------------------------
+   The component centres its canvas inside px-4/sm:px-8, and clamps its stage
+   to 0.95 of the viewport which it writes out as an inline height:95vh —
+   leaving a band top and bottom. Both are overridden here. */
+.fs-fill>div{padding-left:0!important;padding-right:0!important;gap:0!important}
+.fs-fill>div>div{height:100svh!important;max-width:none!important}
+.fs-fill canvas{display:block;width:100%;height:100%}
+/* footage plays as shot — no filter over the picture itself.
+   Only the left and right edges darken, so the white type at the margins
+   keeps contrast without washing out the middle of the frame. */
+.stage-edges{
+  position:fixed;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,
+    rgba(10,10,9,.55) 0%,
+    rgba(10,10,9,.22) 18%,
+    rgba(10,10,9,0)   38%,
+    rgba(10,10,9,0)   62%,
+    rgba(10,10,9,.22) 82%,
+    rgba(10,10,9,.55) 100%);
+}
+
+/* --- section 01 · hero --------------------------------------------------- */
+.hero{
+  position:relative;z-index:2;
+  min-height:calc(100svh - 80px);
+  display:grid;
+  grid-template-columns:1fr minmax(320px,38%);
+  align-items:end;
+  gap:var(--sp-8);
+  padding:clamp(48px,7vw,96px) clamp(24px,4vw,64px) clamp(32px,4vw,56px);
+}
+
+.hero-head{
+  grid-column:1;grid-row:1;align-self:center;
+  margin:0;display:flex;flex-direction:column;align-items:flex-start;
+  font-size:var(--fs-display-1);font-weight:700;line-height:.86;
+  letter-spacing:-.045em;word-spacing:.03em;
+  font-optical-sizing:auto;color:#fff;
+}
+/* Fill each line itself — animated spans paint on their own layer, so a
+   background-clip on the parent would never show through them.
+   The padding gives ascenders and descenders room; the matching negative
+   margin gives the tight line-height back, so nothing is cropped. */
+.hero-head span{
+  display:block;
+  padding-block:.10em .16em;
+  margin-block:-.10em -.16em;
+  color:#fff;-webkit-text-fill-color:#fff;
+}
+/* the split-tone headline — one clause takes the blue gradient.
+   background-image, not the shorthand: the shorthand resets background-clip. */
+.hero-head .l3{
+  background-image:var(--grad-head-accent-bright);
+  -webkit-background-clip:text;background-clip:text;
+  color:#8CBEFF;-webkit-text-fill-color:transparent;
+}
+
+.hero-aside{grid-column:2;grid-row:1;align-self:center;justify-self:end;
+  max-width:42ch;text-align:right}
+.hero-lead{
+  margin:0;font-size:var(--fs-lead);line-height:1.45;letter-spacing:-.005em;
+  color:#fff;text-wrap:pretty;
+}
+.hero-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;
+  gap:var(--sp-6);margin-top:var(--sp-7)}
+/* keep the left/right split down to tablet — it is the layout */
+@media(max-width:1100px){
+  .hero{grid-template-columns:1fr minmax(280px,40%);gap:var(--sp-6)}
+  .hero-head{font-size:var(--fs-display-2)}
+}
+@media(max-width:767px){
+  .hero{grid-template-columns:1fr;align-items:start;gap:var(--sp-7)}
+  .hero-aside{grid-column:1;grid-row:2;max-width:none;justify-self:start;text-align:left}
+  .hero-actions{justify-content:flex-start}
+}
+
+@media(prefers-reduced-motion:no-preference){
+  .hero-head span,.hero-aside>*{animation:rise 700ms var(--ease) both}
+  .hero-head .l2{animation-delay:80ms}
+  .hero-head .l3{animation-delay:160ms}
+  .hero-aside>*:nth-child(1){animation-delay:240ms}
+  .hero-aside>*:nth-child(2){animation-delay:320ms}
+  @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+}
+
+
+/* --- section 02 · intro — hero's split, mirrored ------------------------- */
+/* Body left, heading and CTA right. Sticks below the nav so it appears at the
+   top; only the word opacity moves as you scroll. */
+.reveal{
+  position:relative;z-index:2;
+  min-height:190svh;
+  padding:0 clamp(24px,4vw,64px);
+}
+.reveal-inner{
+  position:sticky;top:0;
+  min-height:100svh;                     /* full screen, content centred in it */
+  display:grid;
+  grid-template-columns:1fr minmax(320px,38%);
+  align-content:center;align-items:center;
+  gap:var(--sp-8);
+  padding-block:clamp(48px,7vw,96px);
+}
+
+/* ScrollReveal ships its own CSS and, because the component imports it, that
+   sheet lands after this one. Scope to .reveal so brand type wins. */
+.reveal .scroll-reveal{margin:0}
+.reveal-body-wrap{grid-column:1;margin:0}
+
+.reveal .reveal-body{
+  margin:0;max-width:34ch;
+  font-size:var(--fs-h3);font-weight:500;line-height:1.3;
+  letter-spacing:-.015em;color:#fff;text-wrap:pretty;
+  text-align:left;
+}
+
+.reveal-aside{grid-column:2;justify-self:end;text-align:right;max-width:42ch}
+.reveal .reveal-head{
+  margin:0;max-width:14ch;margin-left:auto;
+  font-size:var(--fs-h2);font-weight:700;line-height:1.08;
+  letter-spacing:-.02em;text-wrap:balance;color:#fff;
+}
+.reveal-cta{margin:var(--sp-7) 0 0}
+
+@media(max-width:1100px){
+  .reveal-inner{grid-template-columns:1fr minmax(280px,40%);gap:var(--sp-6)}
+}
+@media(max-width:767px){
+  .reveal{min-height:170svh}
+  .reveal-inner{grid-template-columns:1fr;gap:var(--sp-7)}
+  .reveal-body-wrap{grid-row:2}
+  .reveal .reveal-body{max-width:none}
+  .reveal-aside{grid-column:1;grid-row:1;justify-self:start;text-align:left}
+  .reveal .reveal-head{margin-left:0}
+}
+
+/* --- section 03 · stats --------------------------------------------------- */
+/* Scrolls up OVER the sticky section above it. FrameScrub provides this
+   section's height (its own runway) and pins the ship canvas inside it;
+   cargo.jpg and the figures ride above in an absolute overlay. */
+/* Sits BENEATH act one (z-index 0) and is uncovered by the stage's bottom edge
+   wiping upward — it never slides up over anything.
+   The underlap is 180svh, not 100: its canvas is sticky, so it only locks to
+   the viewport once the section top has passed. One screen of underlap left a
+   window where the wipe had begun while the canvas was still travelling into
+   place, which read as the footage scrolling up. */
+.stats{
+  position:relative;z-index:0;
+  margin-top:-180svh;
+  background:#0A0A09;
+}
+.stats-scrub{width:100%}
+
+.stats-overlay{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+/* same edge treatment as the hero, so the figures at the margins hold.
+   Fixed, because the footage it sits on does not move. */
+.stats-scrim{
+  position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,
+    rgba(10,10,9,.62) 0%,
+    rgba(10,10,9,.26) 20%,
+    rgba(10,10,9,0)   40%,
+    rgba(10,10,9,0)   60%,
+    rgba(10,10,9,.26) 80%,
+    rgba(10,10,9,.62) 100%);
+}
+
+/* All four figures stay together as one block — two left, two right — and
+   that block scrolls up past the footage, which stays put.
+
+   The top padding is 230svh, NOT a small value: this section underlaps act one
+   by 180svh, so anything laid out in that first stretch sits behind it. */
+.stats-inner{
+  position:relative;z-index:3;
+  display:block;
+  padding:230svh clamp(24px,4vw,64px) 60svh;
+}
+.stats-col{display:flex;flex-direction:column;gap:clamp(48px,7vw,96px)}
+.stats-col-right{text-align:right}
+.stat{will-change:transform,opacity}
+
+.stat-figure{
+  margin:0;
+  font-size:var(--fs-display-2);font-weight:700;line-height:.9;
+  letter-spacing:-.04em;color:#fff;
+  font-variant-numeric:tabular-nums;
+}
+.stat-unit{font-size:.42em;font-weight:600;letter-spacing:-.01em}
+.stat-label{
+  margin:var(--sp-3) 0 0;max-width:22ch;
+  font-size:var(--fs-small);font-weight:500;
+  color:rgba(255,255,255,.82);
+}
+.stats-col-right .stat-label{margin-left:auto}
+
+@media(max-width:767px){
+  .stats-inner{grid-template-columns:1fr;justify-content:start;gap:clamp(32px,8vw,56px)}
+  .stats-col-right{text-align:left}
+  .stats-col-right .stat-label{margin-left:0}
+  .stat-figure{font-size:var(--fs-h1)}
+}
+
+/* --- film grain ----------------------------------------------------------
+   A fixed noise plate over the whole page. Its job is to break up the banding
+   and blocking in the compressed frame sequences — grain reads as texture, a
+   clean gradient reads as a low-bitrate artefact. Cheap: one inline SVG
+   turbulence tile, no image request, no animation. */
+.grain{
+  position:fixed;inset:0;z-index:60;
+  pointer-events:none;
+  opacity:.16;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+@media(prefers-reduced-motion:reduce){.grain{opacity:.10}}
+
+/* hero footage: no scale, no offset — the frame fills the screen as shot */
+.stage-scrub canvas{transform:none}
+
+/* --- section 04 · services ----------------------------------------------- */
+/* Pulled up over the ship section and dissolved in, so the two sequences
+   stitch instead of one sliding over the other.
+   The underlap is 200svh, not 100. FrameScrub pins its canvas for
+   scrollLength x 100vh and then lets it travel for the final 100vh of its
+   runway — so a 100svh underlap put the crossfade exactly in the window where
+   the ship releases and starts scrolling. At 200svh the whole crossfade sits
+   inside the ship's pinned range: both films hold the same position and only
+   opacity changes. */
+.intro-services{
+  position:relative;z-index:3;
+  margin-top:-200svh;
+  background:transparent;
+}
+.svc-scrub{width:100%;opacity:0}
+
+.svc-overlay{position:absolute;inset:0;z-index:1;pointer-events:none}
+.svc-pin{
+  position:sticky;top:0;
+  height:100svh;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  gap:clamp(40px,6vh,80px);
+  padding:clamp(140px,22vh,240px) clamp(24px,4vw,64px) clamp(32px,4vh,56px);
+  overflow:hidden;                       /* cards wait out of frame below */
+}
+.svc-pin>*{pointer-events:auto}
+
+.svc-head{
+  margin:0;
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:var(--sp-6);
+  font-size:var(--fs-h1);font-weight:700;line-height:.98;
+  letter-spacing:-.035em;color:#fff;
+}
+
+/* four across, below the headline — they rise in from under the fold */
+.svc-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(16px,1.6vw,24px);
+}
+/* top-aligned: the open card grows downward, the closed ones hold their tops */
+.svc-row{align-items:start}
+.svc-card{
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:var(--r-lg);
+  background:rgba(10,10,9,.30);
+  backdrop-filter:blur(6px);
+  padding:clamp(18px,1.8vw,var(--sp-5));
+  will-change:transform,opacity;
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+}
+.svc-card.is-open{
+  background:rgba(10,10,9,.52);
+  border-color:rgba(255,255,255,.5);
+}
+
+/* the detail is closed by default and opens for the active service only.
+   grid-template-rows 0fr -> 1fr animates an auto height without a fixed max. */
+.svc-card-detail{
+  display:grid;grid-template-rows:0fr;
+  opacity:0;
+  transition:grid-template-rows 420ms var(--ease),opacity 260ms var(--ease),
+             margin-top 420ms var(--ease);
+  margin-top:0;
+}
+.svc-card-detail>*{min-height:0}
+.svc-card.is-open .svc-card-detail{
+  grid-template-rows:1fr;opacity:1;margin-top:var(--sp-4);
+}
+
+.svc-card-media{
+  overflow:hidden;border-radius:var(--r-md);
+  margin-bottom:var(--sp-4);
+}
+.svc-card-media img{
+  width:100%;height:clamp(120px,16vh,190px);object-fit:cover;display:block;
+}
+.svc-card-body{
+  margin:0 0 var(--sp-4);
+  font-size:var(--fs-small);line-height:1.55;
+  color:rgba(255,255,255,.84);text-wrap:pretty;
+}
+.svc-card-cta{
+  font-size:var(--fs-eyebrow);
+  color:#fff;border-bottom-color:rgba(255,255,255,.7);
+}
+.svc-card-cta:hover{color:#fff;border-bottom-color:#fff}
+
+@media(prefers-reduced-motion:reduce){
+  .svc-card-detail{transition:none}
+}
+.svc-card-n{
+  margin:0 0 var(--sp-3);
+  font-size:var(--fs-eyebrow);font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,.68);
+}
+.svc-card-head{
+  margin:0;max-width:18ch;
+  font-size:var(--fs-h4);font-weight:600;line-height:1.15;
+  letter-spacing:-.01em;color:#fff;text-wrap:balance;
+}
+
+@media(max-width:1023px){
+  .svc-row{grid-template-columns:repeat(2,1fr)}
+  .svc-head{flex-direction:column;align-items:flex-start;gap:var(--sp-1)}
+}
+@media(max-width:600px){
+  .svc-row{grid-template-columns:1fr;gap:var(--sp-3)}
+  .svc-card-head{font-size:var(--fs-body)}
+}

@@ -30,3 +30,13 @@ yarn-error.log*
 
 # scratch
 /tmp/
+
+# Source footage for the scroll scrubs — ~47MB, kept out of git.
+# The rendered WebP sequences in app/public/seq/ are committed, so the site
+# builds and deploys without these. They are only needed to re-run
+# app/scripts/build-frames.sh when the footage changes.
+*.mp4
+*.mov
+
+# superseded static build, replaced by the React app in app/
+/site/

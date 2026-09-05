@@ -1,0 +1,33 @@
+import { Stage } from "@/components/site/Stage"
+import { Nav } from "@/components/site/Nav"
+import { Hero } from "@/components/site/Hero"
+import { Intro } from "@/components/site/Intro"
+import { Stats } from "@/components/site/Stats"
+import { ServicesIntro } from "@/components/site/ServicesIntro"
+import { Differentiator } from "@/components/site/Differentiator"
+import HowItWorks4 from "@/components/how-it-works-4"
+import { Closing } from "@/components/site/Closing"
+
+export default function App() {
+  return (
+    <>
+      <Stage />
+      <Nav />
+      <main>
+        <Hero />
+        <Intro />
+        <Stats />
+        <ServicesIntro />
+        {/* everything past the footage shares one continuous ground */}
+        <div className="act-three">
+          <Differentiator />
+          <HowItWorks4 />
+          <Closing />
+        </div>
+      </main>
+
+      {/* film grain — sits over everything, masks compression in the footage */}
+      <div className="grain" aria-hidden="true" />
+    </>
+  )
+}

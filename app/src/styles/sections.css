@@ -1,0 +1,258 @@
+/* ==========================================================================
+   Carmel Transport — closing sections
+   Loaded after brand.css. Everything here uses the same tokens.
+   ========================================================================== */
+
+/* --- section 05 · why carmel --------------------------------------------- */
+/* The film ends here. The ground opens on #D5E7F2 — the pale blue the clouds
+   resolve to — so the sequence hands off with no visible seam, then settles
+   down to paper for the sections that follow. */
+.diff {
+  position: relative; z-index: 5;
+  min-height: 100svh;
+  display: flex; align-items: center;
+  padding: var(--section-y) clamp(24px, 4vw, 64px);
+  background: linear-gradient(180deg,
+    #D5E7F2 0%, #E4EFF6 42%, #F1F5F7 74%, var(--paper-100) 100%);
+}
+.diff-inner {
+  width: 100%; max-width: var(--maxw); margin-inline: auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 5vw, 96px);
+  align-items: start;
+}
+.diff-eyebrow { color: var(--ink-500); margin-bottom: var(--sp-4); }
+.diff-head {
+  margin: 0 0 var(--sp-6); max-width: 14ch;
+  font-size: var(--fs-h1); font-weight: 700; line-height: 1.02;
+  letter-spacing: -.03em; color: var(--ink-900); text-wrap: balance;
+}
+.diff-lead {
+  margin: 0 0 var(--sp-4); max-width: 52ch;
+  font-size: var(--fs-lead); line-height: 1.5;
+  color: var(--ink-700); text-wrap: pretty;
+}
+
+/* the three points stack in, one after another */
+.diff-list { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 40px); }
+.diff-item {
+  padding-top: var(--sp-5);
+  border-top: 1px solid rgba(21, 21, 19, .16);
+  will-change: transform, opacity;
+}
+.diff-item-head {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-h4); font-weight: 600; line-height: 1.2;
+  letter-spacing: -.01em; color: var(--ink-900);
+}
+.diff-item-body {
+  margin: 0; max-width: 52ch;
+  font-size: var(--fs-body); line-height: 1.6;
+  color: var(--ink-700); text-wrap: pretty;
+}
+@media (max-width: 900px) { .diff-inner { grid-template-columns: 1fr; gap: var(--sp-8); } }
+
+/* --- section 06 · how it works (@reactbits-pro/how-it-works-4) ------------ */
+/* The block ships its own neutral palette and dark-mode variants; those class
+   names were swapped for these so it reads as part of this site. */
+.hiw {
+  position: relative; z-index: 5;
+  width: 100%;
+  padding: var(--section-y) clamp(24px, 4vw, 64px);
+  background: var(--grad-paper);
+  border-top: var(--line);
+}
+.hiw-eyebrow {
+  margin: 0; font-size: var(--fs-eyebrow); font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-500);
+}
+.hiw-head {
+  margin: var(--sp-3) 0 0; max-width: 16ch;
+  font-size: var(--fs-h1); font-weight: 700; line-height: 1.02;
+  letter-spacing: -.03em; color: var(--ink-900); text-wrap: balance;
+}
+.hiw-lead {
+  margin: var(--sp-4) 0 0; max-width: 56ch;
+  font-size: var(--fs-lead); line-height: 1.5;
+  color: var(--ink-600); text-wrap: pretty;
+}
+.hiw-cta {
+  margin-top: var(--sp-5);
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--fs-caption); font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-900);
+  padding-bottom: var(--sp-2); border-bottom: 1px solid var(--ink-900);
+}
+.hiw-cta:hover { color: var(--blue-500); border-bottom-color: var(--blue-500); }
+.hiw-chip {
+  padding: var(--sp-2) var(--sp-4); border-radius: var(--r-full);
+  border: var(--line); background: var(--paper-50);
+  font-size: var(--fs-caption); font-weight: 600; color: var(--ink-900);
+}
+.hiw-rule { position: absolute; left: 16.66%; right: 16.66%; height: 1px; background: var(--paper-300); }
+.hiw-dot {
+  position: absolute; width: 10px; height: 10px; border-radius: var(--r-full);
+  border: 2px solid var(--blue-500); background: var(--paper-50);
+}
+.hiw-card {
+  border: var(--line); border-radius: var(--r-lg); background: var(--paper-50);
+  padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4);
+}
+.hiw-card-head {
+  margin: 0; font-size: var(--fs-h4); font-weight: 600;
+  letter-spacing: -.01em; color: var(--ink-900);
+}
+.hiw-item {
+  display: flex; align-items: flex-start; gap: var(--sp-2);
+  font-size: var(--fs-small); line-height: 1.55; color: var(--ink-700);
+}
+.hiw-check { width: 16px; height: 16px; margin-top: 3px; flex: none; color: var(--blue-500); }
+
+/* --- section 08 · final CTA ---------------------------------------------- */
+.cta {
+  position: relative; z-index: 5;
+  background: var(--grad-paper);
+  border-top: var(--line);
+  padding: var(--sp-11) clamp(24px, 4vw, 64px);
+  text-align: center;
+}
+.cta-inner { max-width: var(--maxw); margin-inline: auto; }
+.cta-eyebrow { color: var(--ink-500); }
+.cta-head {
+  margin: var(--sp-3) auto var(--sp-5); max-width: 18ch;
+  font-size: var(--fs-display-2); font-weight: 700; line-height: .98;
+  letter-spacing: -.04em; text-wrap: balance;
+  background: var(--grad-head);
+  -webkit-background-clip: text; background-clip: text;
+  color: #151513; -webkit-text-fill-color: transparent;
+}
+.cta-lead {
+  margin: 0 auto; max-width: 44ch;
+  font-size: var(--fs-lead); line-height: 1.5; color: var(--ink-600);
+}
+.cta-actions { margin: var(--sp-8) 0 0; }
+.cta-link { color: var(--ink-900); border-bottom-color: var(--ink-900); }
+.cta-link:hover { color: var(--blue-500); border-bottom-color: var(--blue-500); }
+
+/* --- footer -------------------------------------------------------------- */
+/* Not inverted — BRANDING.md section 4: the identity is light-ground everywhere. */
+.foot {
+  position: relative; z-index: 5;
+  background: var(--grad-paper-deep);
+  border-top: var(--line);
+  padding: var(--section-y) clamp(24px, 4vw, 64px) var(--sp-7);
+}
+.foot-top {
+  max-width: var(--maxw); margin-inline: auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 5vw, 96px);
+  padding-bottom: var(--sp-9);
+}
+.foot-head {
+  margin: 0 0 var(--sp-4); max-width: 14ch;
+  font-size: var(--fs-h2); font-weight: 700; line-height: 1.06;
+  letter-spacing: -.025em; color: var(--ink-900); text-wrap: balance;
+}
+.foot-lead {
+  margin: 0; max-width: 48ch;
+  font-size: var(--fs-body); line-height: 1.6;
+  color: var(--ink-600); text-wrap: pretty;
+}
+.foot-actions { margin: var(--sp-6) 0 0; }
+.foot-link { color: var(--ink-900); border-bottom-color: var(--ink-900); }
+.foot-link:hover { color: var(--blue-500); border-bottom-color: var(--blue-500); }
+
+.foot-details {
+  margin: 0; display: grid; grid-template-columns: auto 1fr;
+  column-gap: var(--sp-6); row-gap: var(--sp-4); align-content: start;
+}
+.foot-details dt {
+  font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-500);
+}
+.foot-details dd {
+  margin: 0; font-size: var(--fs-small); line-height: 1.5;
+  color: var(--ink-700); font-variant-numeric: tabular-nums;
+}
+.foot-details a { color: var(--ink-900); }
+.foot-details a:hover { color: var(--blue-500); }
+
+.foot-bottom {
+  max-width: var(--maxw); margin-inline: auto;
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--sp-5) var(--sp-7);
+  padding-top: var(--sp-6); border-top: var(--line);
+}
+.foot-wm { font-size: 18px; }
+.foot-nav { display: flex; flex-wrap: wrap; gap: var(--sp-5); margin-inline: auto; }
+.foot-nav a { font-size: var(--fs-small); color: var(--ink-600); }
+.foot-nav a:hover { color: var(--ink-900); }
+.foot-legal { margin: 0; font-size: var(--fs-caption); color: var(--ink-500); }
+
+@media (max-width: 767px) {
+  .foot-top { grid-template-columns: 1fr; gap: var(--sp-8); }
+  .foot-nav { margin-inline: 0; }
+}
+
+/* --- clouds -> gradient handoff ------------------------------------------ */
+/* The tail of the clouds sequence resolves into the exact colour the next
+   section opens on, so the footage dissolves into the gradient instead of
+   ending on a section edge. Fixed, because the footage under it is pinned. */
+.svc-out {
+  position: fixed; inset: 0;
+  z-index: 4;
+  background: #D5E7F2;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* --- one ground for everything past the footage --------------------------- */
+/* The sections below carry no background of their own; this continues the
+   #D5E7F2 the clouds resolve into, all the way down. */
+.act-three {
+  background: linear-gradient(180deg,
+    #D5E7F2 0%, #E1EBF3 14%, #EBF1F5 34%, #F1F4F6 62%, #F4F6F7 100%);
+}
+.act-three .diff,
+.act-three .hiw,
+.act-three .cta,
+.act-three .foot { background: transparent; }
+.act-three .diff { border-top: none; }
+
+/* --- nav: blurred plate, inverts on the light half ------------------------ */
+.nav {
+  background: rgba(10, 10, 9, .22);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  backdrop-filter: saturate(140%) blur(14px);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.nav.is-light {
+  background: rgba(255, 255, 255, .68);
+  border-bottom-color: var(--paper-300);
+}
+.nav.is-light .nav-brand,
+.nav.is-light .nav-links a,
+.nav.is-light .nav-portal { border-color: var(--paper-300); }
+.nav.is-light .nav-links a:first-child { border-left-color: var(--paper-300); }
+.nav.is-light .nav-links a,
+.nav.is-light .nav-phone,
+.nav.is-light .nav-portal { color: var(--ink-900); }
+.nav.is-light .nav-links a:hover { background: rgba(21, 21, 19, .06); }
+.nav.is-light .nav-portal:hover { background: rgba(21, 21, 19, .07); }
+.nav.is-light .wm {
+  background: var(--grad-mark);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: var(--ink-900);
+}
+
+/* The figure group is HELD in place by ScrollTrigger while the four arrive,
+   then released. CSS sticky would not engage here — inside the absolutely
+   positioned overlay it passed the stick line and kept travelling. */
+.stats-group {
+  display: grid; grid-template-columns: auto auto;
+  justify-content: space-between; gap: var(--sp-8);
+}
+@media (max-width: 767px) {
+  .stats-group { position: static; grid-template-columns: 1fr; }
+}
