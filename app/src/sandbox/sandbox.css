@@ -1,0 +1,221 @@
+/* Sandbox-only tokens. Nothing here leaks into the site until promoted. */
+
+.sb{
+
+  --sb-paper:#F7F9FC;   /* cool off-white; #FCFBF7 read too warm */
+
+  --sb-ink:#081D35;
+
+  --sb-hi:#6AB0FF;
+
+  --sb-cta:#FE9B23;
+
+  --sb-ink-60:rgba(8,29,53,.62);
+
+  --sb-ink-12:rgba(8,29,53,.12);
+
+  --sb-hi-tint:#DCEBFF;
+
+
+
+  /* type floor: nothing below 16px. The three small steps in BRANDING §3
+
+     (14 / 13 / 12) collapse to body size; they keep their weight, tracking
+
+     and case, which is what actually distinguishes them. */
+
+  --fs-small:1rem;
+
+  --fs-caption:1rem;
+
+  --fs-eyebrow:1rem;
+
+
+
+  min-height:100svh;
+
+  background:var(--sb-paper);
+
+  color:var(--sb-ink);
+
+  font-family:var(--font-sans);
+
+  padding:clamp(48px,7vw,96px) clamp(24px,4vw,64px) var(--sp-11);
+
+}
+
+
+
+/* --- text spacing rules (BRANDING.md §5) ---------------------------------
+
+   Every text block starts with zero margin; the gap is always set on the
+
+   element that follows, from this ladder and nothing else:
+
+     eyebrow  -> heading   --sp-3  (12)
+
+     heading  -> lead      --sp-5  (24)
+
+     heading  -> body      --sp-4  (16)
+
+     lead     -> action    --sp-7  (48)
+
+     section label -> content      --sp-6  (32)
+
+     section  -> section   --sp-9  (96)
+
+   Line heights: display .95, h1 1.02, h2 1.08, h3 1.15, lead 1.5, body 1.6. */
+
+.sb h1,.sb h2,.sb h3,.sb p{margin:0}
+
+.sb .sb-eyebrow + h1{margin-top:var(--sp-3)}
+
+.sb h1 + .sb-lead{margin-top:var(--sp-5)}
+
+.sb .sb-display + .sb-body{margin-top:var(--sp-5)}
+
+.sb .sb-sec h2 + *{margin-top:var(--sp-6)}
+
+.sb .sb-note + *{margin-top:var(--sp-6)}
+
+.sb .sb-card-body h3 + p{margin-top:var(--sp-3)}
+
+
+
+.sb-eyebrow{font-size:var(--fs-eyebrow);font-weight:500;letter-spacing:.14em;line-height:1.2;text-transform:uppercase;color:var(--sb-ink-60)}
+
+.sb-head h1{font-size:var(--fs-display-2);font-weight:700;line-height:.95;letter-spacing:-.035em;text-wrap:balance}
+
+.sb-head h1 em,.sb-display em{font-style:normal;color:var(--sb-hi)}
+
+.sb-lead{max-width:48ch;font-size:var(--fs-lead);line-height:1.5;letter-spacing:-.005em;color:var(--sb-ink-60);text-wrap:pretty}
+
+
+
+.sb-sec{margin-top:var(--sp-9);padding-top:var(--sp-6);border-top:1px solid var(--sb-ink-12)}
+
+.sb-sec h2{font-size:var(--fs-caption);font-weight:600;letter-spacing:.12em;line-height:1.2;text-transform:uppercase;color:var(--sb-ink-60)}
+
+.sb-note{font-size:var(--fs-small);line-height:1.55;color:var(--sb-ink-60);max-width:56ch;text-wrap:pretty}
+
+/* a note directly under the label sits closer — it is part of the label */
+
+.sb .sb-sec h2 + .sb-note{margin-top:var(--sp-3)}
+
+.sb-row{display:flex;flex-wrap:wrap;gap:var(--sp-5);align-items:center}
+
+
+
+/* swatches */
+
+.sb-swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--sp-4)}
+
+.sb-swatch{display:flex;flex-direction:column;gap:var(--sp-2);font-size:var(--fs-small)}
+
+.sb-swatch-chip{aspect-ratio:1.4;border-radius:20px;border:1px solid var(--sb-ink-12)}
+
+.sb-swatch code{font-family:ui-monospace,Menlo,monospace;color:var(--sb-ink-60);font-size:var(--fs-caption)}
+
+
+
+/* CTA: see components/site/cta.css (promoted) */
+
+/* type */
+
+.sb-display{font-size:var(--fs-h1);font-weight:700;line-height:1.02;letter-spacing:-.03em;max-width:16ch;text-wrap:balance}
+
+.sb-body{max-width:62ch;font-size:var(--fs-body);line-height:1.6;color:var(--sb-ink-60);text-wrap:pretty}
+
+
+
+/* --- squircle card ------------------------------------------------------- */
+
+.sb-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,380px));gap:var(--sp-6)}
+
+.sb-card{
+
+  background:#fff;
+
+  border-radius:40px;
+
+  corner-shape:superellipse(2.6);
+
+  padding:18px 18px 34px;
+
+  border:1px solid var(--sb-ink-12);
+
+  box-shadow:0 1px 2px rgba(8,29,53,.05),0 12px 32px rgba(8,29,53,.06);
+
+}
+
+/* the photo slot: the picture fills it edge to edge */
+
+.sb-card-stage{
+
+  position:relative;
+
+  aspect-ratio:1/1;
+
+  border-radius:30px;corner-shape:superellipse(2.6);
+
+  overflow:hidden;
+
+  background:var(--sb-hi-tint);
+
+}
+
+.sb-card-frame{position:absolute;inset:0}
+
+.sb-card-frame img{width:100%;height:100%;object-fit:cover}
+
+
+
+/* status pill: a small CTA — navy, accent icon tile, white label.
+
+   The status word takes the highlight blue. Same face as everything else. */
+
+.sb-card-pill{
+
+  position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);
+
+  display:flex;align-items:center;gap:var(--sp-3);
+
+  padding:3px 18px 3px 3px;
+
+  border-radius:14px;corner-shape:superellipse(2.6);
+
+  background:var(--sb-ink);color:#fff;
+
+  box-shadow:0 8px 24px rgba(8,29,53,.28);
+
+  font-weight:600;font-size:var(--fs-body);letter-spacing:-.005em;
+
+  white-space:nowrap;
+
+}
+
+.sb-card-pill-icon{
+
+  display:grid;place-items:center;width:38px;height:38px;
+
+  border-radius:11px;corner-shape:superellipse(2.6);
+
+  background:var(--sb-cta);color:var(--sb-ink);
+
+}
+
+
+.sb-card-pill-tail{
+
+  padding-left:var(--sp-3);border-left:1px solid rgba(255,255,255,.22);
+
+  color:var(--sb-hi);
+
+}
+
+.sb-card-body{padding:26px 10px 0}
+
+.sb-card-body h3{font-size:var(--fs-h3);font-weight:700;line-height:1.15;letter-spacing:-.025em}
+
+.sb-card-body p{font-size:var(--fs-small);line-height:1.5;color:var(--sb-ink-60);max-width:34ch}
+

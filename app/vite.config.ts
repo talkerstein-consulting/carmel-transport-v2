@@ -7,6 +7,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   // This project lives on an archive drive whose change events Vite's watcher
   // misses, which left it serving stale module transforms. Poll instead.
-  server: { port: 5180, watch: { usePolling: true, interval: 300 } },
+  server: { port: Number(process.env.PORT) || 5180, strictPort: false, watch: { usePolling: true, interval: 300 } },
   resolve: { alias: { "@": path.resolve(import.meta.dirname, "./src") } },
 })

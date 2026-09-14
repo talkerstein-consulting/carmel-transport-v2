@@ -61,7 +61,7 @@ export function Stage() {
     <div className="stage" aria-hidden="true" ref={stage}>
       <FrameScrub
         src="/seq/hero/f-{i}.webp"
-        count={91}
+        count={76}
         pad={3}
         start={1}
         variant="plain"
@@ -77,7 +77,6 @@ export function Stage() {
         background="#F7F7F6"
         className="fs-fill stage-scrub"
       />
-      <div className="stage-edges" />
     </div>
   )
 }

@@ -1,0 +1,464 @@
+/* ==========================================================================
+   Carmel Transport — interior pages
+   Derived from the homepage, not invented beside it. Three moves carry over:
+
+   1. The split-tone display headline (BRANDING §3, "the signature move of
+      this identity") — the homepage hero's only real ornament.
+   2. Content pushed to the two margins, one column holding still while the
+      other scrolls — .hero, .reveal-inner and .svc-pin all do this.
+   3. Separation by hairline and space, never by a colour flip (BRANDING §7).
+      Grounds alternate --grad-paper / --grad-paper-deep and nothing inverts.
+
+   What was dropped: the dark masthead and the 50/50 image-text slabs. Both
+   were generic interior-page furniture with no parent on the homepage, and
+   the dark band broke the light-only rule in BRANDING §4.
+   ========================================================================== */
+
+/* --- shared band ---------------------------------------------------------
+   Backgrounds go full-bleed on the band; the grid inside holds the measure.
+   Two of these never butt the same ground together. */
+.band { position: relative; z-index: 5; background: var(--grad-paper); }
+.band + .band { border-top: var(--line); }
+.band-deep { background: var(--grad-paper-deep); }
+/* the inverted band — the footer's ground (--grad-mark, the wordmark fill)
+   with the same blue glow, so it reads as identity rather than a dark slab */
+.band-ink { background: var(--grad-mark); color: rgba(255, 255, 255, .74); }
+.band-ink::after { content: ""; position: absolute; inset: 0; background: var(--glow-blue); pointer-events: none; }
+.band-ink > * { position: relative; z-index: 1; }
+.band + .band-ink, .band-ink + .band { border-top: 0; }
+.band-ink .pg-rail-n { color: var(--blue-500); }
+.band-ink .pg-rail-head { color: #fff; }
+.band-ink .pg-body { color: rgba(255, 255, 255, .74); }
+.band-inner {
+  width: 100%; max-width: var(--maxw); margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* --- masthead ------------------------------------------------------------
+   The photograph runs sharp and grained; the frosted plate stays. Blurring the
+   picture and frosting the plate on top of it was doing the same job twice —
+   two layers of softening, and the frame reduced to a gradient with a file
+   size. One layer of glass now, and it is the one the type actually sits on.
+   The palette rule (BRANDING §4) is held by the plate and by a cool wash over
+   the frame rather than by destroying the image. Glass is already in the
+   system — the nav pill is the same construction. */
+.ph { position: relative; overflow: hidden; padding-block: calc(var(--section-y) + 72px) var(--section-y); }
+
+.ph-bg { position: absolute; inset: 0; z-index: 0; }
+.ph-bg img {
+  width: 100%; height: 100%; object-fit: cover;
+  /* The source frames are warm; §4 keeps this palette near-monochrome cool
+     with blue as the only colour. Held back, not washed out — the picture
+     still reads as a picture. */
+  filter: saturate(70%) contrast(104%);
+}
+/* Cool wash, and a lift toward the upper left so the plate has somewhere
+   lighter to sit while the frame falls away from it. */
+.ph-bg::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(160deg, rgba(247, 249, 252, .34) 0%, rgba(8, 29, 53, .20) 100%),
+    linear-gradient(0deg, rgba(106, 176, 255, .12), rgba(106, 176, 255, .12));
+}
+/* Grain, local to the frame and scrolling with it — heavier than the
+   page-wide .grain plate (fixed, z-60), which is calibrated for flat paper
+   rather than for a photograph. */
+.ph-bg::after {
+  content: ""; position: absolute; inset: 0;
+  opacity: .24; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+.ph > .band-inner { position: relative; z-index: 1; }
+/* a full-width row under the headline grid — /contact puts its form here.
+   Inverted: the navy the wordmark is filled with, inside the frosted plate,
+   so the form reads as one object rather than more copy on the glass. */
+.ph-plate-body {
+  margin-top: var(--sp-7);
+  padding: clamp(24px, 3vw, 44px);
+  border-radius: 18px; corner-shape: superellipse(2.6);
+  background: var(--grad-mark); color: rgba(255, 255, 255, .74);
+  position: relative; overflow: hidden;
+}
+.ph-plate-body::after { content: ""; position: absolute; inset: 0; background: var(--glow-blue); pointer-events: none; }
+.ph-plate-body > * { position: relative; z-index: 1; }
+
+/* The frosted container, unchanged in construction but denser: it is frosting
+   against real detail now instead of against an already-blurred field, and the
+   split-tone headline has to clear whatever passes underneath it at AA. */
+.ph-plate {
+  padding: clamp(28px, 3.4vw, 56px);
+  border-radius: 24px; corner-shape: superellipse(2.6);
+  background: rgba(255, 255, 255, .76);
+  border: 1px solid rgba(255, 255, 255, .82);
+  -webkit-backdrop-filter: saturate(150%) blur(28px);
+  backdrop-filter: saturate(150%) blur(28px);
+  box-shadow: 0 1px 2px rgba(8, 29, 53, .08), 0 30px 70px rgba(8, 29, 53, .20);
+}
+/* No backdrop-filter: fall back to a near-solid plate rather than a
+   translucent one that leaves the headline sitting on open photograph. */
+@supports not (backdrop-filter: blur(1px)) {
+  .ph-plate { background: rgba(255, 255, 255, .95); }
+}
+
+.ph-crumbs {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-500);
+}
+.ph-crumbs a { color: var(--ink-500); }
+.ph-crumbs a:hover { color: var(--ink-900); }
+.ph-crumbs span { padding: 0 .7em; color: var(--ink-400); }
+
+/* Display type: weight 500 and negative tracking, per the type scale. Each
+   clause fills itself — a background-clip on the parent would not show
+   through the child spans. Same construction as .hero-head. */
+.ph-head {
+  margin: 0; display: flex; flex-direction: column; align-items: flex-start;
+  max-width: 18ch;
+  font-size: var(--fs-display-2); font-weight: 500; line-height: .95;
+  letter-spacing: -.03em; font-optical-sizing: auto;
+  text-wrap: balance;
+}
+.ph-head span {
+  display: block;
+  padding-block: .10em .16em; margin-block: -.10em -.16em;
+  color: var(--ink-900);
+}
+/* blue-700, not blue-500: the accent clause sits on the white plate, and
+   #6AB0FF against white is 2.2:1. */
+.ph-head .accent { color: var(--blue-700); }
+
+.ph-lead {
+  margin: var(--sp-5) 0 0; max-width: 48ch;
+  font-size: var(--fs-lead); line-height: 1.5; letter-spacing: -.005em;
+  color: var(--ink-600); text-wrap: pretty;
+}
+
+/* --- contents ------------------------------------------------------------
+   A list against a hairline, the way .diff-item stacks its points — not a
+   pill bar. Sits in the masthead band's right margin on desktop. */
+.ph-grid {
+  /* minmax(0,1fr), not 1fr: a bare 1fr floors each track at its content's
+     min-content width, so on a phone the twelve tracks plus eleven gaps came
+     out wider than the plate and the copy ran off the right edge of it. */
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sp-6) var(--sp-6); align-items: end;
+}
+.ph-grid > :first-child { grid-column: 1 / span 7; }
+.ph-toc { grid-column: 9 / span 4; }
+.ph-toc-label { margin: 0 0 var(--sp-4); }
+.ph-toc ol { margin: 0; padding: 0; list-style: none; counter-reset: toc; }
+.ph-toc li { counter-increment: toc; border-top: 1px solid rgba(8, 29, 53, .16); }
+.ph-toc a {
+  display: flex; gap: var(--sp-4); padding-block: var(--sp-3);
+  font-size: var(--fs-body); color: var(--ink-700);
+  transition: color var(--dur) var(--ease);
+}
+.ph-toc a::before {
+  content: "0" counter(toc);
+  color: var(--ink-500); font-variant-numeric: tabular-nums;
+}
+.ph-toc a:hover { color: var(--ink-900); }
+.ph-toc a:hover::before { color: var(--blue-500); }
+
+/* --- an entry: sticky rail, scrolling column ----------------------------- */
+.pg-block { padding-block: var(--section-y); scroll-margin-top: 96px; }
+.pg-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-6); }
+
+.pg-rail {
+  grid-column: 1 / span 3; align-self: start;
+  position: sticky; top: clamp(96px, 12vh, 136px);
+}
+.pg-rail-n {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--blue-700);
+  font-variant-numeric: tabular-nums;
+}
+.pg-rail-head {
+  margin: 0; max-width: 12ch;
+  font-size: var(--fs-h3); font-weight: 600; line-height: 1.15;
+  letter-spacing: -.015em; color: var(--ink-900); text-wrap: balance;
+}
+
+.pg-main { grid-column: 5 / span 8; }
+.pg-body {
+  margin: 0 0 var(--sp-5); max-width: 48ch;
+  font-size: var(--fs-lead); line-height: 1.55; letter-spacing: -.005em;
+  color: var(--ink-700); text-wrap: pretty;
+}
+.pg-body + .pg-body { max-width: 68ch; font-size: var(--fs-body); line-height: 1.65; }
+.pg-cta { margin: var(--sp-7) 0 0; }
+
+.pg-media {
+  margin-top: var(--sp-8); overflow: hidden;
+  border-radius: var(--r-lg); background: var(--paper-200);
+  aspect-ratio: 16 / 9;
+}
+.pg-media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- /company: the four service cards ---------------------------------------
+   Same surface as .pg-value: paper, hairline, superellipse corners, picture
+   on top. Four across, two on a tablet, one on a phone. */
+.svc-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-6);
+}
+.svc-tile {
+  display: flex; flex-direction: column; overflow: hidden; color: inherit; text-decoration: none;
+  background: var(--paper-50); border: var(--line);
+  border-radius: var(--r-lg); corner-shape: superellipse(2.6);
+  scroll-margin-top: 96px;
+  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.svc-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(8, 29, 53, .06), 0 20px 40px rgba(8, 29, 53, .12);
+}
+.svc-tile-media { aspect-ratio: 16 / 9; overflow: hidden; background: var(--paper-200); }
+.svc-tile-media img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 900ms var(--ease);
+}
+.svc-tile:hover .svc-tile-media img { transform: scale(1.05); }
+.svc-tile-body { display: flex; flex-direction: column; padding: var(--sp-6) var(--sp-6) var(--sp-7); }
+.svc-tile-body .pg-rail-n { margin-bottom: var(--sp-3); }
+.svc-tile-head {
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-h3); font-weight: 600; line-height: 1.1;
+  letter-spacing: -.02em; color: var(--ink-900); text-wrap: balance;
+}
+.svc-tile-copy {
+  margin: 0; max-width: 60ch;
+  font-size: var(--fs-body); line-height: 1.65; color: var(--ink-700); text-wrap: pretty;
+}
+.svc-tile-copy + .svc-tile-copy { margin-top: var(--sp-3); }
+.svc-tile-cta { margin: auto 0 0; padding-top: var(--sp-6); }
+.svc-grid-lead { margin-bottom: var(--sp-7); }
+.svc-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-5); }
+.svc-grid-4 .svc-tile-head { display: block; font-size: var(--fs-h4); }
+.svc-grid-4 .svc-tile-copy { display: block; }
+.svc-grid-4 .svc-tile-body { padding: var(--sp-5); }
+.svc-tile-go {
+  display: block; margin-top: auto; padding-top: var(--sp-5);
+  font-size: var(--fs-caption); font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-500); transition: color var(--dur) var(--ease);
+}
+.svc-tile:hover .svc-tile-go { color: var(--blue-500); }
+@media (max-width: 1023px) { .svc-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px) { .svc-grid, .svc-grid-4 { grid-template-columns: 1fr; } }
+
+/* --- three-up close: branded cards --------------------------------------
+   BRANDING §7, Cards, to the letter: --paper-50 on the deep ground, --line,
+   --r-lg, padding --sp-6, no shadow at rest. §7 Motion rules out scale and
+   bounce on hover, so hover does what the secondary button does — darkens its
+   border — and adds the shadow the resting state is not allowed. */
+.pg-values { padding-block: var(--section-y); }
+.pg-values-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-5);
+}
+.pg-value {
+  display: flex; flex-direction: column;
+  padding: var(--sp-6);
+  border-radius: var(--r-lg); corner-shape: superellipse(2.6);
+  background: var(--paper-50);
+  border: var(--line);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.pg-value:hover {
+  border-color: var(--ink-900);
+  box-shadow: 0 1px 2px rgba(8, 29, 53, .05), 0 10px 28px rgba(8, 29, 53, .07);
+}
+/* The picture is inset from the card's edge, not bled to it — the nav panel's
+   service cards do the same, and it is what keeps the hairline reading as the
+   card's own edge rather than a frame around a photograph. */
+.pg-value-media {
+  display: block; overflow: hidden;
+  margin: calc(var(--sp-6) * -1) calc(var(--sp-6) * -1) var(--sp-5);
+  margin-bottom: var(--sp-5);
+  border-radius: var(--r-lg) var(--r-lg) 0 0; corner-shape: superellipse(2.6);
+  background: var(--paper-200);
+  aspect-ratio: 16 / 9;
+}
+.pg-value-media img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.01);            /* hides the sub-pixel edge the radius leaves */
+  transition: transform 600ms var(--ease);
+}
+.pg-value:hover .pg-value-media img { transform: scale(1.05); }
+@media (prefers-reduced-motion: reduce) {
+  .pg-value-media img { transition: none; }
+  .pg-value:hover .pg-value-media img { transform: scale(1.01); }
+}
+
+.pg-value-ic {
+  display: grid; place-items: center;
+  width: 44px; height: 44px; margin-bottom: var(--sp-5);
+  border-radius: var(--r-md); corner-shape: superellipse(2.6);
+  background: var(--paper-200); color: var(--blue-700);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.pg-value:hover .pg-value-ic { background: var(--blue-700); color: #fff; }
+.pg-value-head {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-h4); font-weight: 600; line-height: 1.25;
+  letter-spacing: -.01em; color: var(--ink-900);
+}
+.pg-value-body { margin: 0; font-size: var(--fs-body); line-height: 1.6; color: var(--ink-700); text-wrap: pretty; }
+
+/* The closing sections now carry their own grounds — the CTA a blurred frame
+   under a frosted container, the footer an inverted plate — so interior pages
+   let them keep those rather than flattening them into the band. */
+
+/* a short note under the rail heading */
+.pg-rail-note { margin: var(--sp-4) 0 0; max-width: 28ch; font-size: var(--fs-body); line-height: 1.55; color: var(--ink-600); text-wrap: pretty; }
+.band-ink .pg-rail-note { color: rgba(255, 255, 255, .62); }
+
+/* --- facts: icon + label + value, the footer's contact grid on paper ------- */
+.pg-facts {
+  margin: 0; padding: 0; list-style: none;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-6) var(--sp-6);
+}
+.pg-fact {
+  display: grid; grid-template-columns: auto 1fr; column-gap: var(--sp-4); row-gap: 2px; align-items: start;
+}
+.pg-fact-icon {
+  grid-row: 1 / span 2; display: grid; place-items: center; width: 40px; height: 40px;
+  border-radius: 12px; corner-shape: superellipse(2.6);
+  background: var(--blue-50); color: var(--blue-700);
+}
+.pg-fact-label {
+  font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-500);
+}
+.pg-fact-value { font-size: var(--fs-body); line-height: 1.5; color: var(--ink-900); font-variant-numeric: tabular-nums; }
+.pg-fact-value a { color: var(--ink-900); }
+.pg-fact-value a:hover { color: var(--blue-700); }
+@media (max-width: 640px) { .pg-facts { grid-template-columns: 1fr; } }
+
+/* --- a row list ----------------------------------------------------------
+   Services on /company, the roster on /contact. Hairline-separated rows, the
+   same separation-by-line rule as .ph-toc and .pg-value — not cards. */
+.pg-list { margin-top: var(--sp-6); }
+.pg-list-row {
+  display: grid; grid-template-columns: 14rem 1fr auto; gap: var(--sp-4) var(--sp-6);
+  align-items: baseline; padding-block: var(--sp-5);
+  border-top: 1px solid rgba(8, 29, 53, .16);
+  transition: color var(--dur) var(--ease);
+}
+.pg-list-row:last-child { border-bottom: 1px solid rgba(8, 29, 53, .16); }
+.pg-list-name {
+  font-size: var(--fs-h4); font-weight: 600; line-height: 1.25;
+  letter-spacing: -.01em; color: var(--ink-900);
+}
+.pg-list-body { max-width: 52ch; font-size: var(--fs-body); line-height: 1.6; color: var(--ink-700); text-wrap: pretty; }
+.pg-list-go { font-size: var(--fs-body); color: var(--ink-500); transition: color var(--dur) var(--ease); }
+.pg-list-row:hover .pg-list-go { color: var(--blue-500); }
+
+/* A job row carries a second line under its title and a standing "Apply", so
+   the title column takes more room and the rows sit tighter than the roster. */
+.pg-jobs .pg-list-name { display: flex; flex-direction: column; gap: 6px; }
+.pg-job-meta {
+  font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-500);
+}
+.pg-job-go {
+  align-self: center; padding: 8px 16px;
+  border-radius: var(--r-md); corner-shape: superellipse(2.6);
+  border: var(--line); background: var(--paper-50);
+  font-weight: 600; color: var(--ink-900);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.pg-job:hover .pg-job-go { border-color: var(--ink-900); background: var(--paper-100); color: var(--ink-900); }
+
+/* --- one number ----------------------------------------------------------
+   Set at display scale so it reads as a fact, not a badge. */
+.pg-stat { margin: var(--sp-7) 0 0; display: flex; align-items: baseline; gap: var(--sp-4); }
+.pg-stat-n {
+  font-size: var(--fs-display-2); font-weight: 500; line-height: 1;
+  letter-spacing: -.03em; font-variant-numeric: tabular-nums;
+  color: var(--blue-700);
+}
+.pg-stat-label {
+  font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-500);
+}
+
+@media (max-width: 1199px) {
+  .ph-grid > :first-child { grid-column: 1 / span 12; }
+  .ph-toc { grid-column: 1 / span 12; }
+  .pg-rail { grid-column: 1 / span 12; position: static; }
+  .pg-main { grid-column: 1 / span 12; }
+  .pg-rail-head { max-width: 20ch; }
+  .pg-list-row { grid-template-columns: 1fr; gap: var(--sp-2); }
+}
+@media (max-width: 1023px) {
+  .pg-values-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767px) {
+  .pg-values-grid { grid-template-columns: 1fr; }
+  /* Dropped outright, not collapsed: the three reasons repeat verbatim in the
+     CTA block a screen below, and on a phone you meet both in one scroll. */
+  .pg-values-nophone { display: none; }
+  .pg-stat { flex-direction: column; gap: var(--sp-2); }
+  /* One column outright. Twelve tracks on a 390px screen is eleven gaps of
+     structure holding nothing. */
+  .ph-grid, .pg-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .ph-grid > :first-child, .ph-toc, .pg-rail, .pg-main { grid-column: 1; }
+}
+
+/* ==========================================================================
+   Phone layout
+   One block, at the end of the last stylesheet in the chain. It lived in
+   brand.css first and lost every contest with sections.css — a media query
+   adds no specificity, so `.cta{text-align:center}` in the later file simply
+   won and the phone kept the desktop alignment.
+   ========================================================================== */
+@media(max-width:767px){
+  /* The burger goes to the far edge — it is the only control on the bar, and
+     sitting next to the wordmark it read as part of the logo. */
+  .nav-mobile .nav-bar{justify-content:space-between}
+  .nav-burger{margin-left:auto}
+
+  /* Everything reads from the left. The right- and centre-aligned columns are
+     a desktop device: they balance a two-column grid that does not exist here,
+     and ragged-left copy on a narrow screen is just harder to read. */
+  .hero-aside,.reveal-aside{text-align:left;justify-self:start}
+  .hero-actions,.reveal-cta{justify-content:flex-start}
+  .cta{text-align:left}
+  /* --sp-11 top AND bottom is 320px of empty plate on a 375px screen: the
+     section measured 1283px against an 864px viewport and opened on nothing.
+     The plate carries the breathing room here, so the band does not need to. */
+  .cta{padding-block:var(--sp-8)}
+  .cta-inner{padding:var(--sp-6) var(--sp-5)}
+  .cta-head,.cta-lead{margin-inline:0}
+  .cta-actions{justify-content:flex-start}
+  .stats-col-right{text-align:left}
+
+  /* CTAs span the column. At 375px a content-width pill leaves an awkward
+     offcut beside it, and the full-width button is the easier tap target. */
+  .cta-btn{width:100%}
+  .cta-actions,.hiw-cta,.foot-actions,.pg-cta,.svc-card-cta{width:100%}
+  .hero-actions .cta-btn,.reveal-cta .cta-btn{width:100%}
+}
+
+/* --- phone: the footer has to fit the screen to be revealable ------------
+   The reveal holds the footer at the base while the CTA scrolls off it. That
+   only works while the footer is shorter than the viewport — taller, and
+   sticking it to the bottom shows its last rows and never its first, so
+   Closing.tsx switches the reveal off instead. Everything here is in service
+   of getting under that bar on a phone. */
+@media (max-width: 767px) {
+  .foot { padding-block: var(--sp-7) var(--sp-5); }
+  .foot-top { padding-bottom: var(--sp-6); gap: var(--sp-6); }
+  .foot-head { font-size: var(--fs-h3); margin-bottom: var(--sp-3); }
+  .foot-lead { display: none; }          /* the contact grid below says it better */
+  .foot-actions { margin-top: var(--sp-5); }
+  .foot-details { gap: var(--sp-4) var(--sp-4); }
+  .foot-detail { column-gap: var(--sp-3); }
+  .foot-detail-icon { width: 30px; height: 30px; border-radius: 10px; }
+  .foot-bottom { padding-top: var(--sp-4); gap: var(--sp-3) var(--sp-4); }
+  .foot-nav { gap: var(--sp-2) var(--sp-4); margin-inline: 0; }
+  .foot-nav a { font-size: var(--fs-caption); }
+}

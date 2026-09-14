@@ -14,25 +14,33 @@
   --fs-h3:clamp(1.375rem,1.1rem + 1.1vw,2rem);
   --fs-h4:1.375rem;
   --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);
-  --fs-body:1rem; --fs-small:.875rem; --fs-caption:.8125rem; --fs-eyebrow:.75rem;
+  /* 16px floor: small / caption / eyebrow keep their weight, tracking and case
+     but never drop below body size */
+  --fs-body:1rem; --fs-small:1rem; --fs-caption:1rem; --fs-eyebrow:1rem;
 
-  /* colour */
-  --paper-50:#FFFFFF; --paper-100:#F7F7F6; --paper-200:#EFEFEE; --paper-300:#E3E3E1;
-  --ink-400:#B4B4B1; --ink-500:#8A8A87; --ink-600:#63635F;
-  --ink-700:#454542; --ink-800:#2A2A28; --ink-900:#151513;
-  --blue-50:#EDF3FC; --blue-200:#A9C6F0; --blue-500:#1F5FD0;
-  --blue-600:#194FAE; --blue-700:#143E88;
+  /* colour, palette v2 (2026-09-14): cool off-white ground, navy ink,
+     sky-blue highlight, one orange for the primary action */
+  --paper-50:#FFFFFF; --paper-100:#F7F9FC; --paper-200:#EEF2F7; --paper-300:#DFE5ED;
+  /* ink-400 is a TINT, for borders and decorative marks only -- at 2.1:1 on
+     paper it is not a text colour. Every piece of text on a paper ground uses
+     ink-500 or darker; ink-500 was #7C8797 (3.4:1) and is now the lightest
+     value that still clears AA on the palest paper. */
+  --ink-400:#A9B3C0; --ink-500:#666F7E; --ink-600:#56617A;
+  --ink-700:#2F3F58; --ink-800:#16294A; --ink-900:#081D35;
+  --blue-50:#EAF3FF; --blue-200:#B9D6FF; --blue-500:#6AB0FF;
+  --blue-600:#3E92F5; --blue-700:#1F6FD1;
+  --accent:#FE9B23;
 
   /* gradients — all light-ground */
-  --grad-paper:linear-gradient(160deg,#FFFFFF 0%,#F7F7F6 45%,#EFEFEE 100%);
-  --grad-paper-deep:linear-gradient(160deg,#F7F7F6 0%,#EFEFEE 55%,#E7E7E5 100%);
-  --grad-blue:linear-gradient(135deg,#2C74E8 0%,#1F5FD0 48%,#153F92 100%);
-  --grad-mark:linear-gradient(180deg,#3A3A37 0%,#151513 78%);
-  --grad-head:linear-gradient(180deg,#3A3A37 0%,#151513 82%);
-  --grad-head-accent:linear-gradient(180deg,#2C74E8 0%,#153F92 100%);
+  --grad-paper:linear-gradient(160deg,#FFFFFF 0%,#F7F9FC 45%,#EEF2F7 100%);
+  --grad-paper-deep:linear-gradient(160deg,#F7F9FC 0%,#EEF2F7 55%,#E6ECF3 100%);
+  --grad-blue:linear-gradient(135deg,#8CC3FF 0%,#6AB0FF 48%,#3E92F5 100%);
+  --grad-mark:linear-gradient(180deg,#22385A 0%,#081D35 78%);
+  --grad-head:linear-gradient(180deg,#22385A 0%,#081D35 82%);
+  --grad-head-accent:linear-gradient(180deg,#8CC3FF 0%,#6AB0FF 100%);
   /* the accent clause over footage — same hue, lifted so it reads on video */
-  --grad-head-accent-bright:linear-gradient(180deg,#A9CCFF 0%,#4C90FF 62%,#2C74E8 100%);
-  --glow-blue:radial-gradient(900px 340px at 88% -12%,rgba(31,95,208,.10),transparent 70%);
+  --grad-head-accent-bright:linear-gradient(180deg,#C4E0FF 0%,#8CC3FF 62%,#6AB0FF 100%);
+  --glow-blue:radial-gradient(900px 340px at 88% -12%,rgba(106,176,255,.14),transparent 70%);
 
   /* space */
   --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
@@ -67,6 +75,24 @@ img{max-width:100%;display:block}
 a{color:var(--blue-500);text-decoration:none}
 :focus-visible{outline:2px solid var(--blue-500);outline-offset:2px}
 
+/* Off-screen until focused, then a real plate at the top-left. Not
+   display:none and not width:0 -- both take it out of the tab order, which is
+   the one thing it exists to be in. */
+.skip-link{
+  position:fixed;top:8px;left:8px;z-index:100;
+  padding:12px 20px;
+  background:var(--ink-900,#0A1F38);color:#fff;
+  font-size:var(--fs-small);font-weight:600;
+  border-radius:0 0 12px 0;
+  /* The clip-path pattern, not transform or width:0: it leaves the link in the
+     tab order and in the accessibility tree, and unlike a transform it cannot
+     be left mid-transition or overridden by anything animating transforms. */
+  clip-path:inset(50%);
+}
+.skip-link:focus,
+.skip-link:focus-visible{clip-path:none}
+main:focus{outline:none}
+
 .wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
 
 /* --- wordmark ------------------------------------------------------------ */
@@ -74,8 +100,7 @@ a{color:var(--blue-500);text-decoration:none}
 .wm{
   font-family:var(--font-mark);text-transform:uppercase;
   font-weight:700;font-size:22px;letter-spacing:.02em;line-height:1;
-  background:var(--grad-mark);-webkit-background-clip:text;background-clip:text;
-  color:#151513;-webkit-text-fill-color:transparent;
+  color:var(--ink-900);
 }
 
 /* --- caps text link — unboxed, tumbles per word on hover ----------------- */
@@ -115,47 +140,7 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   text-transform:uppercase;color:var(--ink-500);margin:0;
 }
 
-/* --- nav — outlined, not filled ------------------------------------------ */
-.nav{
-  position:sticky;top:0;z-index:50;
-  display:flex;align-items:stretch;
-  height:80px;
-  background:transparent;
-  border-bottom:1px solid rgba(255,255,255,.45);
-}
-.nav a{display:flex;align-items:center;text-decoration:none}
-
-.nav-brand{padding-inline:clamp(24px,3vw,48px);border-right:1px solid rgba(255,255,255,.45)}
-.nav-brand .wm{background:none;-webkit-text-fill-color:#fff;color:#fff}
-
-.nav-links{display:flex;align-items:stretch;margin-inline:auto}
-.nav-links a{
-  padding-inline:clamp(16px,2vw,32px);
-  border-right:1px solid rgba(255,255,255,.45);
-  font-size:var(--fs-small);font-weight:500;color:#fff;
-  transition:background var(--dur) var(--ease);
-}
-.nav-links a:first-child{border-left:1px solid rgba(255,255,255,.45)}
-.nav-links a:hover{background:rgba(255,255,255,.12)}
-.nav-links a[aria-current="page"]{box-shadow:inset 0 -2px 0 #fff}
-
-.nav-phone{
-  padding-inline:clamp(16px,2vw,32px);border-left:1px solid rgba(255,255,255,.45);
-  font-size:var(--fs-small);font-weight:600;color:#fff;
-  font-variant-numeric:tabular-nums;
-}
-
-.nav-portal{
-  padding-inline:clamp(24px,3vw,48px);
-  border-left:1px solid rgba(255,255,255,.45);
-  background:transparent;color:#fff;
-  font-size:var(--fs-caption);font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;
-  transition:background var(--dur) var(--ease);
-}
-.nav-portal:hover{background:rgba(255,255,255,.14)}
-
-@media(max-width:1199px){.nav-links,.nav-phone{display:none}}
+/* nav: see components/site/nav.css */
 
 /* --- background stage ---------------------------------------------------- */
 /* Absolute, not fixed: FrameScrub derives its progress from its own bounding
@@ -168,37 +153,94 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   z-index:1;                 /* above the ship layer, which waits beneath */
   pointer-events:none;
 }
-.stage-scrub{width:100%}
 /* --- FrameScrub full-bleed fixes (shared) --------------------------------
-   The component centres its canvas inside px-4/sm:px-8, and clamps its stage
-   to 0.95 of the viewport which it writes out as an inline height:95vh —
-   leaving a band top and bottom. Both are overridden here. */
+   The component centres its canvas inside px-4/sm:px-8 and clamps its stage to
+   0.95 of the viewport, which it writes out as an inline height:95vh — leaving
+   a band down both sides and across the top and bottom. Both are overridden
+   here. Without these three rules every scrub sequence sits inside a 32px
+   frame instead of filling the screen. */
 .fs-fill>div{padding-left:0!important;padding-right:0!important;gap:0!important}
 .fs-fill>div>div{height:100svh!important;max-width:none!important}
+/* The ship scrub runs full height on a phone like every other sequence. It
+   was briefly letterboxed to soften the cover crop -- a landscape frame in a
+   portrait box scales ~4.5x and shows a narrow vertical slice of it -- but
+   full-bleed is the call, so the crop is accepted rather than the black bars. */
 .fs-fill canvas{display:block;width:100%;height:100%}
-/* footage plays as shot — no filter over the picture itself.
-   Only the left and right edges darken, so the white type at the margins
-   keeps contrast without washing out the middle of the frame. */
-.stage-edges{
-  position:fixed;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,
-    rgba(10,10,9,.55) 0%,
-    rgba(10,10,9,.22) 18%,
-    rgba(10,10,9,0)   38%,
-    rgba(10,10,9,0)   62%,
-    rgba(10,10,9,.22) 82%,
-    rgba(10,10,9,.55) 100%);
+
+/* LEGIBILITY GRADIENT — on the scrub's own box, not on the sections.
+   It used to be three placements (.hero::before, .reveal-inner::before,
+   .stats-vig), each absolute inside a section. The canvas is sticky and the
+   sections scroll over it, so those gradients slid across the footage as you
+   moved instead of staying put on it. Here it is a child of the same sticky
+   box the canvas lives in, so it is locked to the picture and shifts with it.
+
+   Every piece of copy still sits above it: the scrub boxes live in .stage (z1)
+   and .stats (z0), and the copy lives in .hero (z2), .reveal (z2),
+   .stats-inner (z3) and .intro-services (z3) -- all of which outrank the
+   sections the gradient is inside. */
+.fs-fill>div>div::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:var(--vig);
 }
 
+/* --- LEGIBILITY GRADIENT (every scrub module) -----------------------------
+   One dark left/right gradient, shared by all four footage sections. The copy
+   in them is white and sits at the two margins, where the film runs from dark
+   water to near-white cloud and bare aluminium — measured as low as 2.3:1.
+   This darkens only those margins; the centre of the frame, which is the
+   picture, is left completely alone.
+
+   FOUR placements, and NONE of them fixed. Every section is its own stacking
+   context with its own z-index (.stage 1, .hero 2, .reveal 2, .stats 0,
+   .intro-services 3), so a fixed layer never leaves the viewport and paints
+   over the sections that outrank its own — which is how the stats figures kept
+   ending up under two gradients that did not belong to them. Each placement
+   below is scoped inside its own section, under that section's text, and
+   cannot reach any other.
+
+   The cloud veil supersedes all of them for free: .svc-out is z-index 4 inside
+   .intro-services at 3, which outranks every section these sit in, so the
+   handoff into "More than transportation" stays seamless with no JS. */
+:root{
+  --vig:linear-gradient(90deg,
+    rgba(10,10,9,.72) 0%,
+    rgba(10,10,9,.40) 18%,
+    rgba(10,10,9,0)   42%,
+    rgba(10,10,9,0)   58%,
+    rgba(10,10,9,.40) 82%,
+    rgba(10,10,9,.72) 100%);
+}
+/* Half strength on the phone: the stops are scaled to a wide frame, so at full
+   opacity on a 375px screen they read as a black border, not a vignette. */
+@media(max-width:1023px){
+  :root{--vig:linear-gradient(90deg,
+    rgba(10,10,9,.40) 0%,
+    rgba(10,10,9,.20) 18%,
+    rgba(10,10,9,0)   42%,
+    rgba(10,10,9,0)   58%,
+    rgba(10,10,9,.20) 82%,
+    rgba(10,10,9,.40) 100%)}
+}
+.stage-scrub{width:100%}
+
 /* --- section 01 · hero --------------------------------------------------- */
+/* 01. Absolute so it is not picked up as a grid item; inset:0 covers the
+   section box, which is full-bleed, so it reaches both screen edges without
+   any negative inset — a negative inset here is what put 64px of horizontal
+   scroll on the page. z-index 1, copy at 2. */
+.hero-head,.hero-aside{position:relative;z-index:2}
+
 .hero{
   position:relative;z-index:2;
-  min-height:calc(100svh - 80px);
+  min-height:100svh;
   display:grid;
   grid-template-columns:1fr minmax(320px,38%);
   align-items:end;
   gap:var(--sp-8);
   padding:clamp(48px,7vw,96px) clamp(24px,4vw,64px) clamp(32px,4vw,56px);
+  /* After the shorthand, not before it — the nav takes no flow space, so the
+     hero has to leave room for the floating pill itself. */
+  padding-top:calc(62px + var(--sp-4) + env(safe-area-inset-top,0px) + clamp(24px,4vw,48px));
 }
 
 .hero-head{
@@ -240,6 +282,10 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   .hero-head{font-size:var(--fs-display-2)}
 }
 @media(max-width:767px){
+  /* --fs-display-2 bottoms out at its 2.75rem floor on a phone, which left the
+     headline smaller than the lead paragraph was wide. Its own clamp here, so
+     it scales with the screen instead of sitting on a desktop-sized floor. */
+  .hero-head{font-size:clamp(3.4rem,1.6rem + 11vw,5rem);line-height:.9}
   .hero{grid-template-columns:1fr;align-items:start;gap:var(--sp-7)}
   .hero-aside{grid-column:1;grid-row:2;max-width:none;justify-self:start;text-align:left}
   .hero-actions{justify-content:flex-start}
@@ -254,17 +300,26 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 }
 
-
 /* --- section 02 · intro — hero's split, mirrored ------------------------- */
 /* Body left, heading and CTA right. Sticks below the nav so it appears at the
    top; only the word opacity moves as you scroll. */
 .reveal{
   position:relative;z-index:2;
   min-height:190svh;
-  padding:0 clamp(24px,4vw,64px);
 }
+/* The horizontal padding lives HERE, not on .reveal. The vignette is a child
+   of this box and can only reach the screen edges with inset:0 if the box is
+   itself full-bleed. Padding on the parent inset it by clamp(24px,4vw,64px) a
+   side — which is exactly what the negative inset-inline used to compensate
+   for, and that compensation was the 64px of horizontal scroll. */
+/* 02. On the sticky inner, so it tracks the viewport while staying inside the
+   section. inset:0 covers the padding box and the inner is full-bleed (the
+   horizontal padding lives on it, not on .reveal), so it reaches the edges. */
+.reveal-body-wrap,.reveal-aside{position:relative;z-index:2}
+
 .reveal-inner{
   position:sticky;top:0;
+  padding-inline:clamp(24px,4vw,64px);
   min-height:100svh;                     /* full screen, content centred in it */
   display:grid;
   grid-template-columns:1fr minmax(320px,38%);
@@ -276,6 +331,8 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 /* ScrollReveal ships its own CSS and, because the component imports it, that
    sheet lands after this one. Scope to .reveal so brand type wins. */
 .reveal .scroll-reveal{margin:0}
+/* Above the vignette at z-index 1. */
+.reveal-body-wrap,.reveal-aside{position:relative;z-index:2}
 .reveal-body-wrap{grid-column:1;margin:0}
 
 .reveal .reveal-body{
@@ -298,6 +355,20 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 }
 @media(max-width:767px){
   .reveal{min-height:170svh}
+  /* A flat tint behind the intro copy, on top of the scrub's own gradient.
+     That gradient darkens the left and right margins, which is the right
+     shape for a wide frame — on a phone the paragraph runs the full width and
+     sits over the middle of the picture, where the gradient is deliberately
+     clear, and the trailer roof underneath it is near-white. Sticky parent,
+     so it tracks the viewport with the copy and does not leak into the
+     sections either side. */
+  .reveal-inner::after{
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(8,29,53,.34) 0%,
+      rgba(8,29,53,.62) 42%,
+      rgba(8,29,53,.62) 100%);
+  }
   .reveal-inner{grid-template-columns:1fr;gap:var(--sp-7)}
   .reveal-body-wrap{grid-row:2}
   .reveal .reveal-body{max-width:none}
@@ -308,7 +379,7 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 /* --- section 03 · stats --------------------------------------------------- */
 /* Scrolls up OVER the sticky section above it. FrameScrub provides this
    section's height (its own runway) and pins the ship canvas inside it;
-   cargo.jpg and the figures ride above in an absolute overlay. */
+   the figures ride above in an absolute overlay. */
 /* Sits BENEATH act one (z-index 0) and is uncovered by the stage's bottom edge
    wiping upward — it never slides up over anything.
    The underlap is 180svh, not 100: its canvas is sticky, so it only locks to
@@ -324,18 +395,26 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 
 .stats-overlay{position:absolute;inset:0;z-index:1;pointer-events:none}
 
-/* same edge treatment as the hero, so the figures at the margins hold.
-   Fixed, because the footage it sits on does not move. */
-.stats-scrim{
-  position:fixed;inset:0;z-index:2;pointer-events:none;
-  background:linear-gradient(90deg,
-    rgba(10,10,9,.62) 0%,
-    rgba(10,10,9,.26) 20%,
-    rgba(10,10,9,0)   40%,
-    rgba(10,10,9,0)   60%,
-    rgba(10,10,9,.26) 80%,
-    rgba(10,10,9,.62) 100%);
+/* 03 + 04. ONE gradient for both, because sections 03 and 04 run over the SAME
+   ship canvas — services is pulled up onto the stats section's footage rather
+   than bringing its own. Two gradients meant two sticky layers sliding past
+   each other through the handover: measured at up to 1.6 viewports of gradient
+   stacked between 3.5 and 4.75 screens in, which reads as a dark band sweeping
+   down the margins. That doubling is what made this section look wrong while
+   the others looked right.
+
+   It lives in .stats (z-index 0) so it sits above that section's canvas and
+   below its figures — and .intro-services is z-index 3, so the services
+   headline and cards are above it for free, with nothing to synchronise.
+
+   The range wrapper bounds where the sticky may travel: from 180svh, where the
+   intro's own gradient ends, to the end of the services walkthrough. */
+.stats-vig-range{
+  position:absolute;left:0;right:0;
+  top:180svh;height:860svh;
+  pointer-events:none;
 }
+.stats-vig{display:none}   /* superseded by .fs-fill>div>div::after */
 
 /* All four figures stay together as one block — two left, two right — and
    that block scrolls up past the footage, which stays put.
@@ -365,10 +444,34 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 }
 .stats-col-right .stat-label{margin-left:auto}
 
+/* the figure sits on the same dark glass as the service cards; the footage
+   is bright water and sky behind it, and a bare number was losing its edge
+   against the ship. Sized to the figure, not the column, so the four still
+   read as a scattered group rather than a grid. */
+.stat-card{
+  display:inline-flex;flex-direction:column;align-items:flex-start;
+  padding:clamp(20px,2.4vw,32px) clamp(24px,3vw,40px);
+  border-radius:28px;corner-shape:superellipse(2.6);
+  background:rgba(8,29,53,.28);
+  border:1px solid rgba(255,255,255,.30);
+  -webkit-backdrop-filter:saturate(140%) blur(18px);
+  backdrop-filter:saturate(140%) blur(18px);
+  box-shadow:0 2px 4px rgba(8,29,53,.10),0 24px 48px rgba(8,29,53,.22);
+}
+@supports not (backdrop-filter:blur(1px)){ .stat-card{background:rgba(8,29,53,.80)} }
+.stat-card-right{align-items:flex-end;margin-left:auto}
+.stat-card-ic{
+  display:grid;place-items:center;width:38px;height:38px;margin-bottom:var(--sp-4);
+  border-radius:12px;corner-shape:superellipse(2.6);
+  background:rgba(255,255,255,.14);color:#fff;
+}
+.stat-n{font-variant-numeric:tabular-nums}
+
 @media(max-width:767px){
   .stats-inner{grid-template-columns:1fr;justify-content:start;gap:clamp(32px,8vw,56px)}
   .stats-col-right{text-align:left}
   .stats-col-right .stat-label{margin-left:0}
+  .stat-card-right{align-items:flex-start;margin-left:0}
   .stat-figure{font-size:var(--fs-h1)}
 }
 
@@ -387,26 +490,49 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 }
 @media(prefers-reduced-motion:reduce){.grain{opacity:.10}}
 
+/* The interior pages are paper, not footage. `overlay` lightens as much as it
+   darkens, so against #F7F7F6 it cancels out and the grain was effectively
+   invisible on every page below the homepage — present in the DOM, doing
+   nothing. `multiply` only darkens, which is what texture on paper means, and
+   at .07 it reads as tooth on the stock rather than as noise. */
+.grain-paper{
+  mix-blend-mode:multiply;
+  opacity:.07;
+}
+@media(prefers-reduced-motion:reduce){.grain-paper{opacity:.05}}
+
 /* hero footage: no scale, no offset — the frame fills the screen as shot */
 .stage-scrub canvas{transform:none}
 
 /* --- section 04 · services ----------------------------------------------- */
-/* Pulled up over the ship section and dissolved in, so the two sequences
-   stitch instead of one sliding over the other.
-   The underlap is 200svh, not 100. FrameScrub pins its canvas for
-   scrollLength x 100vh and then lets it travel for the final 100vh of its
-   runway — so a 100svh underlap put the crossfade exactly in the window where
-   the ship releases and starts scrolling. At 200svh the whole crossfade sits
-   inside the ship's pinned range: both films hold the same position and only
-   opacity changes. */
+/* Pulled up over the ship section, which is now the ONLY sequence: the footage
+   is a single continuous ocean-to-cloud take, so there is nothing to crossfade
+   and this section just keeps scrubbing the canvas pinned beneath it.
+   The underlap is -800svh, not the -200svh it was when this section carried a
+   second sequence of its own. FrameScrub pins its canvas for scrollLength x
+   100vh and only lets it travel over the final 100vh, so this whole 700vh
+   section has to sit INSIDE that pinned range or the footage scrolls away and
+   leaves the cards on a blank ground. Stats is scrollLength 10.4 => 1140vh
+   tall; -700svh starts this section 4.4 screens into the pin and its 600vh
+   ends at 10.4, exactly where the pin releases. */
 .intro-services{
   position:relative;z-index:3;
-  margin-top:-200svh;
+  margin-top:-700svh;
   background:transparent;
 }
-.svc-scrub{width:100%;opacity:0}
+/* Scroll runway only — no canvas of its own.
+   600vh, not the 700vh FrameScrub used to render here. The #D5E7F2 handoff
+   veil finishes at 5.7 screens in, and at 700vh the screen then sat on flat
+   colour for another 1.3 screens of scrolling before act three arrived. 600
+   brings "More than transportation" in just as the clouds finish taking the
+   picture. Everything inside this section is triggered at explicit offsets
+   from its top (0.9 to 5.7 screens), so none of it moves. */
+.svc-runway{width:100%;height:600vh}
 
 .svc-overlay{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+/* Services content sits above the shared gradient that lives in .stats. */
+.svc-pin{z-index:1}
 .svc-pin{
   position:sticky;top:0;
   height:100svh;
@@ -432,18 +558,36 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 }
 /* top-aligned: the open card grows downward, the closed ones hold their tops */
 .svc-row{align-items:start}
+/* Glass, not paper: 20% opaque so the footage keeps running underneath.
+   The tint is navy and the contents are light, NOT the other way round — the
+   ship sequence is still on screen for the whole walkthrough, and ink-900 type
+   on 20% white glass over dark water is unreadable. Dark glass + light type
+   survives both the water and the clouds that follow it. The backdrop blur is
+   load-bearing too: at this alpha the moving footage otherwise reads straight
+   through the body copy. */
 .svc-card{
-  border:1px solid rgba(255,255,255,.28);
-  border-radius:var(--r-lg);
-  background:rgba(10,10,9,.30);
-  backdrop-filter:blur(6px);
-  padding:clamp(18px,1.8vw,var(--sp-5));
+  border-radius:32px;corner-shape:superellipse(2.6);
+  background:rgba(8,29,53,.20);color:#fff;
+  border:1px solid rgba(255,255,255,.30);
+  -webkit-backdrop-filter:saturate(140%) blur(18px);
+  backdrop-filter:saturate(140%) blur(18px);
+  box-shadow:0 1px 2px rgba(8,29,53,.05),0 12px 32px rgba(8,29,53,.10);
+  /* closed: tight. The open state buys its own breathing room below. */
+  padding:10px 10px 12px;
   will-change:transform,opacity;
-  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+  transition:box-shadow var(--dur) var(--ease),padding 420ms var(--ease),
+             background var(--dur) var(--ease);
 }
+/* the active card firms up so it separates from the three still closed */
 .svc-card.is-open{
-  background:rgba(10,10,9,.52);
-  border-color:rgba(255,255,255,.5);
+  padding:14px 14px 22px;
+  background:rgba(8,29,53,.34);
+  border-color:rgba(255,255,255,.42);
+  box-shadow:0 2px 4px rgba(8,29,53,.10),0 24px 48px rgba(8,29,53,.26);
+}
+@supports not (backdrop-filter:blur(1px)){
+  .svc-card{background:rgba(8,29,53,.72)}
+  .svc-card.is-open{background:rgba(8,29,53,.84)}
 }
 
 /* the detail is closed by default and opens for the active service only.
@@ -456,38 +600,39 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   margin-top:0;
 }
 .svc-card-detail>*{min-height:0}
+/* Clips the contents while the row is at 0fr — without it they simply overflow
+   the collapsed row and stay on screen under the next card. */
+.svc-card-detail-inner{overflow:hidden}
 .svc-card.is-open .svc-card-detail{
   grid-template-rows:1fr;opacity:1;margin-top:var(--sp-4);
 }
 
+/* photo slot: the picture fills it edge to edge */
 .svc-card-media{
-  overflow:hidden;border-radius:var(--r-md);
+  overflow:hidden;border-radius:22px;corner-shape:superellipse(2.6);
+  background:rgba(255,255,255,.12);
   margin-bottom:var(--sp-4);
 }
 .svc-card-media img{
   width:100%;height:clamp(120px,16vh,190px);object-fit:cover;display:block;
 }
 .svc-card-body{
-  margin:0 0 var(--sp-4);
+  margin:0 0 var(--sp-5);padding-inline:8px;
   font-size:var(--fs-small);line-height:1.55;
-  color:rgba(255,255,255,.84);text-wrap:pretty;
+  color:rgba(255,255,255,.82);text-wrap:pretty;
 }
-.svc-card-cta{
-  font-size:var(--fs-eyebrow);
-  color:#fff;border-bottom-color:rgba(255,255,255,.7);
-}
-.svc-card-cta:hover{color:#fff;border-bottom-color:#fff}
+.svc-card-cta{margin-inline:8px 0}
 
 @media(prefers-reduced-motion:reduce){
-  .svc-card-detail{transition:none}
+  .svc-card-detail,.svc-card{transition:none}
 }
 .svc-card-n{
-  margin:0 0 var(--sp-3);
+  margin:0 0 var(--sp-2);padding:6px 8px 0;
   font-size:var(--fs-eyebrow);font-weight:500;letter-spacing:.14em;
-  text-transform:uppercase;color:rgba(255,255,255,.68);
+  text-transform:uppercase;color:rgba(255,255,255,.62);
 }
 .svc-card-head{
-  margin:0;max-width:18ch;
+  margin:0;max-width:18ch;padding-inline:8px;
   font-size:var(--fs-h4);font-weight:600;line-height:1.15;
   letter-spacing:-.01em;color:#fff;text-wrap:balance;
 }
@@ -496,7 +641,92 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   .svc-row{grid-template-columns:repeat(2,1fr)}
   .svc-head{flex-direction:column;align-items:flex-start;gap:var(--sp-1)}
 }
-@media(max-width:600px){
-  .svc-row{grid-template-columns:1fr;gap:var(--sp-3)}
+
+/* --- the walkthrough on a phone -----------------------------------------
+   The phone now turns the same deck the desktop does: four compact tabs
+   arrive together, the frame pins, and then each one expands in turn while
+   the other three fall back to their closed height.
+
+   The earlier note here said the phone could not pin, because the walkthrough
+   was driven by ScrollTrigger offsets measured in viewport heights and those
+   change under you as the mobile URL bar shows and hides — so it stuck on the
+   first card. That is a problem with measuring in vh, not with pinning. The
+   active index is now read from the overlay's live rect on every frame (see
+   ServicesIntro), which cannot go stale, so the pin is safe to bring back.
+
+   The 200svh delay moves from .svc-pin to .svc-overlay. The section carries
+   margin-top:-700svh to underlap the one above it, and the content has to be
+   pushed back down or it lands on top of the stats — but a sticky child needs
+   that offset to be its parent's padding, not its own: padding on the sticky
+   element itself just insets the cards inside a frame that is already stuck.
+   As the overlay's padding it becomes real distance the frame travels before
+   it catches, which is exactly the runway the walkthrough scrubs along. */
+@media(max-width:1023px){
+  /* The delay, and with it the pin's runway: the frame catches at the far
+     edge of this padding and releases at the overlay's content-box bottom. */
+  .svc-overlay{padding-top:200svh}
+  /* Everything here is measured in vh so the whole deck scales with the frame
+     rather than overflowing it: four tabs, one of them open, the headline and
+     both paddings all have to clear a single 100svh box, and .svc-pin clips. */
+  .svc-pin{
+    position:sticky;top:0;
+    height:100svh;overflow:hidden;
+    padding:clamp(56px,8vh,92px) clamp(16px,5vw,28px) clamp(16px,2.4vh,28px);
+    gap:clamp(12px,1.8vh,22px);
+  }
+  /* Tabs: one column, packed to the top so the open card grows downward into
+     the space the closed three leave rather than pushing them off the frame. */
+  .svc-row{grid-template-columns:1fr;gap:10px;align-content:start}
   .svc-card-head{font-size:var(--fs-body)}
+  /* Closed tighter than desktop — four of these plus one open card have to
+     clear a single 100svh frame with the headline still above them. */
+  .svc-card{padding:8px 10px 10px}
+  .svc-card.is-open{padding:12px 12px 16px}
+  /* Darker plates than desktop. The cards sit on the ship footage, which on a
+     phone fills the frame with bright containers and sunlit water rather than
+     the open ocean a wide frame shows — .20 glass over that left the white
+     type on the containers themselves. */
+  .svc-card{background:rgba(8,29,53,.58)}
+  .svc-card.is-open{background:rgba(8,29,53,.74)}
+  @supports not (backdrop-filter:blur(1px)){
+    .svc-card{background:rgba(8,29,53,.84)}
+    .svc-card.is-open{background:rgba(8,29,53,.92)}
+  }
+  .svc-card-n{margin-bottom:4px;padding-top:4px}
+  .svc-card-media{margin-bottom:var(--sp-3)}
+  .svc-card-media img{height:clamp(64px,8.5vh,104px)}
+  .svc-card-body{margin-bottom:var(--sp-3)}
+}
+
+/* --- page load ----------------------------------------------------------
+   The whole app settles in: slightly overscaled and transparent, resolving to
+   its true size.
+
+   Three things here are not optional:
+
+   `transform-origin:50% 0` — #root is the full document, ~14,000px tall. Scaled
+   1.06 about its centre, its top edge lifts by ~420px, so the page loaded
+   visibly offset and fought the scroll position. Anchored to the top edge, the
+   overscan only grows downward, which is where nobody is looking yet.
+
+   `overflow-x:clip` on html — the same 6% also spills ~38px past each side for
+   the length of the animation. `clip` rather than `hidden`: hidden on an
+   ancestor silently kills position:sticky, and this page is built on it.
+
+   The class, rather than styling #root directly — a CSS animation does not
+   advance while the document timeline is paused, which is what a background
+   tab does. With the start state in plain CSS that means a page parked at
+   opacity 0 for as long as the tab stays unfocused. main.tsx adds the class
+   and strips it on animationend, with a timer behind it, so the page cannot
+   get stuck invisible. */
+@media(prefers-reduced-motion:no-preference){
+  html:has(#root.is-entering){overflow-x:clip}
+  #root.is-entering{
+    animation:app-in 900ms var(--ease) both;
+    transform-origin:50% 0;
+  }
+  @keyframes app-in{
+    from{opacity:0;transform:scale(1.06)}
+    to{opacity:1;transform:none}
+  }
 }

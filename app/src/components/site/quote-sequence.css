@@ -1,0 +1,130 @@
+/* --- the one-question-at-a-time quote form (QuoteSequence.tsx) ------------
+   Big prompt, one underlined field, nothing else on screen. The field is a
+   rule rather than a box so it reads as the page's own type, not a form
+   pasted onto it. */
+.qs { position: relative; }
+.qs-bar {
+  height: 2px; background: var(--paper-300); border-radius: var(--r-full);
+  overflow: hidden;
+}
+.qs-bar-fill {
+  display: block; height: 100%; background: var(--blue-600);
+  transform-origin: left center; transition: transform 420ms var(--ease);
+}
+.qs-count {
+  margin: var(--sp-3) 0 0;
+  font-size: var(--fs-caption); font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-500); font-variant-numeric: tabular-nums;
+}
+.qs-form { position: relative; margin-top: var(--sp-6); min-height: 300px; }
+.qs-step { will-change: transform, opacity; }
+
+.qs-label {
+  display: block; margin: 0; max-width: 22ch;
+  font-size: var(--fs-h2); font-weight: 600; line-height: 1.1;
+  letter-spacing: -.02em; color: var(--ink-900); text-wrap: balance;
+}
+.qs-hint { margin: var(--sp-3) 0 0; max-width: 52ch; font-size: var(--fs-body); color: var(--ink-500); }
+
+.qs-input {
+  display: block; width: 100%; margin-top: var(--sp-6);
+  padding: var(--sp-3) 0; border: 0; border-bottom: 2px solid var(--paper-300);
+  background: transparent; outline: 0; border-radius: 0;
+  font: inherit; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -.01em;
+  color: var(--ink-900); caret-color: var(--blue-600);
+  transition: border-color var(--dur) var(--ease);
+}
+.qs-input::placeholder { color: var(--ink-500); font-weight: 400; }
+.qs-input:focus { border-bottom-color: var(--blue-600); }
+.qs-textarea { resize: vertical; min-height: 3.6em; line-height: 1.35; font-size: var(--fs-h4); }
+
+.qs-choices { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6); }
+.qs-choice {
+  display: inline-flex; align-items: center; gap: var(--sp-3);
+  padding: 10px 16px 10px 10px; border-radius: var(--r-full);
+  border: 1px solid var(--paper-300); background: var(--paper-50);
+  font: inherit; font-size: var(--fs-body); font-weight: 500; color: var(--ink-900);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.qs-choice:hover { border-color: var(--ink-400); }
+.qs-choice:focus-visible { outline: 2px solid var(--blue-600); outline-offset: 2px; }
+.qs-choice.is-on { border-color: var(--blue-600); background: var(--blue-50); box-shadow: 0 0 0 1px var(--blue-600) inset; }
+.qs-choice-key {
+  display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px;
+  font-size: .8rem; font-weight: 700; color: var(--ink-600);
+  background: var(--paper-200);
+}
+.qs-choice.is-on .qs-choice-key { background: var(--blue-600); color: #fff; }
+.qs-choice-check { color: var(--blue-700); }
+
+/* the row spans the field's width: back square pinned left, the pill at its
+   own size pinned right — the same at every width */
+.qs-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-3); margin-top: var(--sp-7); }
+.qs-actions .cta-btn { flex: none; width: auto; margin-left: auto; }
+.qs-enter { flex-basis: 100%; text-align: right; font-size: var(--fs-small); color: var(--ink-500); }
+.qs-error { flex-basis: 100%; font-size: var(--fs-small); font-weight: 500; color: #C2410C; }
+
+/* a square with one chevron, the mirror of the CTA tile — same height as
+   the small pill so the two sit on one line */
+.qs-back {
+  display: grid; place-items: center; flex: none;
+  width: 46px; height: 46px; padding: 0; box-sizing: border-box;
+  border: 1px solid var(--paper-300); border-radius: 12px; corner-shape: superellipse(2.6);
+  background: var(--paper-50); color: var(--ink-700);
+  cursor: pointer; transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.qs-back:hover { border-color: var(--ink-900); color: var(--ink-900); }
+.qs-back:focus-visible { outline: 2px solid var(--blue-600); outline-offset: 2px; }
+
+.qs-review { margin: var(--sp-6) 0 0; border-top: 1px solid var(--paper-300); }
+.qs-review-row {
+  display: grid; grid-template-columns: 9ch 1fr auto; gap: var(--sp-4); align-items: baseline;
+  padding: var(--sp-3) 0; border-bottom: 1px solid var(--paper-300);
+}
+.qs-review dt { font-size: var(--fs-caption); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-500); }
+.qs-review dd { margin: 0; color: var(--ink-900); white-space: pre-wrap; overflow-wrap: anywhere; }
+.qs-review-edit {
+  padding: 0; border: 0; background: none; font: inherit; font-size: var(--fs-small);
+  color: var(--blue-700); cursor: pointer;
+}
+.qs-review-edit:hover { text-decoration: underline; }
+
+
+/* --- dark tone: on the inverted quote band ------------------------------ */
+.qs-dark .qs-bar { background: rgba(255, 255, 255, .16); }
+.qs-dark .qs-bar-fill { background: var(--blue-500); }
+.qs-dark .qs-count, .qs-dark .qs-hint, .qs-dark .qs-enter { color: rgba(255, 255, 255, .58); }
+.qs-dark .qs-label { color: #fff; }
+.qs-dark .qs-input {
+  color: #fff; border-bottom-color: rgba(255, 255, 255, .28); caret-color: var(--blue-500);
+}
+.qs-dark .qs-input::placeholder { color: rgba(255, 255, 255, .38); }
+.qs-dark .qs-input:focus { border-bottom-color: var(--blue-500); }
+.qs-dark .qs-choice {
+  background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .18); color: #fff;
+}
+.qs-dark .qs-choice:hover { border-color: rgba(255, 255, 255, .5); }
+.qs-dark .qs-choice.is-on { background: rgba(106, 176, 255, .16); border-color: var(--blue-500); box-shadow: 0 0 0 1px var(--blue-500) inset; }
+.qs-dark .qs-choice-key { background: rgba(255, 255, 255, .12); color: rgba(255, 255, 255, .8); }
+.qs-dark .qs-choice.is-on .qs-choice-key { background: var(--blue-500); color: var(--ink-900); }
+.qs-dark .qs-choice-check { color: var(--blue-500); }
+.qs-dark .qs-error { color: #FFB38A; }
+.qs-dark .qs-back { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .22); color: #fff; }
+.qs-dark .qs-back:hover { border-color: #fff; }
+.qs-dark .qs-review, .qs-dark .qs-review-row { border-color: rgba(255, 255, 255, .16); }
+.qs-dark .qs-review dt { color: rgba(255, 255, 255, .58); }
+.qs-dark .qs-review dd { color: #fff; }
+.qs-dark .qs-review-edit { color: var(--blue-500); }
+
+@media (prefers-reduced-motion: reduce) { .qs-bar-fill { transition: none; } }
+@media (max-width: 767px) {
+  .qs-form { min-height: 0; }
+  .qs-label { font-size: var(--fs-h3); }
+  .qs-input { font-size: var(--fs-h4); }
+  /* page.css makes every pill full-width on a phone; here it shares the row
+     with the back square, so it fills what is left instead */
+  .qs-enter { display: none; }
+  .qs-review-row { grid-template-columns: 1fr auto; }
+  .qs-review dt { grid-column: 1 / -1; }
+}

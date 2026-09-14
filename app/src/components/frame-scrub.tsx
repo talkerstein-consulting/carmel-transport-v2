@@ -390,6 +390,7 @@ export const FrameScrub = ({
   const [fault, setFault] = useState<{ key: string; msg: string } | null>(null);
   const [calm, setCalm] = useState(false);
 
+
   useEffect(() => {
     report.current = onFrameChange;
   }, [onFrameChange]);
@@ -434,34 +435,71 @@ export const FrameScrub = ({
           ? Math.min(1, pulled.n / total)
           : 0;
 
+  /* Frame fetching is gated on proximity. Every FrameScrub on the page used to
+     request its whole sequence the moment it mounted, so the homepage's three
+     scrubs pulled 243 webp -- 4.6 MB -- before the hero had finished painting,
+     on a phone as much as on a desk. The gate opens a full viewport out, which
+     is far enough ahead that the sequence is decoded before it is scrolled to;
+     a scrub already on screen at mount (the hero) opens it on the observer's
+     first callback, so nothing about its behaviour changes.
+
+     The gate is deliberately NOT React state. Flipping state here re-rendered
+     this component, which tore down and remounted the GSAP timelines its
+     parents build against it -- and the remount reset the gate, so the
+     sequence never loaded at all. Loading imperatively from the observer
+     callback keeps the render count exactly where it was before. */
   useEffect(() => {
     if (!sources) {
       bank.current = [];
       return;
     }
-    reel.current = [];
+    const el = rootRef.current;
     let alive = true;
-    const imgs: HTMLImageElement[] = [];
-    sources.forEach((url, i) => {
-      const img = new Image();
-      img.decoding = "async";
-      const tick = () => {
-        if (!alive) return;
-        setTally((prev) =>
-          prev.key === sources
-            ? { key: sources, n: prev.n + 1 }
-            : { key: sources, n: 1 },
-        );
-        wakeRef.current?.();
+
+    const load = () => {
+      if (!alive) return;
+      reel.current = [];
+      const imgs: HTMLImageElement[] = [];
+      sources.forEach((url, i) => {
+        const img = new Image();
+        img.decoding = "async";
+        const tick = () => {
+          if (!alive) return;
+          setTally((prev) =>
+            prev.key === sources
+              ? { key: sources, n: prev.n + 1 }
+              : { key: sources, n: 1 },
+          );
+          wakeRef.current?.();
+        };
+        img.onload = tick;
+        img.onerror = tick;
+        img.src = url;
+        imgs[i] = img;
+      });
+      bank.current = imgs;
+    };
+
+    if (!el || typeof IntersectionObserver === "undefined") {
+      load();
+      return () => {
+        alive = false;
       };
-      img.onload = tick;
-      img.onerror = tick;
-      img.src = url;
-      imgs[i] = img;
-    });
-    bank.current = imgs;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        load();
+      },
+      { rootMargin: "100% 0px" },
+    );
+    io.observe(el);
+
     return () => {
       alive = false;
+      io.disconnect();
     };
   }, [sources]);
 

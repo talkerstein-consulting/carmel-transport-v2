@@ -1,0 +1,284 @@
+/* ==========================================================================
+   Carmel Transport — floating nav
+   Structure from @reactbits-pro/navigation-2; palette from brand.css.
+   Two plates: dark-translucent over footage, white-translucent on the light
+   half (.is-light, toggled by ScrollTrigger in Nav.tsx).
+   ========================================================================== */
+
+.nav{
+  position:sticky;top:0;z-index:50;
+  height:0;overflow:visible;            /* takes no space; the pill floats over the page
+                                           and its open panel overlays instead of pushing */
+  /* flow-root, or the pill's own top margin collapses out through this
+     zero-height element and up through #root, pushing the whole page down by
+     that margin — which is exactly the gap that used to sit above the hero. */
+  display:flow-root;
+  padding-inline:clamp(16px,3vw,32px);
+  pointer-events:none;                  /* only the pill itself takes clicks */
+  --nav-plate:rgba(8,29,53,.58);   /* legibility floor: do not go below .55.
+                                      Measured against the brightest frame the
+                                      bar passes over (the trailer roof, L=.93):
+                                      .34 put white type at 2.3:1, .58 clears
+                                      4.5:1. The blur and the outline are the
+                                      other two legs -- none is optional. */
+  --nav-plate-solid:rgba(8,29,53,.97);
+  --nav-line:rgba(255,255,255,.42);
+  --nav-fg:#fff;
+  --nav-fg-2:rgba(255,255,255,.72);
+  --nav-hover:rgba(255,255,255,.12);
+  --nav-item:rgba(255,255,255,.08);
+  --nav-item-line:rgba(255,255,255,.16);
+  --nav-icon:rgba(255,255,255,.14);
+}
+.nav.is-light{
+  --nav-plate:rgba(255,255,255,.66);  /* legibility floor: do not go below .60 */
+  --nav-plate-solid:#fff;
+  --nav-line:rgba(8,29,53,.20);
+  --nav-fg:var(--ink-900);
+  --nav-fg-2:var(--ink-600);
+  --nav-hover:rgba(8,29,53,.06);
+  --nav-item:rgba(255,255,255,.55);
+  --nav-item-line:rgba(8,29,53,.10);
+  --nav-icon:var(--blue-50);
+}
+
+/* Top offset includes the device safe area, so the bar clears a notch or a
+   status bar instead of sitting under it. */
+.nav-desk{
+  display:block;width:fit-content;pointer-events:auto;
+  margin:calc(var(--sp-4) + env(safe-area-inset-top,0px)) auto 0;
+}
+.nav-mobile{
+  display:none;pointer-events:auto;
+  margin-top:calc(var(--sp-5) + env(safe-area-inset-top,0px));
+}
+@media(max-width:1023px){.nav-desk{display:none}.nav-mobile{display:block}}
+
+/* Fixed, not sticky, on the phone. Sticky is bounded by its containing block,
+   and it is measured against the layout viewport -- on a phone that viewport
+   changes height as the URL bar shows and hides, and the bar drifted upward
+   with it instead of holding the top of the screen. Fixed is measured against
+   the visual viewport and has no containing block to run out of.
+
+   left/right rather than width:100%, because the element keeps its inline
+   padding: a fixed box shrink-wraps otherwise and the pill would no longer
+   span the screen. Nothing about the flow changes -- .nav is already height:0
+   and took no space when it was sticky either, so there is no jump.
+
+   Safe here specifically: no ancestor of .nav carries a transform, filter,
+   perspective, backdrop-filter, will-change or contain, any of which would
+   make "fixed" resolve against that ancestor instead of the viewport. Check
+   again before adding one above this element.
+
+   The open drawer is already max-height:calc(100svh - 84px) with its own
+   overflow-y, so it still fits and scrolls inside a fixed bar. */
+@media(max-width:1023px){
+  .nav{position:fixed;top:0;left:0;right:0}
+}
+
+/* LEGIBILITY FLOOR — see BRANDING §7. The bar passes over aerial footage,
+   white cloud, dark water and paper within one scroll, so nothing about the
+   backdrop can be assumed. The rule is that three things are always present
+   and none of them is optional: a minimum plate (--nav-plate, >= .30 over
+   footage / >= .60 on paper), a backdrop blur, and the outline. Together they
+   hold the type at AA against any frame. Taking the plate to zero looks better
+   on a still and fails the moment the picture moves. */
+.nav-pill{
+  position:relative;
+  /* visible, not hidden: the panel hangs below the bar as its own card, and
+     clipping to the pill would cut it off. The bar's own corners are still
+     rounded by its radius — nothing inside it bleeds past them. */
+  overflow:visible;
+  border-radius:calc(var(--r-cta) + 8px);corner-shape:superellipse(2.6);
+  background:var(--nav-plate);
+  border:1px solid var(--nav-line);
+  -webkit-backdrop-filter:saturate(140%) blur(18px);
+  backdrop-filter:saturate(140%) blur(18px);
+  color:var(--nav-fg);
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
+             box-shadow var(--dur) var(--ease),color var(--dur) var(--ease);
+}
+/* An open panel carries photographs and body copy, so it takes more ground
+   than the bar alone needs — but only the shadow may change. backdrop-filter
+   is not an animatable property: retuning the blur here snapped the whole bar
+   to a new appearance on the frame the panel mounted, which is what read as
+   the hover glitch. One blur value for both states, and the shadow (which is
+   already in the pill's transition list) carries the change. */
+/* Opaque on hover, and opaque whenever a panel is open. At rest the bar is a
+   translucent plate over whatever is behind it; the moment you are actually
+   using it, it stops competing with the picture and becomes a surface.
+   .is-active is set by Nav.tsx from React state (hovered || panel open) rather
+   than from :hover/:has() — one source of truth, so the plate can't flip back
+   to translucent mid-transition while a panel is still mounted. */
+.nav.is-active .nav-pill{
+  background:var(--nav-plate-solid);
+  box-shadow:0 1px 2px rgba(8,29,53,.08),0 16px 40px rgba(8,29,53,.14);
+}
+.nav-bar{
+  display:flex;align-items:center;gap:var(--sp-2);
+  padding:8px 8px 8px 20px;
+}
+.nav a,.nav button{color:inherit;text-decoration:none;font:inherit}
+/* ...but not the CTA. It is a self-contained component that paints its own
+   navy pill and white label; letting it inherit --nav-fg puts ink-900 type on
+   an ink-900 slab the moment the bar flips to its light state, and the label
+   disappears. (.nav a beats .cta-btn on specificity, so this has to be said.) */
+.nav a.cta-btn{color:#fff}
+.nav a.cta-btn .cta-btn-tile{color:var(--ink-900)}
+.nav a.cta-btn.cta-btn-outline,.nav a.cta-btn.cta-btn-outline .cta-btn-tile{color:#fff}
+.nav button{background:none;border:0;cursor:pointer}
+
+.nav-brand{display:flex;align-items:center;margin-right:var(--sp-4)}
+.nav-brand .wm{background:none;-webkit-text-fill-color:currentColor;color:inherit}
+
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{
+  padding:8px 14px;border-radius:12px;corner-shape:superellipse(2.6);
+  font-size:var(--fs-small);font-weight:500;letter-spacing:-.005em;
+  color:var(--nav-fg-2);
+  transition:color var(--dur) var(--ease),background var(--dur) var(--ease);
+}
+.nav-link:hover,.nav-link[aria-expanded="true"]{color:var(--nav-fg);background:var(--nav-hover)}
+.nav-link-more{display:inline-flex;align-items:center;gap:5px}
+.nav-link-more svg{
+  /* nudged down a hair: the glyph's optical centre sits above its box */
+  margin-top:1px;opacity:.72;
+  transition:transform var(--dur) var(--ease),opacity var(--dur) var(--ease);
+}
+.nav-link-more:hover svg{opacity:1}
+.nav-link-more[aria-expanded="true"] svg{transform:rotate(180deg);opacity:1}
+@media(prefers-reduced-motion:reduce){.nav-link-more svg{transition:none}}
+
+.nav-end{display:flex;align-items:center;gap:var(--sp-3);margin-left:var(--sp-4)}
+/* The number is a square button now, sized to the CTA beside it and sharing
+   its radius so the two read as a pair. The digits stay in aria-label and
+   title — losing them from the DOM would cost the tap-to-call affordance for
+   anyone reading the page rather than clicking it. */
+.nav-phone{
+  flex:none;display:grid;place-items:center;
+  width:46px;height:46px;
+  border-radius:var(--r-cta);corner-shape:superellipse(2.6);
+  background:var(--nav-item);border:1px solid var(--nav-item-line);
+  color:var(--nav-fg);
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
+             color var(--dur) var(--ease);
+}
+.nav-phone:hover{background:var(--nav-hover);border-color:var(--nav-line);color:var(--nav-fg)}
+
+/* hover / mobile panel */
+/* The panel is its own card hanging below the bar. It used to be a block
+   inside the pill, so opening it resized the bar — taller, and wider to fit
+   the grid. Absolute, the bar keeps its dimensions whatever is open under it,
+   and left:0/right:0 pins the card to exactly the bar's width. */
+/* Flush to the bar, not floating 8px under it. That gap belonged to the page,
+   not to the nav — dragging the pointer from "Services" down to the menu
+   crossed it, mouseleave fired on .nav-desk, and the panel closed before you
+   could reach anything in it. -1px so no subpixel seam opens up either.
+   Square on top, rounded below: it reads as the bar opening downward rather
+   than a second card that happens to be nearby. */
+.nav-panel{
+  /* -1px, not 0: an absolute child resolves left/right against the pill's
+     PADDING box, which is already inside the pill's own 1px border. At left:0
+     the panel's border box came out 2px narrower than the bar and sat 1px in
+     on each side -- a visible step where the two cards meet. Pulling out by
+     the bar's border width lands the two border boxes on the same edges. */
+  position:absolute;top:calc(100% - 1px);left:-1px;right:-1px;
+  overflow:hidden;
+  border-radius:0 0 calc(var(--r-cta) + 8px) calc(var(--r-cta) + 8px);
+  corner-shape:superellipse(2.6);
+  background:var(--nav-plate-solid);
+  border:1px solid var(--nav-line);
+  border-top:none;
+  box-shadow:0 16px 40px rgba(8,29,53,.18);
+}
+/* the bar loses its bottom rounding while the panel is attached */
+.nav-pill:has(> .nav-panel){
+  border-bottom-left-radius:0;border-bottom-right-radius:0;
+}
+
+/* Full width of the pill. At min(620px,100%) the grid stopped short of the
+   bar above it and left ~160px of bare plate on the right — the panel read as
+   a misaligned popover rather than the bar opening downward. */
+.nav-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2);
+  padding:var(--sp-2);width:100%;
+}
+/* Each service leads with its own photograph — the same four frames the
+   services page uses, so the menu previews the page it opens. The card is a
+   column: picture, then the label row, then the line of detail. */
+.nav-item{
+  display:flex;flex-direction:column;gap:var(--sp-3);
+  padding:var(--sp-2) var(--sp-2) var(--sp-3);
+  border-radius:16px;corner-shape:superellipse(2.6);
+  background:var(--nav-item);border:1px solid var(--nav-item-line);
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+}
+.nav-item:hover{background:var(--nav-hover);border-color:var(--nav-line)}
+
+.nav-item-media{
+  display:block;overflow:hidden;
+  border-radius:12px;corner-shape:superellipse(2.6);
+  background:var(--nav-icon);
+  aspect-ratio:16/9;
+}
+.nav-item-media img{
+  width:100%;height:100%;object-fit:cover;
+  transform:scale(1.01);                 /* hides the sub-pixel edge the radius leaves */
+  transition:transform 600ms var(--ease);
+}
+.nav-item:hover .nav-item-media img{transform:scale(1.06)}
+
+.nav-item-text{display:block;padding-inline:var(--sp-2)}
+.nav-item-icon{flex:none;color:var(--blue-500)}
+.nav-item-title{
+  display:flex;align-items:center;gap:var(--sp-2);
+  font-size:var(--fs-small);font-weight:600;color:var(--nav-fg);line-height:1.2;
+}
+.nav-item-desc{display:block;margin-top:4px;font-size:var(--fs-small);color:var(--nav-fg-2);line-height:1.35}
+
+/* mobile */
+.nav-burger{
+  display:grid;place-items:center;width:40px;height:40px;
+  border-radius:12px;corner-shape:superellipse(2.6);
+  background:var(--nav-hover);
+}
+.nav-mobile-body{padding:var(--sp-2) var(--sp-3) var(--sp-4)}
+.nav-mobile-links{display:flex;flex-direction:column}
+.nav-mobile-links a{
+  padding:10px 8px;font-size:var(--fs-body);font-weight:500;color:var(--nav-fg);
+}
+.nav-mobile-cta{margin:var(--sp-3) 0 var(--sp-5)}
+.nav-mobile-head{
+  margin:0 0 var(--sp-2);padding-inline:8px;
+  font-size:var(--fs-eyebrow);font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--nav-fg-2);
+}
+/* The whole drop fits one phone screen. Links are tighter, the CTA sits
+   between them and the services, and the four services are compact rows —
+   a square thumbnail beside the title and its line — instead of the
+   desktop's picture-on-top cards, which stacked to twice the viewport. */
+.nav-mobile .nav-panel{
+  max-height:calc(100svh - 84px);overflow-y:auto;overscroll-behavior:contain;
+}
+.nav-mobile .nav-mobile-links a{padding:8px 8px;font-size:var(--fs-body)}
+.nav-mobile .nav-mobile-cta{margin:var(--sp-2) 0 var(--sp-4)}
+.nav-mobile .nav-mobile-head{margin-bottom:6px}
+.nav-mobile .nav-grid{grid-template-columns:1fr;gap:6px;padding:0;width:100%}
+.nav-mobile .nav-item{
+  flex-direction:row;align-items:center;gap:var(--sp-3);
+  padding:6px 10px 6px 6px;border-radius:14px;
+}
+.nav-mobile .nav-item-media{
+  flex:none;width:52px;height:52px;aspect-ratio:auto;border-radius:10px;
+}
+.nav-mobile .nav-item-text{padding-inline:0;min-width:0}
+.nav-mobile .nav-item-title{font-size:var(--fs-small)}
+.nav-mobile .nav-item-desc{
+  margin-top:2px;font-size:.9rem;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .nav-pill,.nav-link,.nav-item{transition:none}
+  .nav-item-media img,.nav-item:hover .nav-item-media img{transition:none;transform:none}
+}

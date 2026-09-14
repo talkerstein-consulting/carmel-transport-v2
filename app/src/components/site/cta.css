@@ -1,0 +1,218 @@
+/* ==========================================================================
+   Carmel Transport — primary CTA
+   Promoted from the sandbox 2026-09-14. Tokens from brand.css.
+   ========================================================================== */
+
+/* --- CTA ---------------------------------------------------------------- */
+
+/* After Spartan's hero button. At rest: navy pill, light 58px tile on the left
+
+   with the chevrons travelling continuously from its left edge to its right
+
+   edge, white label to the right. On hover the tile snaps across the pill; the
+
+   label re-enters in navy from the left, the chevrons park at the right end.
+
+   The tile is absolute, inset 3px on every side, so it can never outgrow the
+
+   pill; an in-flow spacer holds its resting slot. */
+
+/* the same pill as a <button>: strip the UA chrome, keep everything else */
+button.cta-btn{border:0;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none}
+button.cta-btn:focus-visible{outline:2px solid var(--blue-600);outline-offset:3px}
+
+.cta-btn{
+
+  --tile:58px;
+
+  --inset:3px;
+
+  --snap:cubic-bezier(.2,1.15,.3,1);
+
+  position:relative;
+
+  display:inline-flex;align-items:center;gap:var(--sp-4);
+
+  height:64px;padding:var(--inset) 26px var(--inset) var(--inset);
+
+  border-radius:16px;
+
+  background:var(--ink-900);color:#fff;
+
+  font-size:var(--fs-body);font-weight:600;letter-spacing:-.005em;
+
+  text-decoration:none;
+
+  transition:transform 90ms var(--ease);
+
+}
+
+.cta-btn-spacer{flex:none;width:var(--tile);height:var(--tile)}
+
+.cta-btn-label{position:relative;transition:opacity 120ms var(--ease)}
+
+
+
+.cta-btn-tile{
+
+  position:absolute;z-index:1;
+
+  top:var(--inset);bottom:var(--inset);left:var(--inset);
+
+  right:calc(100% - var(--inset) - var(--tile));
+
+  display:flex;align-items:center;
+
+  border-radius:14px;
+
+  background:var(--paper-100);color:var(--ink-900);
+
+  overflow:hidden;
+
+  transition:right 240ms var(--snap);
+
+}
+
+/* the navy label that slides in on hover — takes whatever room the tile has,
+
+   which at rest is none */
+
+.cta-btn-tile-label{
+  flex:1 1 0;min-width:0;overflow:hidden;
+  white-space:nowrap;
+  text-indent:22px;                 /* indent, not padding: padding would give the
+                                       collapsed label width and push the chevron
+                                       off the tile's centre at rest */
+  opacity:0;transform:translateX(-14px);
+  transition:opacity 160ms var(--ease),transform 240ms var(--snap);
+}
+
+/* chevron: rolls left edge to right edge and loops, but in discrete steps
+   rather than a smooth glide. Stepped motion means one repaint every ~140ms
+   instead of every frame, so the loop cannot fight the scroll-driven footage
+   for frame budget; it also reads as a deliberate, mechanical tick. */
+.cta-btn-ic{
+  position:relative;flex:none;width:var(--tile);height:100%;
+  --glyph:26px;
+}
+.cta-btn-ic svg{
+  position:absolute;top:50%;left:0;
+  margin-top:calc(var(--glyph) / -2);
+  transform:translateX(calc((var(--tile) - var(--glyph)) / 2));
+}
+/* only a live CTA runs the chevron; the rest hold it centred */
+.cta-btn-live .cta-btn-ic svg{animation:cta-btn-travel 1.1s steps(8,end) infinite}
+@keyframes cta-btn-travel{
+
+  from{transform:translateX(calc(var(--glyph) * -1))}
+
+  to{transform:translateX(var(--tile))}
+
+}
+
+
+
+.cta-btn:hover .cta-btn-tile,.cta-btn:focus-visible .cta-btn-tile{right:var(--inset)}
+
+.cta-btn:hover .cta-btn-label,.cta-btn:focus-visible .cta-btn-label{opacity:0;transition-duration:80ms}
+
+.cta-btn:hover .cta-btn-tile-label,.cta-btn:focus-visible .cta-btn-tile-label{opacity:1;transform:none}
+
+.cta-btn:hover .cta-btn-ic svg,.cta-btn:focus-visible .cta-btn-ic svg{animation:none}
+
+.cta-btn:active{transform:scale(.97)}
+
+.cta-btn:focus-visible{outline:2px solid var(--blue-500);outline-offset:3px}
+
+
+
+@media(prefers-reduced-motion:reduce){
+
+  .cta-btn-tile,.cta-btn-label,.cta-btn-tile-label{transition:none}
+
+  .cta-btn-ic svg{animation:none}
+
+}
+
+
+
+/* orange variant: the tile carries the accent, the pill stays navy */
+
+.cta-btn-cta .cta-btn-tile{background:var(--cta-btn);color:var(--ink-900)}
+
+
+
+/* tile colour: accent by default, paper as the quieter alternative */
+.cta-btn-accent .cta-btn-tile{background:var(--accent);color:var(--ink-900)}
+.cta-btn-paper .cta-btn-tile{background:var(--paper-100);color:var(--ink-900)}
+
+/* small: cards, nav */
+.cta-btn-sm{--tile:40px;height:46px;padding-right:18px;font-size:var(--fs-small);gap:var(--sp-3)}
+.cta-btn-sm .cta-btn-tile-label{text-indent:16px}
+.cta-btn-sm .cta-btn-ic{--glyph:20px}
+.cta-btn-sm .cta-btn-ic svg{width:20px;height:20px}
+
+/* --- corner family -------------------------------------------------------
+   The pill and the nav that wraps it are the same shape at different sizes:
+   same superellipse, and radii kept concentric (nav radius = this radius +
+   the nav bar's 8px padding), so the corners stay parallel instead of one
+   curve cutting across the other. nav.css derives its radius from --r-cta. */
+:root{ --r-cta:16px; }
+.cta-btn{ border-radius:var(--r-cta); corner-shape:superellipse(2.6); }
+.cta-btn-tile{ corner-shape:superellipse(2.6); }
+
+/* --- outline variant -----------------------------------------------------
+   For the hero, where the footage is the subject and a filled navy slab sits
+   on top of it like a sticker. Nothing here is opaque: the pill is a hairline,
+   the tile is a hairline, and hover fills with white at low alpha rather than
+   flipping to a solid. */
+.cta-btn-outline{
+  background:transparent;
+  border:1px solid rgba(255,255,255,.55);
+  color:#fff;
+  transition:transform 90ms var(--ease),border-color var(--dur) var(--ease);
+}
+.cta-btn-outline:hover,.cta-btn-outline:focus-visible{ border-color:#fff; }
+.cta-btn-outline .cta-btn-tile{
+  background:transparent;color:inherit;
+  border:1px solid rgba(255,255,255,.42);
+  transition:right 240ms var(--snap),background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+}
+.cta-btn-outline:hover .cta-btn-tile,.cta-btn-outline:focus-visible .cta-btn-tile{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.5);
+}
+/* the label crossing the tile stays white here — there is no light plate
+   underneath it to go navy against */
+.cta-btn-outline .cta-btn-tile-label{ color:#fff; }
+
+/* --- down variant: a scroll cue -----------------------------------------
+   Same mechanism as the travelling chevron, turned through 90° so it falls
+   through the tile instead of crossing it. The translate has to be restated
+   in every rule because transform is one property — a bare rotate() would
+   drop the centring the base rule sets. */
+.cta-btn-down .cta-btn-ic svg{
+  transform:translateX(calc((var(--tile) - var(--glyph)) / 2)) rotate(90deg);
+}
+.cta-btn-down.cta-btn-live .cta-btn-ic svg{ animation:cta-btn-fall 1.4s steps(8,end) infinite; }
+@keyframes cta-btn-fall{
+  from{ transform:translate(calc((var(--tile) - var(--glyph)) / 2), calc((var(--tile) + var(--glyph)) / -2)) rotate(90deg); }
+  to  { transform:translate(calc((var(--tile) - var(--glyph)) / 2), calc((var(--tile) + var(--glyph)) /  2)) rotate(90deg); }
+}
+.cta-btn-down:hover .cta-btn-ic svg,.cta-btn-down:focus-visible .cta-btn-ic svg{ animation:none; }
+
+/* --- small size: the label does not change ------------------------------
+   The full-size button carries two copies of its label and crosses from one
+   to the other as the tile sweeps past — deliberate at hero scale, where
+   there is room to read it. At nav scale the same move reads as the text
+   glitching: a 15-character label swapping itself out inside 240ms. So the
+   small size renders one label that stays put, and the tile slides behind it
+   instead of past it, flipping the type to ink as it arrives. */
+.cta-btn-sm .cta-btn-tile-label{ display:none; }
+.cta-btn-sm:hover .cta-btn-label,.cta-btn-sm:focus-visible .cta-btn-label{
+  opacity:1;color:var(--ink-900);
+}
+.cta-btn-sm .cta-btn-label{ z-index:2;transition:color var(--dur) var(--ease); }
+/* outline small stays light — its tile never becomes a light plate */
+.cta-btn-sm.cta-btn-outline:hover .cta-btn-label,
+.cta-btn-sm.cta-btn-outline:focus-visible .cta-btn-label{ color:#fff; }

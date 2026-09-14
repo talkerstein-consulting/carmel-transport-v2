@@ -2,14 +2,17 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import FrameScrub from "@/components/frame-scrub"
+import { StatCard } from "@/components/site/StatCard"
+import type { StatSpec } from "@/components/site/StatCard"
+import { CalendarClock, Truck, Container, Headset } from "lucide-react"
 
 gsap.registerPlugin(ScrollTrigger)
 
-const STATS = [
-  { figure: "50+", unit: "Years", label: "Of industry experience" },
-  { figure: "300", unit: "", label: "Power units across North America" },
-  { figure: "800+", unit: "", label: "Chassis in operation" },
-  { figure: "24/7/365", unit: "", label: "Service and support" },
+const STATS: StatSpec[] = [
+  { value: 50,  suffix: "+",  label: "Years of industry experience",       icon: CalendarClock },
+  { value: 300,               label: "Power units across North America",   icon: Truck },
+  { value: 800, suffix: "+",  label: "Chassis in operation",               icon: Container },
+  { value: 0,   literal: "24/7/365", label: "Service and support",         icon: Headset },
 ]
 
 /* Section 03 — Stats.
@@ -80,6 +83,12 @@ export function Stats() {
       // received it at all.
       gsap.set(figures, { opacity: 0, y: 44 })
 
+      // STATIC FIGURES. The count-up used to be driven off each card's opacity
+      // (opacity IS progress, so the number tracked the fade). That coupling
+      // kept stranding the figures on "0" whenever the scrub did not update
+      // them — which is worse than not counting at all, because the number is
+      // then simply wrong. The markup renders the true value and it stays
+      // true; the cards still fade and rise in.
       const reveal = gsap.to(figures, {
         opacity: 1,
         y: 0,
@@ -116,7 +125,7 @@ export function Stats() {
     <section className="stats" id="stats" ref={section}>
       <FrameScrub
         src="/seq/ship/f-{i}.webp"
-        count={91}
+        count={151}
         pad={3}
         start={1}
         variant="plain"
@@ -124,10 +133,19 @@ export function Stats() {
         height={0.95}
         width={4000}
         borderRadius={0}
-        // The clouds section underlaps this one by 200svh, so it begins at
-        // (scrollLength - 2) screens. The figure block is pinned until 3.0, so
-        // anything under 5.0 lets the clouds copy fade in over the figures.
-        scrollLength={4.4}
+        // This one scrub carries BOTH this section and the services section
+        // above it. The film is a single continuous ocean-to-cloud take, so
+        // there is no second sequence to dissolve into: services underlaps
+        // this section and keeps scrubbing the same canvas.
+        //
+        // The canvas is pinned for scrollLength x 100vh and only travels over
+        // the final 100vh, so BOTH sections have to finish inside that pinned
+        // range. Services is 600vh and starts 4.4 screens in (see the -700svh
+        // in .intro-services), so it ends at 4.4 + 6 = 10.4 screens — which is
+        // exactly the pin length. Change one of these three numbers and the
+        // footage drops out from under services; change all three together.
+        // The figure block is pinned until 3.0, well inside the stats share.
+        scrollLength={10.4}
         smooth={0.12}
         grain={0}
         vignette={0}
@@ -137,7 +155,9 @@ export function Stats() {
       />
 
       <div className="stats-overlay">
-        <div className="stats-scrim" />
+        <div className="stats-vig-range" aria-hidden="true">
+          <div className="stats-vig" />
+        </div>
 
         {/* All four stay together as one block — two left, two right. The
             block scrolls up past the footage, which stays put, and each figure
@@ -145,27 +165,11 @@ export function Stats() {
         <div className="stats-inner">
           <div className="stats-group" ref={inner}>
           <div className="stats-col">
-            {STATS.slice(0, 2).map((s) => (
-              <div className="stat" key={s.figure}>
-                <p className="stat-figure">
-                  {s.figure}
-                  {s.unit && <span className="stat-unit"> {s.unit}</span>}
-                </p>
-                <p className="stat-label">{s.label}</p>
-              </div>
-            ))}
+            {STATS.slice(0, 2).map((s) => <StatCard {...s} key={s.label} />)}
           </div>
 
           <div className="stats-col stats-col-right">
-            {STATS.slice(2).map((s) => (
-              <div className="stat" key={s.figure}>
-                <p className="stat-figure">
-                  {s.figure}
-                  {s.unit && <span className="stat-unit"> {s.unit}</span>}
-                </p>
-                <p className="stat-label">{s.label}</p>
-              </div>
-            ))}
+            {STATS.slice(2).map((s) => <StatCard {...s} align="right" key={s.label} />)}
           </div>
           </div>
         </div>

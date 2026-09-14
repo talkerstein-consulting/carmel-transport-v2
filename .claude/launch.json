@@ -5,6 +5,12 @@
       "name": "carmel-app",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "app"],
+      "port": 5180,
+      "autoPort": true
+    },
+    {
+      "name": "carmel-app-attach",
+      "url": "http://localhost:5180",
       "port": 5180
     }
   ]

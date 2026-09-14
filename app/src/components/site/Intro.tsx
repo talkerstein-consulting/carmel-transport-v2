@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import ScrollReveal from "@/components/ScrollReveal"
-import { WordRoll } from "./WordRoll"
+import { Cta } from "./Cta"
 
 /* Section 02 — Intro / About.
    Body left, heading and CTA right — the hero's split, mirrored.
@@ -16,8 +16,11 @@ export function Intro() {
         <ScrollReveal
           triggerRef={section}
           enableBlur={false}
+          /* 0.3, not the registry's 0.1: the untriggered tail of the sentence
+             sits over footage for most of the section, and at 10% it read as a
+             rendering fault rather than as copy waiting its turn. */
           baseRotation={0}
-          baseOpacity={0.1}
+          baseOpacity={0.3}
           wordAnimationEnd="bottom bottom"
           containerClassName="reveal-body-wrap"
           textClassName="reveal-body"
@@ -28,7 +31,7 @@ export function Intro() {
         <div className="reveal-aside">
           <h2 className="reveal-head">Built to keep moving</h2>
           <p className="reveal-cta">
-            <WordRoll className="link-caps" href="#company">More About Carmel</WordRoll>
+            <Cta href="#company">More about Carmel</Cta>
           </p>
         </div>
       </div>

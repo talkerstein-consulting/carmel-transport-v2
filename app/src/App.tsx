@@ -11,9 +11,14 @@ import { Closing } from "@/components/site/Closing"
 export default function App() {
   return (
     <>
+      {/* Keyboard users otherwise tab the whole nav -- brand, Services panel,
+          four links, phone, quote -- on every single page before reaching the
+          content. Visually hidden until it takes focus. */}
+      <a className="skip-link" href="#main">Skip to content</a>
+
       <Stage />
       <Nav />
-      <main>
+      <main id="main" tabIndex={-1}>
         <Hero />
         <Intro />
         <Stats />

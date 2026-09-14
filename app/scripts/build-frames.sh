@@ -25,9 +25,10 @@ render() {
   echo "$name: $(ls "public/seq/$name" | wc -l) frames, $(du -sh "public/seq/$name" | cut -f1)"
 }
 
-render "../hero scrub.mp4" hero
+render "../hero scrub logo final.mp4" hero
+# One continuous ocean-to-cloud take. It used to be two films (ship.mp4 then
+# clouds.mp4) crossfaded together in the page; they are now a single scrub.
 render "../ship.mp4"       ship
-render "../clouds.mp4"     clouds
 
 echo
 echo "Update count={N} in Stage.tsx / Stats.tsx if the frame count changed."

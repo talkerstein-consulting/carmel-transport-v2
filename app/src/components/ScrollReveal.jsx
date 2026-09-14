@@ -99,10 +99,15 @@ const ScrollReveal = ({
     };
   }, [scrollContainerRef, triggerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
 
+  /* The registry ships this wrapped in an <h2>. The content is a paragraph of
+     running prose, so that made a 47-word sentence the page's first heading --
+     ahead of the real one -- which is what a screen reader announces and what
+     a crawler indexes. A plain <div> wrapper keeps the rotation target without
+     claiming a heading level; the <p> inside carries the text as it should. */
   return (
-    <h2 ref={containerRef} className={`scroll-reveal ${containerClassName}`}>
+    <div ref={containerRef} className={`scroll-reveal ${containerClassName}`}>
       <p className={`scroll-reveal-text ${textClassName}`}>{splitText}</p>
-    </h2>
+    </div>
   );
 };
 

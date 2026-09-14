@@ -325,6 +325,14 @@ On the secondary (light) button, drop the shine opacity to `.35` and tint the ba
 
 **Nav** — 72px tall, `--paper-50`, `--fs-small` at 500, `--ink-700`; active item `--ink-900` with a 2px `--blue-500` underline. Wordmark cap-height 20px, always left.
 
+**Nav legibility floor (rule).** The bar floats over whatever is behind it — aerial footage, white cloud, dark water and paper all inside one scroll — so no assumption about the backdrop is safe. Three things are always present on the bar, and none is optional:
+
+1. **A minimum plate.** `--nav-plate` never goes below `.30` alpha over footage or `.60` on paper. Fully transparent is not permitted: it looks better on a still frame and fails the moment the picture moves.
+2. **A backdrop blur** of at least 16px, which flattens whatever detail is underneath before the type has to sit on it.
+3. **The outline** — `--nav-line` at `.42` over footage, `.20` on paper — so the bar keeps its shape when the backdrop happens to match the plate.
+
+The dark/light flip (`.is-light`) chooses which pair of values applies; it does not exempt the bar from any of the three. Type on the bar must clear WCAG AA against the *lightest and darkest* frame it can pass over, not against a chosen screenshot.
+
 **Footer** — `--grad-paper-deep`, `--ink-600` text, hairline top. Not inverted.
 
 **Data / numbers** — `font-variant-numeric: tabular-nums`. Key figures may take `--blue-500`; their labels stay `--ink-500`.
