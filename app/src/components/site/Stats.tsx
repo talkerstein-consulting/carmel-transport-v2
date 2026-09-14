@@ -124,7 +124,15 @@ export function Stats() {
   return (
     <section className="stats" id="stats" ref={section}>
       <FrameScrub
-        src="/seq/ship/f-{i}.webp"
+        /* ?v= is a CACHE BUSTER and it MUST be bumped whenever the frames
+           behind it are rebuilt. vercel.json serves /seq/* with
+           `max-age=31536000, immutable`, which is a promise that the bytes at
+           a URL never change — so replacing the files under the same names
+           leaves every browser and the Vercel edge serving last year's copy
+           for a year. That is what mixes old and new footage in one scrub:
+           some frames come from cache, the rest come fresh. Immutable is the
+           right header; changing the URL is how you ship new frames under it. */
+        src="/seq/ship/f-{i}.webp?v=2"
         count={151}
         pad={3}
         start={1}

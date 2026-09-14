@@ -268,7 +268,6 @@ export function Nav() {
                     ))}
                     <a href="tel:+12012995416">(201) 299-5416</a>
                   </div>
-                  <Cta href="#quote" size="sm" className="nav-mobile-cta">Request a quote</Cta>
                   <p className="nav-mobile-head">Services</p>
                   <div className="nav-grid">
                     {SERVICES.map((s) => {
@@ -289,6 +288,12 @@ export function Nav() {
                       )
                     })}
                   </div>
+
+                  {/* Last, not wedged between the links and Services. It is the
+                      one action in the drawer, and sitting mid-list it read as
+                      another row. At the bottom, off on its own, it is the
+                      thing your thumb lands on after reading the menu. */}
+                  <Cta href="#quote" className="nav-mobile-cta">Request a quote</Cta>
                 </div>
               </motion.div>
             )}
