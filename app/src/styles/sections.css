@@ -399,6 +399,13 @@
   display: inline-grid; padding: 0; background: none;
   margin-left: auto;
 }
+/* Phone: the badge takes the full column, centred under the mark, rather
+   than a 94vw plaque hanging off the right of a padded footer. */
+@media (max-width: 767px) {
+  .foot .tcg-footer { width: 100%; margin-left: 0; justify-items: center; }
+  .foot .tcg-plaque { --w: 100%; }
+  .foot-bottom { justify-content: center; }
+}
 
 @media (max-width: 900px) { .foot-details { grid-template-columns: 1fr; } }
 @media (max-width: 767px) {
