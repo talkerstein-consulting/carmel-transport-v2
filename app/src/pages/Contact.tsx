@@ -1,5 +1,5 @@
 import { PageShell, PageBlock } from "./PageShell"
-import { QuoteSequence, CONTACT_STEPS } from "@/components/site/QuoteSequence"
+import { QuoteSequence } from "@/components/site/QuoteSequence"
 import { MapPin, Clock, Phone, Mail } from "lucide-react"
 
 /* /contact — copy ported verbatim from carmel-usa-scrape/text/en_contact-us.txt.
@@ -34,8 +34,10 @@ export default function Contact() {
           </ol>
         </div>
       }
-      /* the masthead IS the form: four prompts, one at a time */
-      plate={<QuoteSequence steps={CONTACT_STEPS} subject="Message from the website" tone="dark" />}
+      /* The masthead IS the quote request — the thing people come here to do,
+         at the top, rather than a general message form with the real ask
+         buried at the bottom of the page. */
+      plate={<QuoteSequence tone="dark" />}
     >
       <PageBlock n="01" kicker="Contact" head="Who to ask for">
         <p className="pg-body" data-rise>
@@ -57,28 +59,10 @@ export default function Contact() {
         </div>
       </PageBlock>
 
-      {/* The full quote request on its own inverted band — the footer's
-          ground, so the inversion reads as identity rather than a dark slab. */}
-      <section className="band band-ink pg-block" id="quote" aria-label="Request a quote">
-        <div className="band-inner pg-grid">
-          <div className="pg-rail">
-            <p className="pg-rail-n" data-rise>02 / Contact</p>
-            <h2 className="pg-rail-head" data-rise>Request a quote</h2>
-            <p className="pg-rail-note" data-rise>
-              Six quick questions, one at a time. It ends as an email to us with
-              everything filled in.
-            </p>
-          </div>
-          <div className="pg-main">
-            <QuoteSequence tone="dark" />
-          </div>
-        </div>
-      </section>
-
       <section className="band pg-block" aria-label="Corporate HQ">
         <div className="band-inner pg-grid">
           <div className="pg-rail">
-            <p className="pg-rail-n" data-rise>03 / Contact</p>
+            <p className="pg-rail-n" data-rise>02 / Contact</p>
             <h2 className="pg-rail-head" data-rise>Corporate HQ</h2>
           </div>
           <div className="pg-main">
@@ -104,6 +88,21 @@ export default function Contact() {
                 <span className="pg-fact-value"><a href="mailto:quotes@carmel-usa.com">quotes@carmel-usa.com</a></span>
               </li>
             </ul>
+
+            {/* The map the scraped page had, put back. An address line tells you
+                where the yard is; the map tells you what is around it, which is
+                what someone routing a truck actually wants. Lazy so it costs
+                nothing until it is scrolled to, and titled because an unlabelled
+                iframe is an unlabelled frame to a screen reader. */}
+            <div className="pg-map" data-rise>
+              <iframe
+                title="Carmel Transport — 78 John Miller Way, Kearny, NJ"
+                src="https://www.google.com/maps?q=78+John+Miller+Way+Unit+408,+Kearny,+NJ+07032&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
           </div>
         </div>
       </section>

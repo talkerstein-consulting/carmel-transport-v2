@@ -14,10 +14,10 @@ gsap.registerPlugin(ScrollTrigger)
    backdrop is dropped — the footage is the backdrop here. */
 
 const SERVICES = [
-  { icon: Truck,      title: "Drayage",       description: "Port to door, same day",            href: "/services#drayage",    img: "/img/services/drayage.jpg" },
-  { icon: Snowflake,  title: "Refrigerated",  description: "Reefer transport and 30-slot yard", href: "/services#refrigerated", img: "/img/services/refrigerated.jpg" },
-  { icon: TrainFront, title: "Intermodal",    description: "Ocean and rail terminals",          href: "/services#intermodal",   img: "/img/services/intermodal.jpg" },
-  { icon: Warehouse,  title: "Storage",       description: "Secured container yard in Kearny",  href: "/services#storage",      img: "/img/services/storage.jpg" },
+  { icon: Truck,      title: "Drayage",       description: "Port to door, same day",            href: "/services/drayage",    img: "/img/services/drayage.jpg" },
+  { icon: Snowflake,  title: "Refrigerated",  description: "Reefer transport and 30-slot yard", href: "/services/refrigerated", img: "/img/services/refrigerated.jpg" },
+  { icon: TrainFront, title: "Intermodal",    description: "Ocean and rail terminals",          href: "/services/intermodal",   img: "/img/services/intermodal.jpg" },
+  { icon: Warehouse,  title: "Storage",       description: "Secured container yard in Kearny",  href: "/services/storage",      img: "/img/services/storage.jpg" },
 ]
 
 const LINKS = [
@@ -145,6 +145,10 @@ export function Nav() {
         <div className="nav-pill">
           <div className="nav-bar">
             <a className="nav-brand" href="/" aria-label="Carmel — home">
+              {/* The mark sits before the wordmark and is decorative here: the
+                  link already has its own label, so alt="" keeps a screen
+                  reader from reading the company name twice. */}
+              <img className="nav-mark" src="/img/carmel-mark.png" alt="" width="28" height="28" decoding="async" />
               <span className="wm">Carmel</span>
             </a>
 
@@ -239,6 +243,10 @@ export function Nav() {
         <div className="nav-pill">
           <div className="nav-bar">
             <a className="nav-brand" href="/" aria-label="Carmel — home">
+              {/* The mark sits before the wordmark and is decorative here: the
+                  link already has its own label, so alt="" keeps a screen
+                  reader from reading the company name twice. */}
+              <img className="nav-mark" src="/img/carmel-mark.png" alt="" width="28" height="28" decoding="async" />
               <span className="wm">Carmel</span>
             </a>
             <button

@@ -128,7 +128,10 @@
 .nav a.cta-btn.cta-btn-outline,.nav a.cta-btn.cta-btn-outline .cta-btn-tile{color:#fff}
 .nav button{background:none;border:0;cursor:pointer}
 
-.nav-brand{display:flex;align-items:center;margin-right:var(--sp-4)}
+.nav-brand{display:flex;align-items:center;gap:9px;margin-right:var(--sp-4)}
+/* The mark is a round badge; sized to the wordmark's cap height rather than to
+   its line box so the two sit on one optical baseline. */
+.nav-mark{width:28px;height:28px;flex:none;object-fit:contain}
 .nav-brand .wm{background:none;-webkit-text-fill-color:currentColor;color:inherit}
 
 .nav-links{display:flex;align-items:center;gap:2px}

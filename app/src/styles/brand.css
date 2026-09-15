@@ -181,6 +181,12 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 .fs-fill>div>div::after{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   background:var(--vig);
+  /* Driven to 0 as the clouds veil comes up, so the dark margins are already
+     gone by the time the screen is full of #D5E7F2. Fading the veil in over a
+     gradient that is still at full strength left the edges visibly darker than
+     the middle right through the handoff — the swap only reads as seamless if
+     both move together. */
+  opacity:var(--vig-o,1);
 }
 
 /* --- LEGIBILITY GRADIENT (every scrub module) -----------------------------
@@ -202,6 +208,11 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
    .intro-services at 3, which outranks every section these sit in, so the
    handoff into "More than transportation" stays seamless with no JS. */
 :root{
+  /* Declared here, not left to the var() fallback. GSAP reads the current
+     computed value to build a tween's start — with the property undefined it
+     read "" as 0 and animated 0 to 0, so the gradient was simply absent rather
+     than fading out. */
+  --vig-o:1;
   --vig:linear-gradient(90deg,
     rgba(10,10,9,.72) 0%,
     rgba(10,10,9,.40) 18%,

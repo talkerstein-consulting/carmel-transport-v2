@@ -189,7 +189,11 @@
   padding: var(--sp-11) clamp(24px, 4vw, 64px);
   text-align: center;
 }
-.cta-bg { position: absolute; inset: -10%; z-index: 0; }
+/* pointer-events:none, and it matters. The footer is sticky at the base while
+   the CTA scrolls off over it, so this decorative backdrop ends up on top of
+   the footer's own "Get in touch" button and was swallowing every click on it.
+   It is aria-hidden already; it should not be in the hit path either. */
+.cta-bg { position: absolute; inset: -10%; z-index: 0; pointer-events: none; }
 /* Full strength — no paper scrim over it. The picture carries this section
    now, and the container below is what protects the type. */
 .cta-bg img {
@@ -277,6 +281,25 @@
 }
 .cta-actions { margin: var(--sp-8) 0 0; display: flex; justify-content: center; }
 
+/* --- the CTA in its asking state ----------------------------------------
+   Same plate, different contents. The form is left-aligned even though the
+   pitch is centred: a centred form reads as a poster, and these are fields
+   you fill in order. */
+.cta-form { text-align: left; }
+.cta-form-top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--sp-4); margin-bottom: var(--sp-5);
+}
+.cta-form-back {
+  border: 0; background: none; padding: 6px 2px; cursor: pointer;
+  font-family: inherit; font-size: var(--fs-small); font-weight: 600;
+  color: var(--ink-600);
+  transition: color var(--dur) var(--ease);
+}
+.cta-form-back:hover { color: var(--ink-900); }
+.cta-form-back:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 3px; }
+@media (max-width: 767px) { .cta-form-top { margin-bottom: var(--sp-4); } }
+
 /* --- footer --------------------------------------------------------------
    Inverted, at the client's direction. This is a deliberate exception to
    BRANDING §4 (light-only) and the "footer is not inverted" line in §7 — the
@@ -349,6 +372,8 @@
 }
 .foot-wm { font-size: 18px; }
 .foot .foot-wm { background: none; -webkit-text-fill-color: #fff; color: #fff; }
+.foot-brand { display: inline-flex; align-items: center; gap: 10px; }
+.foot-mark { width: 30px; height: 30px; flex: none; object-fit: contain; }
 .foot-nav { display: flex; flex-wrap: wrap; gap: var(--sp-5); margin-inline: auto; }
 .foot-nav a { font-size: var(--fs-small); color: rgba(255, 255, 255, .74); }
 .foot-nav a:hover { color: #fff; }

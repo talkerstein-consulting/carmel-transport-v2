@@ -11,8 +11,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 FPS=15          # scrub reads fine well below playback rate
-WIDTH=960       # these sit behind an overlay; 1080p is wasted
-QUALITY=58      # WebP q — raise for cleaner frames, watch the total size
+WIDTH=1920      # full source width: 960 read soft on a desktop screen
+QUALITY=78      # WebP q — raise for cleaner frames, watch the total size
 
 render() {
   local input="$1" name="$2"
@@ -25,7 +25,7 @@ render() {
   echo "$name: $(ls "public/seq/$name" | wc -l) frames, $(du -sh "public/seq/$name" | cut -f1)"
 }
 
-render "../hero scrub logo final.mp4" hero
+render "../hero scrub logo extended.mp4" hero
 # One continuous ocean-to-cloud take. It used to be two films (ship.mp4 then
 # clouds.mp4) crossfaded together in the page; they are now a single scrub.
 render "../ship.mp4"       ship

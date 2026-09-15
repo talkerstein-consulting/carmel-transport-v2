@@ -24,8 +24,8 @@ const STATS: StatSpec[] = [
    top in an absolute overlay with its own sticky box, so nothing has to nest
    inside FrameScrub's pin.
 
-   The footage enters heavily zoomed — tight on the containers — and pulls
-   back to full frame as the section continues. */
+   The footage plays as shot — no scale on the canvas. It used to enter at
+   2.8x and pull back, which was magnifying 960px frames on a full screen. */
 export function Stats() {
   const section = useRef<HTMLElement>(null)
   const inner = useRef<HTMLDivElement>(null)
@@ -42,24 +42,6 @@ export function Stats() {
     const mm = gsap.matchMedia()
 
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // enters tight on the cargo, then pulls back to full frame
-      const zoom = gsap.fromTo(
-        canvas,
-        { scale: 2.8, transformOrigin: "50% 50%" },
-        {
-          scale: 1,
-          ease: "power2.out",
-          immediateRender: true,
-          scrollTrigger: {
-            trigger: el,
-            start: "top bottom",
-            end: () => "+=" + el.offsetHeight * 0.6,
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        }
-      )
-
       // The block is HELD while the four figures arrive, then released and
       // scrolls away. Pinned by ScrollTrigger rather than CSS sticky: sticky
       // did not engage inside the absolutely positioned overlay.
@@ -111,8 +93,6 @@ export function Stats() {
         window.removeEventListener("load", refresh)
         window.clearTimeout(settle)
         hold.kill()
-        zoom.scrollTrigger?.kill()
-        zoom.kill()
         reveal.scrollTrigger?.kill()
         reveal.kill()
       }

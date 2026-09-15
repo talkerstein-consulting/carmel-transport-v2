@@ -462,3 +462,34 @@
   .foot-nav { gap: var(--sp-2) var(--sp-4); margin-inline: 0; }
   .foot-nav a { font-size: var(--fs-caption); }
 }
+
+/* --- embedded map --------------------------------------------------------
+   Sits under the HQ facts on /contact. Aspect-ratio rather than a fixed
+   height, so it keeps its shape from phone to desktop; the hairline and the
+   radius are the same ones every other bounded object on these pages uses. */
+.pg-map {
+  margin-top: var(--sp-6);
+  border: var(--line); border-radius: var(--r-lg);
+  corner-shape: superellipse(2.6);
+  overflow: hidden;
+  background: var(--paper-200);
+}
+.pg-map iframe {
+  display: block; width: 100%; aspect-ratio: 16 / 9; border: 0;
+}
+@media (max-width: 767px) { .pg-map iframe { aspect-ratio: 4 / 3; } }
+
+/* --- the service chain ---------------------------------------------------
+   Port -> Terminal -> Rail -> Destination, set as an object rather than as a
+   sentence. It is a diagram in one line, and reading it as running prose is
+   what made it vanish into the paragraph above it. */
+.pg-chain {
+  margin: var(--sp-6) 0 0;
+  padding: var(--sp-5) var(--sp-6);
+  border: var(--line); border-radius: var(--r-lg);
+  corner-shape: superellipse(2.6);
+  background: var(--paper-50);
+  font-size: var(--fs-small); font-weight: 600;
+  letter-spacing: .01em; color: var(--ink-900);
+  text-wrap: balance;
+}

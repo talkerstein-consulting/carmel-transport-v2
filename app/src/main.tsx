@@ -8,6 +8,9 @@ import Company from "./pages/Company.tsx"
 import Careers from "./pages/Careers.tsx"
 import Contact from "./pages/Contact.tsx"
 import Sandbox from "./sandbox/Sandbox.tsx"
+import { SERVICE_PAGES } from "./pages/services-content"
+import { makeServicePage } from "./pages/ServicePage"
+import { initSmoothScroll } from "./lib/smooth-scroll"
 
 /* A path table, not a router library. Five static pages and a scratch page do
    not need react-router, and adding it would pull a second history model in
@@ -19,6 +22,10 @@ const ROUTES: Record<string, () => ReactElement> = {
   "/careers": Careers,
   "/contact": Contact,
   "/sandbox": Sandbox,
+  /* One route per service. /services stays as the overview that links to them. */
+  ...Object.fromEntries(
+    SERVICE_PAGES.map((s) => ["/services/" + s.slug, makeServicePage(s)]),
+  ),
 }
 
 /* The homepage grows by thousands of pixels as three frame sequences load, so
@@ -42,6 +49,8 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   rootEl.addEventListener("animationend", done, { once: true })
   window.setTimeout(done, 1600)
 }
+
+initSmoothScroll()
 
 createRoot(rootEl).render(
   <StrictMode>

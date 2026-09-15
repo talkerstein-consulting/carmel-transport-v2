@@ -3,3 +3,10 @@
 @import "./styles/sections.css";
 @import "./styles/page.css";
 
+
+/* Lenis (desktop smooth scroll). Native smooth-behaviour has to stay off or it
+   fights Lenis on programmatic scrolls and anchor jumps. */
+html.lenis,html.lenis body{height:auto}
+html.lenis{scroll-behavior:auto!important}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:clip}

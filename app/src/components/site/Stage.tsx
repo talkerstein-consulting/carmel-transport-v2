@@ -19,8 +19,8 @@ export function Stage() {
 
   useEffect(() => {
     const el = stage.current
-    // Anchor on the end of act one, not on the ship section: that section now
-    // carries a -100svh margin, so its own top sits a screen and a half early.
+    // Act one's copy. Nothing is anchored to it any more (see the wipe below),
+    // but its presence is still what tells us act one rendered at all.
     const actOneEnd = document.querySelector<HTMLElement>(".reveal")
     if (!el || !actOneEnd) return
 
@@ -35,6 +35,18 @@ export function Stage() {
       // The bottom edge travels upward and takes act one with it. The ship has
       // been sitting underneath the whole time, so this uncovers it rather
       // than sliding anything over it.
+      //
+      // START IS ANCHORED TO THE SCRUB, NOT TO THE COPY. It used to fire at
+      // the bottom of .reveal, which happened to land 0.9vh before the scrub
+      // finished — so the wipe ate the last quarter of the sequence, and the
+      // footage was still moving as it slid away. The scrub's runway ends one
+      // viewport short of its own bottom (its canvas is sticky), so that
+      // point is where the last frame settles. Anything that changes the
+      // frame count, scrollLength, or the height of act one now moves both
+      // ends together instead of silently re-opening that gap.
+      const scrub = el.querySelector<HTMLElement>(".stage-scrub")
+      if (!scrub) return
+
       const wipe = gsap.fromTo(
         pinned,
         { clipPath: "inset(0% 0% 0% 0%)" },
@@ -42,8 +54,8 @@ export function Stage() {
           clipPath: "inset(0% 0% 100% 0%)",
           ease: "none",
           scrollTrigger: {
-            trigger: actOneEnd,
-            start: "bottom bottom",
+            trigger: scrub,
+            start: () => "bottom bottom",
             end: () => "+=" + window.innerHeight * 0.9,
             scrub: true,
             invalidateOnRefresh: true,
@@ -68,8 +80,8 @@ export function Stage() {
            for a year. That is what mixes old and new footage in one scrub:
            some frames come from cache, the rest come fresh. Immutable is the
            right header; changing the URL is how you ship new frames under it. */
-        src="/seq/hero/f-{i}.webp?v=2"
-        count={76}
+        src="/seq/hero/f-{i}.webp?v=3"
+        count={151}
         pad={3}
         start={1}
         variant="plain"
@@ -77,7 +89,7 @@ export function Stage() {
         height={0.95}
         width={4000}
         borderRadius={0}
-        scrollLength={1.9}
+        scrollLength={2.9}
         smooth={0.12}
         grain={0}
         vignette={0}

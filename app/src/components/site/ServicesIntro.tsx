@@ -1,5 +1,5 @@
 import { Cta } from "./Cta"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -12,7 +12,7 @@ const SERVICES = [
     head: "From terminal to destination",
     body: "A full range of asset-based drayage and transload services, connecting ports, terminals, warehouses, and final destinations.",
     img: "/img/services/drayage.jpg",
-    href: "/services#drayage",
+    href: "/services/drayage",
     cta: "Explore Drayage",
   },
   {
@@ -21,7 +21,7 @@ const SERVICES = [
     head: "Keeping cargo in control",
     body: "Comprehensive refrigerated container transport and storage, supported by experienced drivers and Genset chassis, up to 30 units at once.",
     img: "/img/services/refrigerated.jpg",
-    href: "/services#refrigerated",
+    href: "/services/refrigerated",
     cta: "Explore Refrigerated Logistics",
   },
   {
@@ -30,7 +30,7 @@ const SERVICES = [
     head: "Connecting every leg",
     body: "Ocean and rail container terminals, pre-arranged rail reservations, documentation and border clearance support.",
     img: "/img/services/intermodal.jpg",
-    href: "/services#intermodal",
+    href: "/services/intermodal",
     cta: "Explore Intermodal Trucking",
   },
   {
@@ -39,7 +39,7 @@ const SERVICES = [
     head: "Space to keep moving",
     body: "Secure short- and long-term storage for dry-box and refrigerated containers, in yards near major seaports and rail terminals.",
     img: "/img/services/storage.jpg",
-    href: "/services#storage",
+    href: "/services/storage",
     cta: "Explore Storage Solutions",
   },
 ]
@@ -55,7 +55,10 @@ const SERVICES = [
    the screen. */
 export function ServicesIntro() {
   const section = useRef<HTMLElement>(null)
-  const [active, setActive] = useState(-1)
+  /* No walkthrough. All four services render as full cards from the moment the
+     section arrives — the deck-you-turn reading was costing three of the four
+     their copy at any given scroll position, and the card you could read
+     changed under you as you scrolled. They are four cards now, open. */
 
   useEffect(() => {
     const el = section.current
@@ -151,6 +154,22 @@ export function ServicesIntro() {
           )
         : null
 
+      /* The gradient leaves on exactly the range the veil arrives on. Fading
+         the veil in over a gradient still at full strength kept the margins
+         visibly darker than the middle all the way through the handoff; the
+         swap to flat #D5E7F2 only reads as seamless if both move together. */
+      const vigOut = gsap.to(document.documentElement, {
+        "--vig-o": 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: el,
+          start: () => "top top-=" + Math.round(window.innerHeight * 4.7),
+          end: () => "+=" + Math.round(window.innerHeight * 1),
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      })
+
       const refresh = () => ScrollTrigger.refresh()
       window.addEventListener("load", refresh)
       const settle = window.setTimeout(refresh, 2500)
@@ -158,7 +177,8 @@ export function ServicesIntro() {
       return () => {
         window.removeEventListener("load", refresh)
         window.clearTimeout(settle)
-        ;[copyIn, fadeOut, ...tweens].forEach((t) => {
+        document.documentElement.style.removeProperty("--vig-o")
+        ;[copyIn, fadeOut, vigOut, ...tweens].forEach((t) => {
           if (!t) return
           t.scrollTrigger?.kill()
           t.kill()
@@ -166,114 +186,39 @@ export function ServicesIntro() {
       }
     })
 
-    /* The four-across walkthrough is desktop only. */
-    mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
-      const el2 = section.current
-      if (!el2) return
-      // Once all four are up, continued scroll walks through them one at a
-      // time: the active card opens to show its photo and copy, the others
-      // stay closed. One quarter of the walkthrough range per service.
-      // 1.6 -> 4.0, so each service gets 0.6 of a screen rather than 0.5.
-      const walk = ScrollTrigger.create({
-        trigger: el2,
-        start: () => "top top-=" + Math.round(window.innerHeight * 1.6),
-        end: () => "+=" + Math.round(window.innerHeight * 2.4),
-        scrub: true,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const i = Math.min(SERVICES.length - 1, Math.floor(self.progress * SERVICES.length))
-          setActive(self.progress <= 0 ? -1 : i)
-        },
-        onLeaveBack: () => setActive(-1),
-      })
 
-      return () => walk.kill()
-    })
-
-    /* On a phone the four cards are a pinned deck, the same one the desktop
-       turns: they arrive as compact tabs, the frame catches, and then each
-       expands in turn while the other three drop back to their closed height.
-
-       Driven off the overlay's live rect every frame rather than through
-       ScrollTrigger. ScrollTrigger resolves its ranges against measurements
-       taken when it is created, and on this page the document is still growing
-       then — three frame sequences load after mount. Worse on a phone, ranges
-       expressed in viewport heights shift under you as the URL bar shows and
-       hides, which is what stuck this on the first card when it last pinned.
-       A rect read on the frame is always current, so neither can bite.
-
-       The runway is the overlay's padding (200svh, set in brand.css): the pin
-       catches at the far edge of it and releases a frame-height short of the
-       overlay's bottom. LEAD holds all four closed for the first stretch after
-       it catches, so the tabs register as tabs before anything opens. */
+    /* The clouds-to-paper handoff, on a phone. .svc-out is the #D5E7F2 veil
+       the desktop sequence fades up so the footage dissolves into the colour
+       act three opens on rather than cutting at a section edge. The desktop
+       tween is measured in viewport heights off the pinned runway, which does
+       not exist here, so it is anchored to act three itself: the screen
+       lightens as "More than transportation" arrives. */
     mm.add("(max-width: 1023px)", () => {
       const el2 = section.current
       if (!el2) return
-      const wrap = el2.querySelector<HTMLElement>(".svc-overlay")
-      const pin = el2.querySelector<HTMLElement>(".svc-pin")
-      if (!wrap || !pin) return
-
-
-      const LEAD = 0.12
-      let queued = false
-
-      const pick = () => {
-        queued = false
-        const r = wrap.getBoundingClientRect()
-        const pad = parseFloat(getComputedStyle(wrap).paddingTop) || 0
-        const start = r.top + pad                      // frame's top, once padding is spent
-        const range = r.bottom - start - pin.offsetHeight
-        if (range <= 0) { setActive(-1); return }
-
-        const p = -start / range
-        if (p <= LEAD) { setActive(-1); return }        // pinned, still all tabs
-        if (p >= 1) { setActive(SERVICES.length - 1); return }
-
-        const t = (p - LEAD) / (1 - LEAD)
-        setActive(Math.min(SERVICES.length - 1, Math.floor(t * SERVICES.length)))
-      }
-
-      const onScroll = () => {
-        if (queued) return
-        queued = true
-        requestAnimationFrame(pick)
-      }
-
-      /* The clouds-to-paper handoff, on a phone. .svc-out is the #D5E7F2 veil
-         the desktop sequence fades up so the footage dissolves into the colour
-         act three opens on rather than cutting at a section edge. Its desktop
-         tween is measured in viewport heights off the pinned runway, which
-         does not exist here, so on a phone the veil never ran and the dark
-         ship footage cut straight to the light section. Anchored to act three
-         itself: the screen lightens as "More than transportation" arrives. */
       const veil = el2.querySelector<HTMLElement>(".svc-out")
       const light = document.querySelector<HTMLElement>(".act-three")
-      const outIn = veil && light
-        ? gsap.fromTo(
-            veil,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: light,
-                start: "top bottom",
-                end: "top top+=25%",
-                scrub: true,
-                invalidateOnRefresh: true,
-              },
-            }
-          )
-        : null
+      if (!veil || !light) return
 
-      pick()
-      window.addEventListener("scroll", onScroll, { passive: true })
-      window.addEventListener("resize", onScroll)
+      const range = {
+        trigger: light,
+        start: "top bottom",
+        end: "top top+=25%",
+        scrub: true,
+        invalidateOnRefresh: true,
+      } as const
+
+      const outIn = gsap.fromTo(veil, { opacity: 0 }, {
+        opacity: 1, ease: "none", scrollTrigger: { ...range },
+      })
+      /* the gradient leaves on exactly the same range the veil arrives on */
+      const vigOut = gsap.to(document.documentElement, {
+        "--vig-o": 0, ease: "none", scrollTrigger: { ...range },
+      })
+
       return () => {
-        window.removeEventListener("scroll", onScroll)
-        window.removeEventListener("resize", onScroll)
-        outIn?.scrollTrigger?.kill()
-        outIn?.kill()
+        document.documentElement.style.removeProperty("--vig-o")
+        ;[outIn, vigOut].forEach((t) => { t.scrollTrigger?.kill(); t.kill() })
       }
     })
 
@@ -300,11 +245,10 @@ export function ServicesIntro() {
           </div>
 
           <div className="svc-row">
-            {SERVICES.map((s, i) => (
+            {SERVICES.map((s) => (
               <article
-                className={"svc-card" + (i === active ? " is-open" : "")}
+                className="svc-card is-open"
                 key={s.n}
-                aria-expanded={i === active}
               >
                 <p className="svc-card-n">{s.n} / {s.name}</p>
                 <h3 className="svc-card-head">{s.head}</h3>
