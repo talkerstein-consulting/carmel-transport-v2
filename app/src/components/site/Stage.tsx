@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import FrameScrub from "@/components/frame-scrub"
+import { hasSmoothScroll } from "@/lib/smooth-scroll"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -135,7 +136,9 @@ export function Stage() {
         /* See the note above — these two are a pair, not duplicates. */
         scrollLength={STAGE_RUNWAY_VH}
         frameSpan={span}
-        smooth={0.12}
+        // No easing of its own under Lenis — the scroll is already eased, and a
+        // second ease here made the footage trail the copy. See smooth-scroll.ts.
+        smooth={hasSmoothScroll() ? 0 : 0.12}
         grain={0}
         vignette={0}
         showCounter={false}

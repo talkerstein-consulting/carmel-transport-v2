@@ -208,14 +208,14 @@
   max-width: min(100%, 1040px); margin-inline: auto;
   padding: clamp(40px, 5vw, 80px) clamp(28px, 4vw, 72px);
   border-radius: 24px; corner-shape: superellipse(2.6);
-  background: rgba(255, 255, 255, .72);
+  /* No backdrop-filter. The picture behind is already blurred (.cta-bg img),
+     so the glass was blurring a blur — and Chrome draws a backdrop only for
+     the visible viewport, which painted a band with the nav in it across the
+     plate whenever its top scrolled off. A plain translucent plate over the
+     soft picture reads the same and has nothing to get wrong. */
+  background: rgba(255, 255, 255, .80);
   border: 1px solid rgba(255, 255, 255, .78);
-  -webkit-backdrop-filter: saturate(150%) blur(28px);
-  backdrop-filter: saturate(150%) blur(28px);
   box-shadow: 0 1px 2px rgba(8, 29, 53, .06), 0 24px 60px rgba(8, 29, 53, .10);
-}
-@supports not (backdrop-filter: blur(1px)) {
-  .cta-inner { background: rgba(255, 255, 255, .95); }
 }
 .cta-eyebrow { color: var(--ink-500); }
 
@@ -280,6 +280,25 @@
   font-size: var(--fs-lead); line-height: 1.5; color: var(--ink-600);
 }
 .cta-actions { margin: var(--sp-8) 0 0; display: flex; justify-content: center; }
+
+/* --- the CTA in its asking state ----------------------------------------
+   Same plate, different contents. The form is left-aligned even though the
+   pitch is centred: a centred form reads as a poster, and these are fields
+   you fill in order. */
+.cta-form { text-align: left; }
+.cta-form-top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--sp-4); margin-bottom: var(--sp-5);
+}
+.cta-form-back {
+  border: 0; background: none; padding: 6px 2px; cursor: pointer;
+  font-family: inherit; font-size: var(--fs-small); font-weight: 600;
+  color: var(--ink-600);
+  transition: color var(--dur) var(--ease);
+}
+.cta-form-back:hover { color: var(--ink-900); }
+.cta-form-back:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 3px; }
+@media (max-width: 767px) { .cta-form-top { margin-bottom: var(--sp-4); } }
 
 /* --- footer --------------------------------------------------------------
    Inverted, at the client's direction. This is a deliberate exception to
@@ -534,7 +553,20 @@
   mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 74%);
 }
 .foot-top, .foot-bottom { position: relative; z-index: 1; }
-/* A WebGL canvas has no business competing with the contact details for a
-   375px column, and it is the single most expensive thing on the page. */
-@media (max-width: 1023px) { .foot-globe { display: none; } }
+/* On a phone there is no right column for it to sit behind, so it sits on
+   the bottom edge instead: centred, enlarged past the column, most of the
+   sphere bled off the bottom. It sits BELOW the copyright line, not behind
+   it -- the footer gets 150px of extra bottom padding and the globe lives in
+   that band, so no text is laid over it. */
+@media (max-width: 1023px) {
+  .closing .foot { padding-bottom: calc(var(--sp-5) + 150px); }
+  .foot-globe {
+    top: auto; bottom: 0; right: auto; left: 50%;
+    width: clamp(480px, 150vw, 720px);
+    transform: translate(-50%, 66%);
+    opacity: .55;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 62%, transparent 76%);
+    mask-image: radial-gradient(circle at 50% 50%, #000 62%, transparent 76%);
+  }
+}
 @media (prefers-reduced-motion: reduce) { .foot-globe { display: none; } }

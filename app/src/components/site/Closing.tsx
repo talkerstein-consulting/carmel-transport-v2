@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { MapPin, Phone, PhoneCall, Receipt, Mail, Clock, ShieldCheck, Gauge, MessagesSquare, ChevronDown } from "lucide-react"
+import { motion, AnimatePresence } from "motion/react"
 import { Cta } from "./Cta"
+import { QuoteSequence } from "./QuoteSequence"
 import Globe from "@/components/globe"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -83,6 +85,9 @@ export function Closing() {
      four of the six facts from assistive tech for no reason. */
   const [phone, setPhone] = useState(false)
   const [open, setOpen] = useState(0)
+  /* The CTA opens the quote sequence in place rather than handing off to
+     /contact. The ask and the answer share one container. */
+  const [asking, setAsking] = useState(false)
   useEffect(() => {
     const q = window.matchMedia("(max-width: 767px)")
     const sync = () => setPhone(q.matches)
@@ -164,14 +169,46 @@ export function Closing() {
           <img src="/img/hero.jpg" alt="" loading="lazy" decoding="async" />
         </div>
         <div className="cta-inner">
-          <p className="eyebrow cta-eyebrow" data-rise>Let's keep moving.</p>
-          <h2 className="cta-head" data-rise>Ready to move freight forward?</h2>
-          <p className="cta-lead" data-rise>
-            Tell us where your cargo needs to go. We'll help you get it there.
-          </p>
-          <p className="cta-actions" data-rise>
-            <Cta href="/contact">Request a quote</Cta>
-          </p>
+          {/* The pitch and the form are the same container: the button does not
+              navigate, it swaps what the plate is showing. AnimatePresence with
+              mode="wait" keeps the two from overlapping mid-swap. */}
+          <AnimatePresence mode="wait" initial={false}>
+            {!asking ? (
+              <motion.div
+                key="pitch"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <p className="eyebrow cta-eyebrow" data-rise>Let's keep moving.</p>
+                <h2 className="cta-head" data-rise>Ready to move freight forward?</h2>
+                <p className="cta-lead" data-rise>
+                  Tell us where your cargo needs to go. We'll help you get it there.
+                </p>
+                <p className="cta-actions" data-rise>
+                  <Cta href="/contact" onClick={(e) => { e.preventDefault(); setAsking(true) }}>Request a quote</Cta>
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                className="cta-form"
+              >
+                <div className="cta-form-top">
+                  <p className="eyebrow cta-eyebrow">Request a quote</p>
+                  <button type="button" className="cta-form-back" onClick={() => setAsking(false)}>
+                    Back
+                  </button>
+                </div>
+                <QuoteSequence />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <ul className="cta-reasons" data-rise>
             {REASONS.map((r) => {
@@ -194,10 +231,10 @@ export function Closing() {
       <footer className="foot" id="contact" ref={foot}>
         {/* Bleeds off the right edge on purpose: a globe fully inside the
             column reads as a picture of a globe, and half out of frame it
-            reads as the world the network sits on. Decorative and inert —
-            aria-hidden, no pointer events, and it never renders on a phone
-            where it would be a WebGL canvas competing with the contact
-            details for a 375px column. */}
+            reads as the world the network sits on. On a phone it sits on
+            the bottom edge instead, enlarged and bled off the bottom (see
+            .foot-globe in sections.css). Decorative and inert —
+            aria-hidden, no pointer events. */}
         <div className="foot-globe" aria-hidden="true">
           <Globe
             width="auto"

@@ -36,13 +36,20 @@ export function ServicePage({ s }: { s: ServiceContent }) {
         ))}
       </PageBlock>
 
+      {/* Each offer is a card with its own photograph (services-content.ts
+          keeps the prompt beside the file). Same tile as /company's services. */}
       <PageBlock id="what" n="02" kicker={s.crumb} head={s.offerHead} deep>
-        <div className="pg-list">
+        <div className="svc-grid svc-grid-offer">
           {s.offer.map((o) => (
-            <div className="pg-list-row" data-rise key={o.head}>
-              <span className="pg-list-name">{o.head}</span>
-              <span className="pg-list-body">{o.body}</span>
-            </div>
+            <article className="svc-tile" data-rise key={o.head}>
+              <div className="svc-tile-media" aria-hidden="true">
+                <img src={o.img} alt="" loading="lazy" decoding="async" />
+              </div>
+              <div className="svc-tile-body">
+                <h3 className="svc-tile-head">{o.head}</h3>
+                <p className="svc-tile-copy">{o.body}</p>
+              </div>
+            </article>
           ))}
         </div>
       </PageBlock>

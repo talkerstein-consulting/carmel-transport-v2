@@ -34,6 +34,11 @@ export interface FrameScrubProps {
       and the last frame is then held for the remainder — which is how the
       canvas can stay pinned (and be wiped) after the footage has ended. */
   frameSpan?: number;
+  /** Fraction of the runway to HOLD the first frame before the frames start
+      advancing. Used when the canvas is pinned under another that is still
+      being wiped off it: the footage waits on its opening frame until it is
+      actually uncovered, so what the wipe reveals is the start of the take. */
+  frameStart?: number;
   /** Pan the frame horizontally, as a fraction of stage width (+ = right).
       Shifts INSIDE the cover crop, so nothing is exposed at the edge: the
       value is clamped to whatever overflow the crop actually has. Used to
@@ -360,6 +365,7 @@ export const FrameScrub = ({
   smooth = 0.18,
   fit = "cover",
   frameSpan = 1,
+  frameStart = 0,
   offsetX = 0,
   offsetXRamp = 0.25,
   width = 1020,
@@ -388,11 +394,12 @@ export const FrameScrub = ({
   const grit = useRef<HTMLCanvasElement | null>(null);
   const size = useRef({ w: 0, h: 0, dpr: 1 });
   const shown = useRef(0);
+  const painted = useRef(false);
   const beat = useRef(0);
   const spin = useRef(0);
   const live = useRef(false);
   const seen = useRef(-1);
-  const wakeRef = useRef<(() => void) | null>(null);
+  const wakeRef = useRef<((force?: boolean) => void) | null>(null);
   const report = useRef(onFrameChange);
 
   const [lead, setLead] = useState(0);
@@ -487,7 +494,7 @@ export const FrameScrub = ({
               ? { key: sources, n: prev.n + 1 }
               : { key: sources, n: 1 },
           );
-          wakeRef.current?.();
+          wakeRef.current?.(true);
         };
         img.onload = tick;
         img.onerror = tick;
@@ -597,7 +604,7 @@ export const FrameScrub = ({
         kept[i] = cv;
         reel.current = kept;
         setPulled({ key: video, n: i + 1 });
-        wakeRef.current?.();
+        wakeRef.current?.(true);
       }
     };
 
@@ -653,8 +660,9 @@ export const FrameScrub = ({
       // leading `frameSpan` of the runway. Everything that should finish WITH
       // the footage (the frame index, the pan) reads this rather than raw
       // scroll progress, so shortening the span moves them together.
-      const span = clamp(frameSpan, 0.05, 1);
-      const fp = clamp(clamp(p, 0, 1) / span, 0, 1);
+      const hold = clamp(frameStart, 0, 0.95);
+      const span = clamp(frameSpan, hold + 0.05, 1);
+      const fp = clamp((clamp(p, 0, 1) - hold) / (span - hold), 0, 1);
       const at = fp * last;
 
       const pick = (i: number) => {
@@ -843,6 +851,7 @@ export const FrameScrub = ({
       fit,
       grain,
       frameSpan,
+      frameStart,
       lag,
       offsetX,
       offsetXRamp,
@@ -904,10 +913,20 @@ export const FrameScrub = ({
 
       const target = measure();
       const from = shown.current;
+      // Nothing to do: the scrub is parked (pinned before or after its take)
+      // and the last paint is still on the canvas. Every scroll event wakes
+      // this loop, and without this both canvases on the homepage repainted
+      // a full 2x viewport on every frame of every scroll, whether or not
+      // their frame had moved.
+      if (target === from && painted.current) {
+        live.current = false;
+        return;
+      }
       const pull = ease > 0 ? 1 - Math.pow(1 - ease, delta * 60) : 1;
       const next = from + (target - from) * pull;
       shown.current = next;
       paint(next);
+      painted.current = true;
 
       if (Math.abs(target - next) > 0.00015) {
         spin.current = view.requestAnimationFrame(step);
@@ -918,7 +937,10 @@ export const FrameScrub = ({
       }
     };
 
-    const wake = () => {
+    // force: a new frame has landed in the reel, so the picture on the canvas
+    // is stale even though the scroll position has not moved.
+    const wake = (force = false) => {
+      if (force) painted.current = false;
       if (live.current) return;
       live.current = true;
       beat.current = 0;
@@ -930,6 +952,7 @@ export const FrameScrub = ({
       resize();
       shown.current = measure();
       paint(shown.current);
+      painted.current = true;
       wake();
     };
 
@@ -937,8 +960,9 @@ export const FrameScrub = ({
     shown.current = measure();
     paint(shown.current);
 
-    view.addEventListener("scroll", wake, { passive: true });
-    doc.addEventListener("scroll", wake, { passive: true, capture: true });
+    const onScroll = () => wake();
+    view.addEventListener("scroll", onScroll, { passive: true });
+    doc.addEventListener("scroll", onScroll, { passive: true, capture: true });
     view.addEventListener("resize", relayout);
 
     const watch = new ResizeObserver(relayout);
@@ -948,8 +972,8 @@ export const FrameScrub = ({
       view.cancelAnimationFrame(spin.current);
       live.current = false;
       wakeRef.current = null;
-      view.removeEventListener("scroll", wake);
-      doc.removeEventListener("scroll", wake, { capture: true });
+      view.removeEventListener("scroll", onScroll);
+      doc.removeEventListener("scroll", onScroll, { capture: true });
       view.removeEventListener("resize", relayout);
       watch.disconnect();
     };

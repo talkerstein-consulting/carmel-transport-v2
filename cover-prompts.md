@@ -135,90 +135,99 @@ painting, 3D render, low quality, artifacts
 
 ---
 
-# Part 2 — Value card images
+# Part 2 — Value card images (revised 15 Sept 2026)
 
-These render **sharp at ~380px wide, 16:9** — small enough that the covers'
-rule about composition does not carry over: one subject, centred, reading
-instantly at thumbnail size, because nothing else will survive the size. No badge, no text, no people's
-faces. All three share a palette so the row reads as a set — cool blue-grey,
-one warm accent, overcast light, no hard sun.
+The first pass — object studies, no people, cool grade — was rejected: "I
+don't like the recipe for the features." The cards now use the CleverPays
+photographic direction (the global block from
+`F:\ARCHIVE WORK\04 SEAN\209 Cleverpays post-rishon branch\hardware-image-prompts.txt`),
+adapted for a yard rather than a shop: **people, bright natural daylight,
+editorial-portrait, unretouched — and each person wears the Carmel badge as an
+embroidered patch on their uniform.** Attach `carmel-logo.png` as the
+reference for the cards too now.
+
+## The global block — prepend to every card scene
+
+> Photographed like a real editorial portrait for a business magazine, not a
+> logistics brand campaign. Bright natural daylight is the dominant and primary
+> light source — open sky or large windows flooding the space, soft and even
+> but not flat, with gentle real shadow falloff. Any practical lamps or fixtures
+> stay secondary and subtle, never competing with the daylight or tinting the
+> scene orange. Overall the image reads bright, fresh and airy, not dim or
+> moody. Full-frame camera at eye level, 50mm lens around f/2.8 — subject
+> sharp, background softened but still clearly readable as a specific real
+> place, never dissolved into abstract bokeh. Shot from a normal standing
+> distance, the way a photographer actually stands in a working yard. The
+> environment fills the frame with layered depth: something in the near
+> foreground (a mirror arm, a container corner, a shoulder), the subject in the
+> middle, real background detail behind them — equipment, stacked containers,
+> other staff out of focus and partially cropped by the frame. No empty
+> negative space, no styled minimalist set. Include mundane working detail no
+> art director would choose: a coiled air line, a coffee cup on the step, a
+> clipboard, a radio on a belt, a chock beside a wheel, a cloth over a
+> shoulder. Clean means cared-for and in-use, not empty or styled — but every
+> truck, container and chassis is brand new and immaculate: fresh factory
+> paint, polished chrome, no rust, no weathering, no dents. Absolutely no
+> readable text, signage, labels, plates, numbers or lettering anywhere in the
+> shot, including out of focus — if a surface would normally carry text, show
+> it blank, blurred beyond legibility, or turned away from camera. The ONE
+> exception: the CARMEL TRANSPORT company badge from the attached reference
+> image, reproduced exactly as supplied *(badge description as above)* — worn
+> as an embroidered patch on the chest of the person's work uniform, about the
+> size of a palm, stitched into the fabric and following its folds, lit by the
+> same light as the rest of the scene. One badge only, on the uniform only,
+> nowhere else in the frame. People may look directly into the lens and smile
+> openly — a real, warm, unforced smile with the eyes involved. Posing for the
+> camera is fine and usually reads more honest than forced candidness. Show
+> real ages and real skin: pores, laugh lines, uneven tone, flyaway hair, a
+> watch or ring worn for years. No smoothing, no retouching, no idealised faces
+> or bodies. Colour is bright and naturally warm-toned skin against a clean,
+> airy daylight environment — not graded toward blue or teal, not
+> high-contrast, not glossy, not dim. No CGI or 3D render look, no stock-photo
+> gloss, no floating UI, no other logos, no watermarks. Shot on a full-frame
+> camera, 50mm lens at f/2.8, natural eye-level perspective, bright
+> daylight-dominant lighting, fine 400-speed film grain, unretouched.
 
 ## 4 — Reliable & Protected
 
-> You benefit from our history of delivering effective solutions, regardless of
-> complexity. Our proven track record speaks for our ability to handle any
-> situation with proficiency and expertise.
-
-**Prompt**
-
-Photorealistic close photograph of the locking bars and cam handles on the rear
-doors of a shipping container, shot straight on with a 50mm lens from two metres.
-The container is a deep weathered blue, its vertical locking rods and galvanised
-handles catching soft overcast light. A steel security seal hangs through the
-handle, sharp and in focus at the centre of the frame. Shallow depth of field
-falls off to a blurred container yard behind. Cool blue-grey palette, soft even
-daylight, fine surface texture of paint, rust bloom and brushed metal.
-
-Photorealistic, natural colour, product-quality detail photography, no people,
-no text, no logos, no watermark.
-
-**Negative prompt**
-
-people, hands, faces, text, letters, numbers, serial codes, logos, badges,
-branding, padlocks, chains, hard sunlight, lens flare, HDR, oversaturated
-colour, orange teal grade, cartoon, illustration, painting, 3D render, low
-quality, artifacts
+**Scene:** A Carmel Transport driver in her fifties, in a navy work shirt with
+the company badge patch on the chest, stands at the rear doors of a brand-new
+blue shipping container on a chassis in a bright container yard, one hand
+resting on the locking bar where a steel security seal hangs, clipboard in the
+other hand. She has just finished the walkaround and looks straight into the
+lens with an easy, confident smile. Near foreground: the corner of the
+container door and its cam handle, slightly cropped. Behind her, softened: rows
+of new containers stacked in fresh factory colours, a yellow reach stacker, a
+light mast, open blue sky. Late-morning sun, bright and clean.
 
 ## 5 — Fast Delivery
 
-> Take advantage of our strategic location near the New York and New Jersey
-> ports. Rely on our skilled drivers for timely and secure delivery of your
-> cargo.
-
-**Prompt**
-
-Photorealistic photograph of a blue semi truck hauling a 40-foot container
-crossing an elevated highway bridge, shot from the side with a 135mm telephoto
-lens so the background compresses. Behind it, soft and out of focus, stand
-port gantry cranes and the faint outline of a city skyline in haze. The truck is
-sharp and reads as a clean silhouette against pale sky. Cool overcast light, no
-hard shadows, muted blue-grey palette with a single warm note from the cranes.
-Slight motion in the wheels only, everything else still.
-
-Photorealistic, natural colour, professional transport photography, no other
-vehicles close to the truck, no people, no text, no logos, no watermark.
-
-**Negative prompt**
-
-traffic, other trucks, cars, people, faces, text, letters, numbers, logos,
-badges, branding, light trails, long exposure streaks, heavy motion blur, lens
-flare, sun star, HDR, oversaturated colour, orange teal grade, cartoon,
-illustration, painting, 3D render, low quality, artifacts
+**Scene:** A Carmel Transport driver in his thirties, in a hi-vis vest over a
+navy company polo with the badge patch on the chest, stands at the open door of
+a showroom-new blue-and-yellow semi truck tractor at a container port gate, one
+boot on the step, one hand on the mirror arm, coffee in the other, looking into
+the lens with a wide, genuine grin as if about to roll out. Near foreground: the
+chrome mirror and the edge of the door, cropped. Behind him, softened but
+readable: a red container on his chassis, tall port gantry cranes, a container
+ship, another truck waiting in the lane, bright open sky. Full daylight, bright
+and airy.
 
 ## 6 — Outstanding Client Support
 
-> We are prepared to channel our enthusiasm for problem-solving towards
-> enhancing your business operations.
+**Scene:** A Carmel Transport dispatcher in her forties, in a navy company polo
+with the badge patch on the chest, at a dispatch desk beside a
+floor-to-ceiling window, headset on, one hand on a mouse, turned toward the
+camera with a warm, open smile mid-call. Near foreground: the corner of a
+second monitor and a mug, cropped. The monitors show soft out-of-focus schedule
+grids and a map with no readable text. Through the big window behind her,
+softened: a bright container yard with new containers and a truck passing. The
+room is flooded with daylight from the window wall; bright, airy, clean modern
+office, warm skin tones.
 
-**Prompt**
-
-Photorealistic photograph of a dispatch desk at a trucking office, shot at a
-low three-quarter angle with a 35mm lens. Two monitors show soft out-of-focus
-schedule grids and a map, their glow cool against the room. In the foreground, a
-headset rests on the desk beside a notepad, sharp and in focus. Through a window
-behind, a container yard sits blurred in flat daylight. Cool blue-grey palette,
-soft overcast light from the window, warm desk lamp as the single warm accent.
-No one is at the desk.
-
-Photorealistic, natural colour, documentary interior photography, no people, no
-readable text, no logos, no watermark.
-
-**Negative prompt**
-
-people, person at desk, hands, faces, readable text, letters, numbers, user
-interface detail, spreadsheets, logos, badges, branding, phone screens, clutter,
-messy cables, hard sunlight, lens flare, HDR, oversaturated colour, orange teal
-grade, cartoon, illustration, painting, 3D render, low quality, artifacts
+**Watch for:** container numbers and shipping-line names on background boxes —
+the model still draws them despite the no-text rule. Pick the variant where
+they are smallest, or run a "make only this change: remove the lettering on
+the container" edit pass.
 
 ---
 
@@ -241,8 +250,8 @@ which tier the account is on before budgeting.
 ## Settings
 
     nano-banana-pro --aspect-ratio 16:9 --resolution 2k
-    covers only — reference image: carmel-logo.png
-    cards  — no reference image
+    covers and cards — reference image: carmel-logo.png (the cards wear it
+    as a uniform patch since the 15 Sept revision)
 
 2K for both. The covers now render sharp and full-bleed at roughly 1400px, so 2K
 is the working minimum rather than a luxury — 1K would show. 4K is still not

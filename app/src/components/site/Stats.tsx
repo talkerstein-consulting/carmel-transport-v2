@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import FrameScrub from "@/components/frame-scrub"
+import { hasSmoothScroll } from "@/lib/smooth-scroll"
 import { StatCard } from "@/components/site/StatCard"
 import type { StatSpec } from "@/components/site/StatCard"
 import { CalendarClock, Truck, Container, Headset } from "lucide-react"
@@ -26,9 +27,38 @@ const STATS: StatSpec[] = [
 
    The footage plays as shot — no scale on the canvas. It used to enter at
    2.8x and pull back, which was magnifying 960px frames on a full screen. */
+const STATS_RUNWAY_VH = 7.7
+
 export function Stats() {
   const section = useRef<HTMLElement>(null)
   const inner = useRef<HTMLDivElement>(null)
+
+  /* Phones only. The ship canvas is pinned under the stage canvas from the
+     moment this section's top passes, but the stage is still being wiped
+     off it until the intro copy's bottom clears the screen -- so the ship
+     had already run a fifth of its take by the time it was uncovered, and
+     the wipe revealed mid-footage rather than the opening frame. Hold the
+     first frame until the wipe completes; measured, since the intro's height
+     is a breakpoint away from changing. Desktop keeps its tuned timing. */
+  const [hold, setHold] = useState(0)
+  useLayoutEffect(() => {
+    const read = () => {
+      const el = section.current
+      const copy = document.querySelector<HTMLElement>(".reveal")
+      const vh = window.innerHeight
+      if (!el || !copy || vh < 1 || !window.matchMedia("(max-width: 1023px)").matches) {
+        setHold(0)
+        return
+      }
+      const top = el.getBoundingClientRect().top + window.scrollY
+      const wipeEnd = copy.getBoundingClientRect().bottom + window.scrollY - vh
+      const next = (wipeEnd - top) / (STATS_RUNWAY_VH * vh)
+      setHold(Number.isFinite(next) && next > 0 && next < 0.9 ? next : 0)
+    }
+    read()
+    window.addEventListener("resize", read)
+    return () => window.removeEventListener("resize", read)
+  }, [])
 
   useEffect(() => {
     const el = section.current
@@ -128,13 +158,19 @@ export function Stats() {
         //
         // The canvas is pinned for scrollLength x 100vh and only travels over
         // the final 100vh, so BOTH sections have to finish inside that pinned
-        // range. Services is 600vh and starts 4.4 screens in (see the -700svh
-        // in .intro-services), so it ends at 4.4 + 6 = 10.4 screens — which is
+        // range. Services is 430vh and starts 3.4 screens in (see the -530svh
+        // in .intro-services), so it ends at 3.4 + 4.3 = 7.7 screens — which is
         // exactly the pin length. Change one of these three numbers and the
         // footage drops out from under services; change all three together.
-        // The figure block is pinned until 3.0, well inside the stats share.
-        scrollLength={10.4}
-        smooth={0.12}
+        // The figure block is pinned until 3.0, just inside the stats share:
+        // services arrives as the figures release. (Was 10.4 — the take ran
+        // long, with a screen and a half of empty scroll between the figures
+        // and the services copy and nearly three more holding the open cards.)
+        scrollLength={STATS_RUNWAY_VH}
+        frameStart={hold}
+        // No easing of its own under Lenis — the scroll is already eased, and a
+        // second ease here made the footage trail the copy. See smooth-scroll.ts.
+        smooth={hasSmoothScroll() ? 0 : 0.12}
         grain={0}
         vignette={0}
         showCounter={false}

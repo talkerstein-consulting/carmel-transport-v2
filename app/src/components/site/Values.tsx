@@ -5,27 +5,25 @@ import { ShieldCheck, Gauge, MessagesSquare } from "lucide-react"
    service cards: a picture, then an icon tile, then the text, on a paper
    surface with superellipse corners and a hairline.
 
-   STAND-IN IMAGES: img below points at the service photographs, the same
-   placeholder approach the page covers use. The real card pictures are
-   prompted in cover-prompts.md (Part 2) and belong at /img/values/*.jpg —
-   swap the three paths once they are generated. */
+   Pictures are the Part 2 set from cover-prompts.md (Nano Banana Pro,
+   2026-09-15): one subject each, no badge, cool palette. */
 
 const VALUES = [
   {
     icon: ShieldCheck,
-    img: "/img/covers/storage.jpg",
+    img: "/img/values/reliable.jpg",
     head: "Reliable & Protected",
     body: "You benefit from our history of delivering effective solutions, regardless of complexity. Our proven track record speaks for our ability to handle any situation with proficiency and expertise.",
   },
   {
     icon: Gauge,
-    img: "/img/covers/drayage.jpg",
+    img: "/img/values/fast.jpg",
     head: "Fast Delivery",
     body: "Take advantage of our strategic location near the New York and New Jersey ports. Rely on our skilled drivers for timely and secure delivery of your cargo.",
   },
   {
     icon: MessagesSquare,
-    img: "/img/covers/intermodal.jpg",
+    img: "/img/values/support.jpg",
     head: "Outstanding Client Support",
     body: "We are prepared to channel our enthusiasm for problem-solving towards enhancing your business operations.",
   },

@@ -1,9 +1,6 @@
 import type { MouseEvent } from "react"
-import gsap from "gsap"
-import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 import { Cta } from "./Cta"
-
-gsap.registerPlugin(ScrollToPlugin)
+import { scrollPageTo } from "@/lib/smooth-scroll"
 
 export function Hero() {
   /* The hero's only action is "keep reading", so the button drives the scroll
@@ -15,15 +12,9 @@ export function Hero() {
     if (!target) return
     e.preventDefault()
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    gsap.to(window, {
-      // autoKill:false deliberately. Three frame sequences load after mount and
-      // keep changing the document height, and ScrollTrigger's own scrubbing
-      // moves the scroll position while the tween runs — autoKill reads both as
-      // the user grabbing the page and cancels a few hundred pixels in.
-      scrollTo: { y: target, autoKill: false },
-      duration: reduced ? 0 : 1.1,
-      ease: "power2.inOut",
-    })
+    // Through Lenis when it is running, so the glide and the smooth scroll
+    // are the same clock rather than two drivers fighting for scrollTop.
+    scrollPageTo(target, reduced ? 0 : 1.1)
   }
 
   return (

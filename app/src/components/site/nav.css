@@ -142,15 +142,28 @@
   transition:color var(--dur) var(--ease),background var(--dur) var(--ease);
 }
 .nav-link:hover,.nav-link[aria-expanded="true"]{color:var(--nav-fg);background:var(--nav-hover)}
-.nav-link-more{display:inline-flex;align-items:center;gap:5px}
-.nav-link-more svg{
+/* Services is a link with its chevron as a separate button tucked against
+   it, so the pair reads as one item. */
+/* One pill: the hover plate and the colour change live on the wrapper, so
+   the link and the chevron light up together rather than as two buttons. */
+.nav-more{
+  display:inline-flex;align-items:stretch;
+  border-radius:12px;corner-shape:superellipse(2.6);
+  color:var(--nav-fg-2);
+  transition:color var(--dur) var(--ease),background var(--dur) var(--ease);
+}
+.nav-more:hover,.nav-more:has([aria-expanded="true"]){color:var(--nav-fg);background:var(--nav-hover)}
+.nav-more .nav-link{color:inherit;background:none;border-radius:0;transition:none}
+.nav-link-more{padding-right:5px}
+.nav-link-chev{display:inline-flex;align-items:center;padding:8px 10px 8px 0}
+.nav-link-chev svg{
   /* nudged down a hair: the glyph's optical centre sits above its box */
   margin-top:1px;opacity:.72;
   transition:transform var(--dur) var(--ease),opacity var(--dur) var(--ease);
 }
-.nav-link-more:hover svg{opacity:1}
-.nav-link-more[aria-expanded="true"] svg{transform:rotate(180deg);opacity:1}
-@media(prefers-reduced-motion:reduce){.nav-link-more svg{transition:none}}
+.nav-link-chev:hover svg{opacity:1}
+.nav-link-chev[aria-expanded="true"] svg{transform:rotate(180deg);opacity:1}
+@media(prefers-reduced-motion:reduce){.nav-link-chev svg{transition:none}}
 
 .nav-end{display:flex;align-items:center;gap:var(--sp-3);margin-left:var(--sp-4)}
 /* The number is a square button now, sized to the CTA beside it and sharing
@@ -245,51 +258,87 @@
   border-radius:12px;corner-shape:superellipse(2.6);
   background:var(--nav-hover);
 }
-.nav-mobile-body{padding:var(--sp-2) var(--sp-3) var(--sp-4)}
-.nav-mobile-links{display:flex;flex-direction:column}
-.nav-mobile-links a{
-  padding:10px 8px;font-size:var(--fs-body);font-weight:500;color:var(--nav-fg);
-}
-/* Bottom of the drawer, separated from the services list by a rule and real
-   space rather than sitting flush under it — it is the one action here and it
-   should not read as a fifth service. Full width: the drawer is 343px and a
-   content-width pill leaves an awkward offcut beside it. */
-.nav-mobile-cta{
-  margin:var(--sp-5) 0 var(--sp-2);
-  padding-top:var(--sp-5);
-  border-top:1px solid var(--nav-item-line);
-  width:100%;
-}
-.nav-mobile-cta .cta-btn{width:100%}
-.nav-mobile-head{
-  margin:0 0 var(--sp-2);padding-inline:8px;
-  font-size:var(--fs-eyebrow);font-weight:500;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--nav-fg-2);
-}
-/* The whole drop fits one phone screen. Links are tighter, the CTA sits
-   between them and the services, and the four services are compact rows —
-   a square thumbnail beside the title and its line — instead of the
-   desktop's picture-on-top cards, which stacked to twice the viewport. */
+/* The drawer runs from the bar to the bottom of the screen -- one panel,
+   not a card floating over the page with the page showing under it. Its
+   height is the viewport less the bar's offset (the pill's top margin plus
+   its 58px height); the body is a column so the actions can pin to the
+   foot with margin-top:auto whatever the screen height. Below ~600px the
+   column overflows and the panel scrolls instead.
+   min- and max-height rather than height: the open animation ends by
+   writing height:auto inline, which would override a plain height. A couple
+   of px of overshoot past the screen edge is deliberate -- a gap is not. */
 .nav-mobile .nav-panel{
-  max-height:calc(100svh - 84px);overflow-y:auto;overscroll-behavior:contain;
+  --nav-bar-h:58px;
+  --nav-drawer-h:calc(100svh - var(--sp-5) - env(safe-area-inset-top,0px) - var(--nav-bar-h) + 4px);
+  min-height:var(--nav-drawer-h);max-height:var(--nav-drawer-h);
+  background:rgb(8 29 53);   /* fully opaque: at .97 the hero's display type
+                                ghosted through a drawer this big */
+  overflow-y:auto;overscroll-behavior:contain;
+  border-radius:0;border-bottom:none;
+  display:flex;flex-direction:column;
 }
-.nav-mobile .nav-mobile-links a{padding:8px 8px;font-size:var(--fs-body)}
-.nav-mobile .nav-mobile-cta{margin:var(--sp-5) 0 var(--sp-2)}
-.nav-mobile .nav-mobile-head{margin-bottom:6px}
-.nav-mobile .nav-grid{grid-template-columns:1fr;gap:6px;padding:0;width:100%}
+.nav.is-light .nav-mobile .nav-panel{background:#fff}
+.nav-mobile-body{
+  flex:1;display:flex;flex-direction:column;
+  padding:var(--sp-4) var(--sp-3) var(--sp-4);
+}
+/* Tangible rows: each a plate of its own, label left, chevron right. The
+   Services row is a button and opens the four services (and the overview
+   link) directly beneath it. */
+.nav-mobile-links{display:flex;flex-direction:column;gap:8px}
+.nav .nav-mobile-btn{   /* outranks the .nav button reset */
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);
+  width:100%;min-height:60px;padding:0 16px 0 18px;
+  font-size:var(--fs-h4);font-weight:600;color:var(--nav-fg);text-align:left;
+  background:var(--nav-item);border:1px solid var(--nav-item-line);
+  border-radius:14px;corner-shape:superellipse(2.6);
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+}
+.nav-mobile-btn svg{flex:none;color:var(--nav-fg-2);transition:transform var(--dur) var(--ease)}
+.nav-mobile-btn:active{background:var(--nav-hover);border-color:var(--nav-line)}
+.nav-mobile-btn-more{padding:0}
+.nav-mobile-btn-more a{flex:1;display:flex;align-items:center;align-self:stretch;padding-left:18px;color:inherit}
+.nav .nav-mobile-btn-more button{
+  flex:none;display:grid;place-items:center;
+  width:56px;align-self:stretch;
+  border-left:1px solid var(--nav-item-line);
+}
+.nav-mobile-btn-more[data-open]{background:var(--nav-hover);border-color:var(--nav-line)}
+.nav-mobile-btn-more[data-open] svg{transform:rotate(180deg)}
+.nav-mobile-sub{overflow:hidden}
+.nav-mobile-sub .nav-grid{padding:2px 0 6px 12px}
+.nav-item-all{justify-content:space-between;padding-block:12px}
+.nav-item-all svg{flex:none;color:var(--nav-fg-2)}
+.nav-mobile .nav-grid{grid-template-columns:1fr;gap:8px;padding:0;width:100%}
+/* Compact rows: an icon tile beside the title and its line. */
 .nav-mobile .nav-item{
   flex-direction:row;align-items:center;gap:var(--sp-3);
-  padding:6px 10px 6px 6px;border-radius:14px;
+  padding:8px 12px 8px 8px;border-radius:14px;
 }
-.nav-mobile .nav-item-media{
-  flex:none;width:52px;height:52px;aspect-ratio:auto;border-radius:10px;
+.nav-item-ic{
+  flex:none;display:grid;place-items:center;
+  width:44px;height:44px;border-radius:11px;corner-shape:superellipse(2.6);
+  background:var(--nav-icon);color:var(--blue-500);
 }
 .nav-mobile .nav-item-text{padding-inline:0;min-width:0}
-.nav-mobile .nav-item-title{font-size:var(--fs-small)}
+.nav-mobile .nav-item-title{font-size:var(--fs-body)}
 .nav-mobile .nav-item-desc{
   margin-top:2px;font-size:.9rem;line-height:1.3;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
+/* Foot of the drawer: square call button, then the quote CTA taking the
+   rest of the width. Both 64px so they read as one row. */
+.nav-mobile-actions{
+  margin-top:auto;padding-top:var(--sp-5);
+  display:flex;align-items:center;gap:var(--sp-2);
+}
+.nav-mobile-actions .nav-phone{width:64px;height:64px;border-radius:16px}
+.nav-mobile-cta{flex:1;min-width:0}
+.nav-mobile-cta.cta-btn{width:auto}
+/* Navy on the navy drawer read as an icon and a line of text; the pill has
+   to be its own colour here to read as the button it is. */
+.nav-mobile .nav-mobile-cta.cta-btn{background:var(--blue-600)}
+.nav.is-light .nav-mobile .nav-mobile-cta.cta-btn{background:var(--ink-900)}
 
 @media(prefers-reduced-motion:reduce){
   .nav-pill,.nav-link,.nav-item{transition:none}

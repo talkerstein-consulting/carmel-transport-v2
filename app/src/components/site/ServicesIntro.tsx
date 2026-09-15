@@ -67,9 +67,9 @@ export function ServicesIntro() {
     const mm = gsap.matchMedia()
 
     /* Desktop only. This whole entrance is choreographed against the pinned
-       600vh runway: the copy fades over the first 0.7 of a screen, the cards
+       430vh runway: the copy fades over the first 0.7 of a screen, the cards
        rise from under the fold at 0.9/1.12/1.34/1.56 screens in, and the
-       clouds hand off at 4.7. A phone does not pin (see brand.css) -- the
+       clouds hand off at 2.2. A phone does not pin (see brand.css) -- the
        frame grows to its content and scrolls -- so none of those offsets mean
        anything there, and the cards simply sat at opacity 0 / y 120 for the
        whole section. On a phone they are laid out and visible, which is what
@@ -127,11 +127,14 @@ export function ServicesIntro() {
       // The tail of the clouds resolves into the flat #D5E7F2 the next section
       // opens on, so the footage hands off to colour rather than cutting.
       //
-      // The walkthrough now ends at 4.0 screens and this begins at 4.7, so the
-      // fourth card sits open and untouched for most of a screen before the
-      // clouds start taking the picture back. Previously this began at 2.8 —
-      // while the walkthrough was still running — and the last service was
-      // being dissolved out before it could be read.
+      // The last card is open at 2.0 screens and this begins at 2.2, running
+      // to 3.2. It MUST be finished before act three's top edge enters the
+      // viewport, which on a 430vh runway is 3.3 screens in: act three slides
+      // up over the pinned footage, and while the veil was still coming up
+      // its top edge met a picture with the dark edge gradient still on it —
+      // a dark band sitting right over "More than transportation". With the
+      // veil complete first, act three's own gradient starts on the flat
+      // #D5E7F2 the veil already put up, and the edge is invisible.
       const fadeOut = out
         ? gsap.fromTo(
             out,
@@ -145,7 +148,7 @@ export function ServicesIntro() {
                 // cards and the walkthrough use. "bottom bottom+=X" resolves
                 // in the opposite direction to what it reads like and kept
                 // starting this early.
-                start: () => "top top-=" + Math.round(window.innerHeight * 4.7),
+                start: () => "top top-=" + Math.round(window.innerHeight * 2.2),
                 end: () => "+=" + Math.round(window.innerHeight * 1),
                 scrub: true,
                 invalidateOnRefresh: true,
@@ -163,7 +166,7 @@ export function ServicesIntro() {
         ease: "none",
         scrollTrigger: {
           trigger: el,
-          start: () => "top top-=" + Math.round(window.innerHeight * 4.7),
+          start: () => "top top-=" + Math.round(window.innerHeight * 2.2),
           end: () => "+=" + Math.round(window.innerHeight * 1),
           scrub: true,
           invalidateOnRefresh: true,
@@ -229,8 +232,8 @@ export function ServicesIntro() {
     <section className="intro-services" id="services" ref={section}>
       {/* No second sequence. The ship scrub in Stats is one continuous
           ocean-to-cloud take and stays pinned through this section, so all
-          this needs to contribute is the scroll runway the copy rides on —
-          the same 700vh FrameScrub used to render (100 + 6 x 100). */}
+          this needs to contribute is the scroll runway the copy rides on
+          (430vh — see .svc-runway). */}
       <div className="svc-runway" aria-hidden="true" />
 
       <div className="svc-out" aria-hidden="true" />
@@ -261,8 +264,14 @@ export function ServicesIntro() {
                     four of them could not fit a pinned frame. */}
                 <div className="svc-card-detail">
                   <div className="svc-card-detail-inner">
+                    {/* Not lazy. The cards are tweened into a clipped, pinned
+                        frame, and Chrome's lazy loader judges visibility from
+                        layout, not transforms -- so a card arriving by tween
+                        was never seen to "enter" and its picture sometimes
+                        never loaded. Four covers is cheap enough to fetch up
+                        front. */}
                     <div className="svc-card-media">
-                      <img src={s.img} alt="" loading="lazy" decoding="async" />
+                      <img src={s.img} alt="" decoding="async" fetchPriority="low" />
                     </div>
                     <p className="svc-card-body">{s.body}</p>
                     <Cta href={s.href} size="sm" className="svc-card-cta">{s.cta}</Cta>

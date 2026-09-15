@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { Menu, X, Phone, ChevronDown, Truck, Snowflake, TrainFront, Warehouse } from "lucide-react"
+import { Menu, X, Phone, ChevronDown, ChevronRight, Truck, Snowflake, TrainFront, Warehouse } from "lucide-react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Cta } from "./Cta"
@@ -37,6 +37,7 @@ export function Nav() {
   const bar = useRef<HTMLElement>(null)
   const [servicesOpen, setServicesOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const [hovered, setHovered] = useState(false)
 
   /* Hover intent. Opening on the first pixel of mouseenter and closing on the
@@ -161,17 +162,24 @@ export function Nav() {
               {/* The chevron says the item opens something — without it Services
                   looks like the four links beside it and the panel appearing
                   reads as an accident. It rotates to point up while open. */}
-              <button
-                type="button"
-                className="nav-link nav-link-more"
-                aria-expanded={servicesOpen}
-                aria-haspopup="true"
-                onMouseEnter={openSoon}
-                onClick={toggleByClick}
-              >
-                Services
-                <ChevronDown size={15} strokeWidth={2.25} aria-hidden="true" />
-              </button>
+              {/* A link to the overview page: hover opens the panel, a click
+                  goes to /services. The chevron is its own button so a
+                  keyboard user can still open the panel without leaving. */}
+              <span className="nav-more" onMouseEnter={openSoon}>
+                <a className="nav-link nav-link-more" href="/services">
+                  Services
+                </a>
+                <button
+                  type="button"
+                  className="nav-link nav-link-chev"
+                  aria-label="Show services"
+                  aria-expanded={servicesOpen}
+                  aria-haspopup="true"
+                  onClick={toggleByClick}
+                >
+                  <ChevronDown size={15} strokeWidth={2.25} aria-hidden="true" />
+                </button>
+              </span>
               {LINKS.map((l) => (
                 <a key={l.href} className="nav-link" href={l.href} onMouseEnter={closeSoon}>
                   {l.label}
@@ -275,38 +283,81 @@ export function Nav() {
                 className="nav-panel"
               >
                 <div className="nav-mobile-body">
+                  {/* Four tangible rows, not a list of words: three links
+                      and a Services button that opens the four services
+                      beneath it, plus a link to the overview page. */}
                   <div className="nav-mobile-links">
+                    {/* The label goes to the overview page; the chevron is
+                        the part that opens the four services beneath. */}
+                    <div className="nav-mobile-btn nav-mobile-btn-more" data-open={mobileServicesOpen || undefined}>
+                      <a href="/services" onClick={() => setMobileOpen(false)}>Services</a>
+                      <button
+                        type="button"
+                        aria-label="Show services"
+                        aria-expanded={mobileServicesOpen}
+                        onClick={() => setMobileServicesOpen((o) => !o)}
+                      >
+                        <ChevronDown size={20} strokeWidth={2.25} aria-hidden="true" />
+                      </button>
+                    </div>
+                    <AnimatePresence initial={false}>
+                      {mobileServicesOpen && (
+                        <motion.div
+                          className="nav-mobile-sub"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25, ease: EASE }}
+                        >
+                          <div className="nav-grid">
+                            {SERVICES.map((s) => {
+                              const Icon = s.icon
+                              return (
+                                <a key={s.title} href={s.href} className="nav-item" onClick={() => setMobileOpen(false)}>
+                                  <span className="nav-item-ic" aria-hidden="true">
+                                    <Icon size={22} strokeWidth={2} />
+                                  </span>
+                                  <span className="nav-item-text">
+                                    <span className="nav-item-title">{s.title}</span>
+                                    <span className="nav-item-desc">{s.description}</span>
+                                  </span>
+                                </a>
+                              )
+                            })}
+                            <a href="/services" className="nav-item nav-item-all" onClick={() => setMobileOpen(false)}>
+                              <span className="nav-item-text">
+                                <span className="nav-item-title">All services</span>
+                              </span>
+                              <ChevronRight size={18} strokeWidth={2.25} aria-hidden="true" />
+                            </a>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                     {LINKS.map((l) => (
-                      <a key={l.href} href={l.href} onClick={() => setMobileOpen(false)}>{l.label}</a>
+                      <a key={l.href} className="nav-mobile-btn" href={l.href} onClick={() => setMobileOpen(false)}>
+                        {l.label}
+                        <ChevronRight size={20} strokeWidth={2.25} aria-hidden="true" />
+                      </a>
                     ))}
-                    <a href="tel:+12012995416">(201) 299-5416</a>
-                  </div>
-                  <p className="nav-mobile-head">Services</p>
-                  <div className="nav-grid">
-                    {SERVICES.map((s) => {
-                      const Icon = s.icon
-                      return (
-                        <a key={s.title} href={s.href} className="nav-item" onClick={() => setMobileOpen(false)}>
-                          <span className="nav-item-media">
-                            <img src={s.img} alt="" loading="lazy" decoding="async" />
-                          </span>
-                          <span className="nav-item-text">
-                            <span className="nav-item-title">
-                              <Icon className="nav-item-icon" size={16} strokeWidth={2} aria-hidden="true" />
-                              {s.title}
-                            </span>
-                            <span className="nav-item-desc">{s.description}</span>
-                          </span>
-                        </a>
-                      )
-                    })}
                   </div>
 
-                  {/* Last, not wedged between the links and Services. It is the
-                      one action in the drawer, and sitting mid-list it read as
-                      another row. At the bottom, off on its own, it is the
-                      thing your thumb lands on after reading the menu. */}
-                  <Cta href={QUOTE_HREF} className="nav-mobile-cta">Request a quote</Cta>
+                  {/* Pinned to the foot of the drawer, which runs to the bottom
+                      of the screen: the one action here, where the thumb
+                      lands. The number is a square call button beside it —
+                      the same pair as the desktop bar — rather than a line of
+                      digits in the link list. */}
+                  <div className="nav-mobile-actions">
+                    <a
+                      className="nav-phone"
+                      href="tel:+12012995416"
+                      aria-label="Call sales: (201) 299-5416"
+                      title="(201) 299-5416"
+                    >
+                      <Phone size={22} strokeWidth={2} aria-hidden="true" />
+                    </a>
+                    <Cta href={QUOTE_HREF} className="nav-mobile-cta">Request a quote</Cta>
+                  </div>
                 </div>
               </motion.div>
             )}

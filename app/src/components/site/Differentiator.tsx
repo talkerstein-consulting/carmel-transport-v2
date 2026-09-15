@@ -10,19 +10,19 @@ const POINTS = [
     icon: Tag,
     head: "Transparent pricing",
     body: "Precise quotes designed to match your invoice—without unexpected charges or surprises.",
-    img: "/img/covers/drayage.jpg",
+    img: "/img/values/reliable.jpg",
   },
   {
     icon: Truck,
     head: "A fleet built for flexibility",
     body: "From 20', 40', and 45' containers to dry, overweight, refrigerated, open-top, and flat-rack cargo, our equipment is ready for a wide range of requirements.",
-    img: "/img/covers/storage.jpg",
+    img: "/img/values/fast.jpg",
   },
   {
     icon: Clock,
     head: "Support around the clock",
     body: "Our team monitors shipments 24/7 to help ensure a seamless transition throughout the transportation process.",
-    img: "/img/covers/intermodal.jpg",
+    img: "/img/values/support.jpg",
   },
 ]
 

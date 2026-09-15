@@ -380,11 +380,15 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
       rgba(8,29,53,.62) 42%,
       rgba(8,29,53,.62) 100%);
   }
-  .reveal-inner{grid-template-columns:1fr;gap:var(--sp-7)}
+  /* Heading, then the paragraph, then the CTA at the bottom. The aside is
+     dissolved (display:contents) so its heading and CTA place as grid rows
+     of their own either side of the copy. */
+  .reveal-inner{grid-template-columns:1fr;gap:var(--sp-6)}
+  .reveal-aside{display:contents;text-align:left}
+  .reveal .reveal-head{grid-row:1;margin:0;position:relative;z-index:2}
   .reveal-body-wrap{grid-row:2}
   .reveal .reveal-body{max-width:none}
-  .reveal-aside{grid-column:1;grid-row:1;justify-self:start;text-align:left}
-  .reveal .reveal-head{margin-left:0}
+  .reveal-cta{grid-row:3;margin:var(--sp-2) 0 0;position:relative;z-index:2}
 }
 
 /* --- section 03 · stats --------------------------------------------------- */
@@ -422,7 +426,7 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
    intro's own gradient ends, to the end of the services walkthrough. */
 .stats-vig-range{
   position:absolute;left:0;right:0;
-  top:180svh;height:860svh;
+  top:180svh;height:590svh;
   pointer-events:none;
 }
 .stats-vig{display:none}   /* superseded by .fs-fill>div>div::after */
@@ -463,13 +467,16 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   display:inline-flex;flex-direction:column;align-items:flex-start;
   padding:clamp(20px,2.4vw,32px) clamp(24px,3vw,40px);
   border-radius:28px;corner-shape:superellipse(2.6);
-  background:rgba(8,29,53,.28);
+  /* No backdrop-filter, on purpose. These plates sit over a canvas that is
+     repainted on every scroll frame, and a backdrop blur has to re-read and
+     re-blur everything beneath it each time the picture changes -- eight
+     such plates (four here, four service cards) at 2x DPR was the homepage
+     scroll jitter; the interior pages, with no blur over moving pixels,
+     scroll clean. A denser plate carries the type on its own. */
+  background:rgba(8,29,53,.62);
   border:1px solid rgba(255,255,255,.30);
-  -webkit-backdrop-filter:saturate(140%) blur(18px);
-  backdrop-filter:saturate(140%) blur(18px);
   box-shadow:0 2px 4px rgba(8,29,53,.10),0 24px 48px rgba(8,29,53,.22);
 }
-@supports not (backdrop-filter:blur(1px)){ .stat-card{background:rgba(8,29,53,.80)} }
 .stat-card-right{align-items:flex-end;margin-left:auto}
 .stat-card-ic{
   display:grid;place-items:center;width:38px;height:38px;margin-bottom:var(--sp-4);
@@ -519,26 +526,25 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 /* Pulled up over the ship section, which is now the ONLY sequence: the footage
    is a single continuous ocean-to-cloud take, so there is nothing to crossfade
    and this section just keeps scrubbing the canvas pinned beneath it.
-   The underlap is -800svh, not the -200svh it was when this section carried a
-   second sequence of its own. FrameScrub pins its canvas for scrollLength x
-   100vh and only lets it travel over the final 100vh, so this whole 700vh
-   section has to sit INSIDE that pinned range or the footage scrolls away and
-   leaves the cards on a blank ground. Stats is scrollLength 10.4 => 1140vh
-   tall; -700svh starts this section 4.4 screens into the pin and its 600vh
-   ends at 10.4, exactly where the pin releases. */
+   FrameScrub pins its canvas for scrollLength x 100vh and only lets it travel
+   over the final 100vh, so this whole section has to sit INSIDE that pinned
+   range or the footage scrolls away and leaves the cards on a blank ground.
+   Stats is scrollLength 7.7 => 870vh tall; -530svh starts this section 3.4
+   screens into the pin (the figures release at 3.0) and its 430vh ends at
+   7.7, exactly where the pin releases. */
 .intro-services{
   position:relative;z-index:3;
-  margin-top:-700svh;
+  margin-top:-530svh;
   background:transparent;
 }
 /* Scroll runway only — no canvas of its own.
-   600vh, not the 700vh FrameScrub used to render here. The #D5E7F2 handoff
-   veil finishes at 5.7 screens in, and at 700vh the screen then sat on flat
-   colour for another 1.3 screens of scrolling before act three arrived. 600
-   brings "More than transportation" in just as the clouds finish taking the
-   picture. Everything inside this section is triggered at explicit offsets
-   from its top (0.9 to 5.7 screens), so none of it moves. */
-.svc-runway{width:100%;height:600vh}
+   The cards are all open by 2.0 screens in and the #D5E7F2 handoff veil runs
+   2.2 to 3.2. At 430vh, act three's top edge enters the viewport at 3.3 — a
+   tenth of a screen after the veil is complete, so "More than transportation"
+   rises onto flat colour and never meets the footage. Everything inside this
+   section is triggered at explicit offsets from its top (0.9 to 3.2 screens),
+   so none of it moves. */
+.svc-runway{width:100%;height:430vh}
 
 .svc-overlay{position:absolute;inset:0;z-index:1;pointer-events:none}
 
@@ -567,8 +573,13 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   display:grid;grid-template-columns:repeat(4,1fr);
   gap:clamp(16px,1.6vw,24px);
 }
-/* top-aligned: the open card grows downward, the closed ones hold their tops */
-.svc-row{align-items:start}
+/* All four render open now, so they share one height: the row stretches and
+   each card is a column with its CTA pushed to the bottom edge. */
+.svc-row{align-items:stretch}
+.svc-card{display:flex;flex-direction:column}
+.svc-card-detail{flex:1 1 auto}
+.svc-card.is-open .svc-card-detail>*{display:flex;flex-direction:column}
+.svc-card.is-open .svc-card-body{flex:1 1 auto}
 /* Glass, not paper: 20% opaque so the footage keeps running underneath.
    The tint is navy and the contents are light, NOT the other way round — the
    ship sequence is still on screen for the whole walkthrough, and ink-900 type
@@ -578,10 +589,10 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
    through the body copy. */
 .svc-card{
   border-radius:32px;corner-shape:superellipse(2.6);
-  background:rgba(8,29,53,.20);color:#fff;
+  /* No backdrop-filter -- see .stat-card. The plate is dense enough to hold
+     the copy over the water without blurring what moves beneath it. */
+  background:rgba(8,29,53,.66);color:#fff;
   border:1px solid rgba(255,255,255,.30);
-  -webkit-backdrop-filter:saturate(140%) blur(18px);
-  backdrop-filter:saturate(140%) blur(18px);
   box-shadow:0 1px 2px rgba(8,29,53,.05),0 12px 32px rgba(8,29,53,.10);
   /* closed: tight. The open state buys its own breathing room below. */
   padding:10px 10px 12px;
@@ -592,13 +603,9 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 /* the active card firms up so it separates from the three still closed */
 .svc-card.is-open{
   padding:14px 14px 22px;
-  background:rgba(8,29,53,.34);
+  background:rgba(8,29,53,.76);
   border-color:rgba(255,255,255,.42);
   box-shadow:0 2px 4px rgba(8,29,53,.10),0 24px 48px rgba(8,29,53,.26);
-}
-@supports not (backdrop-filter:blur(1px)){
-  .svc-card{background:rgba(8,29,53,.72)}
-  .svc-card.is-open{background:rgba(8,29,53,.84)}
 }
 
 /* the detail is closed by default and opens for the active service only.
@@ -642,10 +649,13 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   font-size:var(--fs-eyebrow);font-weight:500;letter-spacing:.14em;
   text-transform:uppercase;color:rgba(255,255,255,.62);
 }
+/* One line, always: sized to the column rather than wrapped, so the four
+   headings sit on the same baseline and the bodies start level. */
 .svc-card-head{
-  margin:0;max-width:18ch;padding-inline:8px;
-  font-size:var(--fs-h4);font-weight:600;line-height:1.15;
-  letter-spacing:-.01em;color:#fff;text-wrap:balance;
+  margin:0;padding-inline:8px;
+  font-size:clamp(1rem,.55rem + .95vw,1.375rem);font-weight:600;line-height:1.15;
+  letter-spacing:-.015em;color:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 
 @media(max-width:1023px){
@@ -653,60 +663,54 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   .svc-head{flex-direction:column;align-items:flex-start;gap:var(--sp-1)}
 }
 
-/* --- the walkthrough on a phone -----------------------------------------
-   The phone now turns the same deck the desktop does: four compact tabs
-   arrive together, the frame pins, and then each one expands in turn while
-   the other three fall back to their closed height.
+/* --- the services on a phone -------------------------------------------
+   No pin. The four cards render open (ServicesIntro no longer walks through
+   them), and four open cards do not fit a 100svh frame — pinned and clipped,
+   the phone showed the headline, the first card and the top of the second,
+   and the rest were cut off with no way to reach them. So the frame is a
+   plain block here: it grows to its content and scrolls with the page, over
+   the ship footage that stays pinned beneath it.
 
-   The earlier note here said the phone could not pin, because the walkthrough
-   was driven by ScrollTrigger offsets measured in viewport heights and those
-   change under you as the mobile URL bar shows and hides — so it stuck on the
-   first card. That is a problem with measuring in vh, not with pinning. The
-   active index is now read from the overlay's live rect on every frame (see
-   ServicesIntro), which cannot go stale, so the pin is safe to bring back.
+   The section carries margin-top:-530svh to underlap the one above it, so
+   the content still has to be pushed back down or it lands on top of the
+   stats. That stays as padding on .svc-overlay: the cards start two screens
+   in and then simply scroll.
 
-   The 200svh delay moves from .svc-pin to .svc-overlay. The section carries
-   margin-top:-700svh to underlap the one above it, and the content has to be
-   pushed back down or it lands on top of the stats — but a sticky child needs
-   that offset to be its parent's padding, not its own: padding on the sticky
-   element itself just insets the cards inside a frame that is already stuck.
-   As the overlay's padding it becomes real distance the frame travels before
-   it catches, which is exactly the runway the walkthrough scrubs along. */
+   The overlay is in flow here, not absolute, and the 430vh runway is gone:
+   the section's height is whatever the cards need. Absolute over a fixed
+   runway, the fourth card ran ~270px past the section's end on a 375x812
+   phone and .act-three (a stacking context above this one) slid over it
+   before it could be read. In flow, 200svh + the cards is ~4.6 screens,
+   which still ends inside the 7.7-screen canvas pin. */
 @media(max-width:1023px){
-  /* The delay, and with it the pin's runway: the frame catches at the far
-     edge of this padding and releases at the overlay's content-box bottom. */
-  .svc-overlay{padding-top:200svh}
-  /* Everything here is measured in vh so the whole deck scales with the frame
-     rather than overflowing it: four tabs, one of them open, the headline and
-     both paddings all have to clear a single 100svh box, and .svc-pin clips. */
+  .svc-runway{display:none}
+  .svc-overlay{position:relative;inset:auto;padding-top:200svh}
   .svc-pin{
-    position:sticky;top:0;
-    height:100svh;overflow:hidden;
-    padding:clamp(56px,8vh,92px) clamp(16px,5vw,28px) clamp(16px,2.4vh,28px);
-    gap:clamp(12px,1.8vh,22px);
+    position:static;
+    height:auto;overflow:visible;
+    /* 50svh below the last card: the #D5E7F2 veil starts the moment
+       .act-three's top enters the viewport, so without this gap the
+       storage card whitened out while it was still being read. Keeps the
+       section's end (~7.6 screens) inside the 7.7-screen canvas pin. */
+    padding:clamp(56px,8vh,92px) clamp(16px,5vw,28px) 50svh;
+    gap:clamp(20px,3vh,32px);
   }
-  /* Tabs: one column, packed to the top so the open card grows downward into
-     the space the closed three leave rather than pushing them off the frame. */
-  .svc-row{grid-template-columns:1fr;gap:10px;align-content:start}
-  .svc-card-head{font-size:var(--fs-body)}
-  /* Closed tighter than desktop — four of these plus one open card have to
-     clear a single 100svh frame with the headline still above them. */
-  .svc-card{padding:8px 10px 10px}
-  .svc-card.is-open{padding:12px 12px 16px}
+  .svc-row{grid-template-columns:1fr;gap:12px;align-content:start}
+  .svc-card-head{font-size:var(--fs-h4)}
+  .svc-card{padding:12px 12px 16px}
   /* Darker plates than desktop. The cards sit on the ship footage, which on a
      phone fills the frame with bright containers and sunlit water rather than
      the open ocean a wide frame shows — .20 glass over that left the white
      type on the containers themselves. */
-  .svc-card{background:rgba(8,29,53,.58)}
-  .svc-card.is-open{background:rgba(8,29,53,.74)}
-  @supports not (backdrop-filter:blur(1px)){
-    .svc-card{background:rgba(8,29,53,.84)}
-    .svc-card.is-open{background:rgba(8,29,53,.92)}
-  }
+  .svc-card,.svc-card.is-open{background:rgba(8,29,53,.80)}
+  /* The card CTA labels run long ("Explore Refrigerated Logistics") and at
+     the pill's 26px right padding the label reached the edge on a 375px
+     phone and was cut on narrower ones. Tighter padding, a smaller label,
+     and the pill may grow a line rather than clip. */
+  .cta-btn.svc-card-cta{margin-inline:0;height:auto;min-height:46px;padding-right:14px}
+  .cta-btn.svc-card-cta .cta-btn-label{white-space:normal;line-height:1.2;min-width:0}
   .svc-card-n{margin-bottom:4px;padding-top:4px}
-  .svc-card-media{margin-bottom:var(--sp-3)}
-  .svc-card-media img{height:clamp(64px,8.5vh,104px)}
-  .svc-card-body{margin-bottom:var(--sp-3)}
+  .svc-card-media img{height:clamp(140px,22vh,200px)}
 }
 
 /* --- page load ----------------------------------------------------------

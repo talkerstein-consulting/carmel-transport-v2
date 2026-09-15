@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Nav } from "@/components/site/Nav"
+import { PlateBg } from "@/components/site/PlateBg"
 import { Closing } from "@/components/site/Closing"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -92,9 +93,7 @@ export function PageShell({ crumb, head, accent, lead, cover, aside, plate, wide
         {/* Light from the first pixel, so the nav pill starts in its light
             state rather than flipping partway down. */}
         <header className="band ph" data-nav-light>
-          <div className="ph-bg" aria-hidden="true">
-            <img src={cover} alt="" decoding="async" />
-          </div>
+          <PlateBg src={cover} />
 
           <div className="band-inner">
             <div className="ph-plate">

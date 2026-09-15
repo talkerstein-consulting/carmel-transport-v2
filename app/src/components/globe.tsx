@@ -48,6 +48,8 @@ type GlobeInstance = {
     color: { set: (color: string) => void };
   };
   pointOfView: (view: { altitude: number }) => GlobeInstance;
+  pauseAnimation: () => GlobeInstance;
+  resumeAnimation: () => GlobeInstance;
   controls: () => {
     autoRotate: boolean;
     autoRotateSpeed: number;
@@ -601,10 +603,8 @@ export const Globe: React.FC<GlobeProps> = ({
           });
         };
 
-        const initialTimeout = setTimeout(() => {
-          animateArcs();
-        }, 500);
-        animationTimeoutsRef.current.push(initialTimeout);
+        /* First arcs straight away, not after a half-second wait. */
+        animateArcs();
 
         animationIntervalRef.current = setInterval(animateArcs, arcInterval);
 
@@ -640,6 +640,22 @@ export const Globe: React.FC<GlobeProps> = ({
                 if (globeRef.current) {
                   const controls = globeRef.current.controls();
                   controls.autoRotate = entry.isIntersecting;
+                  /* Stop the WebGL render loop entirely while the globe is
+                     off screen. globe.gl otherwise draws every frame for the
+                     life of the page, which on this scroll-driven page was
+                     a permanent GPU tax on every other section -- felt as
+                     jitter in the frame sequences three screens above it. */
+                  if (entry.isIntersecting) {
+                    globeRef.current.resumeAnimation();
+                    /* The arcs only fire while visible, so when the globe
+                       was off screen at init (it always is: the footer is
+                       the last thing on the page) the first set would wait
+                       for the next interval tick -- up to six seconds of a
+                       bare sphere. Fire a set the moment it comes into view. */
+                    animateArcs();
+                  } else {
+                    globeRef.current.pauseAnimation();
+                  }
                 }
               });
             },

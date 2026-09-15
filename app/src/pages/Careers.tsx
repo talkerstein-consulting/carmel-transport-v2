@@ -1,17 +1,19 @@
+import { useState } from "react"
 import { Cta } from "@/components/site/Cta"
 import { Values } from "@/components/site/Values"
+import { ApplyModal } from "@/components/site/ApplyModal"
 import { PageShell, PageBlock } from "./PageShell"
 
 /* /careers — copy ported verbatim from carmel-usa-scrape/text/en_careers.txt.
    The old page's application form posted to a host we no longer have, so the
-   apply step is an email with the same intent.
+   apply step is a form in a dialog (ApplyModal) that ends as an email with
+   the same intent.
 
    PLACEHOLDER: the roles below are invented. The old site never listed any, so
    there is nothing to port — these are here to show the shape of the section
-   and must be replaced with real openings before launch. Each one mails
-   quotes@carmel-usa.com with the title in the subject; if Carmel wants these
-   going somewhere other than the quotes inbox, that address is the one line to
-   change. */
+   and must be replaced with real openings before launch. Applications go to
+   APPLY_TO in ApplyModal.tsx; if Carmel wants them somewhere other than the
+   quotes inbox, that is the one line to change. */
 
 const OPENINGS = [
   {
@@ -52,6 +54,11 @@ const OPENINGS = [
 ]
 
 export default function Careers() {
+  /* undefined = closed; "" = open with no role chosen; otherwise the role
+     whose card was clicked. One dialog for the page, keyed by what opened it. */
+  const [applying, setApplying] = useState<string | undefined>(undefined)
+  const close = () => setApplying(undefined)
+
   return (
     <PageShell
       cover="/img/covers/careers.jpg"
@@ -74,7 +81,7 @@ export default function Careers() {
           team.
         </p>
         <p className="pg-cta" data-rise>
-          <Cta href="mailto:quotes@carmel-usa.com?subject=Application" size="sm">Apply by email</Cta>
+          <Cta type="button" size="sm" onClick={() => setApplying("")}>Apply now</Cta>
         </p>
       </PageBlock>
 
@@ -98,25 +105,22 @@ export default function Careers() {
                 before the prose rather than after it. */}
             <div className="job-grid">
               {OPENINGS.map((o) => (
-                <a
-                  className="job-card"
-                  href={"mailto:quotes@carmel-usa.com?subject=" + encodeURIComponent("Application — " + o.title)}
-                  key={o.title}
-                  data-rise
-                >
-                  <span className="job-media">
+                <article className="job-card" key={o.title} data-rise>
+                  <div className="job-media">
                     <img src={o.img} alt="" loading="lazy" decoding="async" />
-                  </span>
-                  <span className="job-body">
-                    <span className="job-badges">
+                  </div>
+                  <div className="job-body">
+                    <div className="job-badges">
                       <span className={"job-badge" + (o.type === "Contract" ? " is-contract" : "")}>{o.type}</span>
                       <span className="job-badge is-place">{o.place}</span>
-                    </span>
-                    <span className="job-title">{o.title}</span>
-                    <span className="job-copy">{o.body}</span>
-                    <span className="job-go">Apply</span>
-                  </span>
-                </a>
+                    </div>
+                    <h3 className="job-title">{o.title}</h3>
+                    <p className="job-copy">{o.body}</p>
+                    <p className="job-go">
+                      <Cta type="button" size="sm" onClick={() => setApplying(o.title)}>Apply</Cta>
+                    </p>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
@@ -125,6 +129,12 @@ export default function Careers() {
 
       <Values />
 
+      <ApplyModal
+        open={applying !== undefined}
+        onClose={close}
+        roles={OPENINGS.map((o) => o.title)}
+        role={applying || undefined}
+      />
     </PageShell>
   )
 }

@@ -94,18 +94,21 @@
    against real detail now instead of against an already-blurred field, and the
    split-tone headline has to clear whatever passes underneath it at AA. */
 .ph-plate {
+  position: relative;
   padding: clamp(28px, 3.4vw, 56px);
   border-radius: 24px; corner-shape: superellipse(2.6);
   background: rgba(255, 255, 255, .76);
   border: 1px solid rgba(255, 255, 255, .82);
-  -webkit-backdrop-filter: saturate(150%) blur(28px);
-  backdrop-filter: saturate(150%) blur(28px);
   box-shadow: 0 1px 2px rgba(8, 29, 53, .08), 0 30px 70px rgba(8, 29, 53, .20);
 }
-/* No backdrop-filter: fall back to a near-solid plate rather than a
-   translucent one that leaves the headline sitting on open photograph. */
-@supports not (backdrop-filter: blur(1px)) {
-  .ph-plate { background: rgba(255, 255, 255, .95); }
+/* The frosting under the plate. Not backdrop-filter — see PlateBg.tsx for
+   why — but a blurred copy of the cover, clipped to the plate's measured box.
+   Until PlateBg has measured, the clip is closed and only the sharp cover
+   shows; the plate is opaque enough to carry the type on its own for a frame. */
+.ph-bg .ph-bg-frost {
+  position: absolute; inset: 0;
+  filter: saturate(105%) contrast(104%) blur(28px);
+  clip-path: inset(var(--frost-t, 100%) var(--frost-r, 0) var(--frost-b, 0) var(--frost-l, 0) round var(--frost-radius, 24px));
 }
 
 .ph-crumbs {
@@ -246,6 +249,10 @@
 .svc-tile-cta { margin: auto 0 0; padding-top: var(--sp-6); }
 .svc-grid-lead { margin-bottom: var(--sp-7); }
 .svc-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-5); }
+/* the four offers on a service page: two across inside the 8-col main column */
+.svc-grid-offer { gap: var(--sp-5); margin-top: var(--sp-2); }
+.svc-grid-offer .svc-tile-head { font-size: var(--fs-h4); }
+.svc-grid-offer .svc-tile-body { padding: var(--sp-5) var(--sp-5) var(--sp-6); }
 .svc-grid-4 .svc-tile-head { display: block; font-size: var(--fs-h4); }
 .svc-grid-4 .svc-tile-copy { display: block; }
 .svc-grid-4 .svc-tile-body { padding: var(--sp-5); }
@@ -591,7 +598,7 @@
    sit above the title because "Kearny, NJ" and "Contract" are what someone
    scans for before they read a word of the description. */
 .job-grid {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--sp-5);
 }
 .job-card {
@@ -603,10 +610,9 @@
   transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .job-card:hover { border-color: var(--ink-900); transform: translateY(-2px); }
-.job-card:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 3px; }
 .job-media { display: block; aspect-ratio: 16 / 10; background: var(--paper-200); overflow: hidden; }
 .job-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.job-body { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-5); }
+.job-body { display: flex; flex: 1; flex-direction: column; gap: var(--sp-2); padding: var(--sp-5); }
 .job-badges { display: flex; flex-wrap: wrap; gap: 6px; }
 .job-badge {
   display: inline-flex; align-items: center; padding: 4px 10px;
@@ -619,17 +625,13 @@
 .job-badge.is-contract { border-color: var(--paper-300); background: var(--paper-200); color: var(--ink-700); }
 .job-badge.is-place { border-color: var(--paper-300); background: transparent; color: var(--ink-600); text-transform: none; letter-spacing: 0; }
 .job-title {
-  margin-top: 2px;
+  margin: 2px 0 0;
   font-size: var(--fs-body); font-weight: 600; line-height: 1.25;
   letter-spacing: -.01em; color: var(--ink-900); text-wrap: balance;
 }
-.job-copy { font-size: var(--fs-small); line-height: 1.55; color: var(--ink-600); text-wrap: pretty; }
-.job-go {
-  margin-top: auto; padding-top: var(--sp-3);
-  font-size: var(--fs-small); font-weight: 600; color: var(--blue-700);
-}
-.job-card:hover .job-go { color: var(--ink-900); }
-@media (max-width: 1023px) { .job-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.job-copy { margin: 0; font-size: var(--fs-small); line-height: 1.55; color: var(--ink-600); text-wrap: pretty; }
+/* the standard CTA, pinned to the card's foot so the five line up */
+.job-go { margin: auto 0 0; padding-top: var(--sp-4); }
 @media (max-width: 640px)  { .job-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .job-card, .job-card:hover { transition: none; transform: none; } }
 
