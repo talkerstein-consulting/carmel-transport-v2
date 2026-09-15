@@ -1,5 +1,7 @@
 import { PageShell, PageBlock } from "./PageShell"
 import { Cta } from "@/components/site/Cta"
+import { ServiceSteps } from "@/components/site/ServiceSteps"
+import { WhyCarmel } from "@/components/site/WhyCarmel"
 import type { ServiceContent } from "./services-content"
 
 /* One service, one page. The four services used to be anchors inside /services;
@@ -16,6 +18,7 @@ export function ServicePage({ s }: { s: ServiceContent }) {
       head={s.head}
       accent={s.accent}
       lead={s.lead}
+      wideHead
       aside={
         <div className="ph-toc" aria-label="On this page">
           <p className="eyebrow ph-toc-label">On this page</p>
@@ -44,32 +47,18 @@ export function ServicePage({ s }: { s: ServiceContent }) {
         </div>
       </PageBlock>
 
-      {s.middle && (
-        <PageBlock n="03" kicker={s.crumb} head={s.middle.head}>
-          {s.middle.body.map((p) => (
-            <p className="pg-body" data-rise key={p.slice(0, 24)}>{p}</p>
-          ))}
-          {s.middle.chain && (
-            /* The chain is the shape of the service in one line. Set as its own
-               object rather than as a sentence: it is a diagram, and reading it
-               as running prose is what made it disappear in the source doc. */
-            <p className="pg-chain" data-rise>{s.middle.chain}</p>
-          )}
-        </PageBlock>
-      )}
-
-      <PageBlock id="why" n={s.middle ? "04" : "03"} kicker={s.crumb} head="Why Carmel" deep>
-        <div className="pg-values-grid">
-          {s.why.map((w) => (
-            <div className="pg-value" data-rise key={w.head}>
-              <h3 className="pg-value-head">{w.head}</h3>
-              <p className="pg-value-body">{w.body}</p>
-            </div>
-          ))}
-        </div>
+      <PageBlock n="03" kicker={s.crumb} head={s.middle.head}>
+        {s.middle.body.map((p) => (
+          <p className="pg-body" data-rise key={p.slice(0, 24)}>{p}</p>
+        ))}
+        <ServiceSteps steps={s.middle.steps} />
       </PageBlock>
 
-      <PageBlock n={s.middle ? "05" : "04"} kicker={s.crumb} head={s.closeHead}>
+      <PageBlock id="why" n="04" kicker={s.crumb} head="Why Carmel" deep>
+        <WhyCarmel reasons={s.why} />
+      </PageBlock>
+
+      <PageBlock n="05" kicker={s.crumb} head={s.closeHead}>
         {s.closeBody.map((p) => (
           <p className="pg-body" data-rise key={p.slice(0, 24)}>{p}</p>
         ))}

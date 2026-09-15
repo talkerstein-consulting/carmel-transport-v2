@@ -24,11 +24,14 @@ type Props = {
   aside?: ReactNode
   /* rendered inside the plate, full width, under the headline row — the
      contact form on /contact */
+  /* service pages run the headline across the whole plate; the TOC drops
+     beneath it rather than sitting in the right-hand columns */
+  wideHead?: boolean
   plate?: ReactNode
   children: ReactNode
 }
 
-export function PageShell({ crumb, head, accent, lead, cover, aside, plate, children }: Props) {
+export function PageShell({ crumb, head, accent, lead, cover, aside, plate, wideHead, children }: Props) {
   const root = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -95,7 +98,7 @@ export function PageShell({ crumb, head, accent, lead, cover, aside, plate, chil
 
           <div className="band-inner">
             <div className="ph-plate">
-              <div className="ph-grid">
+              <div className={"ph-grid" + (wideHead ? " ph-grid-wide" : "")}>
                 <div>
                   <p className="ph-crumbs">
                     <a href="/">Home</a><span aria-hidden="true">/</span>{crumb}

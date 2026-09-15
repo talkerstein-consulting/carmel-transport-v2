@@ -115,7 +115,10 @@
    through the child spans. Same construction as .hero-head. */
 .ph-head {
   margin: 0; display: flex; flex-direction: column; align-items: flex-start;
-  max-width: 18ch;
+  /* Spans the plate. The 18ch cap was sized for two short clauses and broke the
+     longer service headlines into a narrow column with a ragged right edge
+     halfway across an otherwise empty plate. */
+  max-width: none;
   font-size: var(--fs-display-2); font-weight: 500; line-height: .95;
   letter-spacing: -.03em; font-optical-sizing: auto;
   text-wrap: balance;
@@ -493,3 +496,85 @@
   letter-spacing: .01em; color: var(--ink-900);
   text-wrap: balance;
 }
+
+/* --- service page: the chain as a stepper --------------------------------
+   From @reactbits-pro/how-it-works-8, repainted in brand tokens. The rule is
+   two layers: a hairline that is always there and a navy one that draws in
+   left-to-right as each node arrives, so the sequence reads as a direction
+   rather than as four separate bullets. */
+.svc-steps {
+  list-style: none; margin: var(--sp-6) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-6);
+}
+.svc-step { min-width: 0; }
+.svc-step-node { position: relative; display: flex; align-items: center; height: 40px; }
+.svc-step-rule {
+  position: absolute; top: 50%; height: 1px; transform: translateY(-50%);
+  background: var(--paper-300);
+}
+.svc-step-rule-fill { background: var(--ink-900); transform-origin: left center; }
+.svc-step.is-first .svc-step-rule { left: 0; right: calc(var(--sp-6) * -1); }
+.svc-step.is-mid   .svc-step-rule { left: calc(var(--sp-6) * -1); right: calc(var(--sp-6) * -1); }
+.svc-step.is-last  .svc-step-rule { left: calc(var(--sp-6) * -1); right: 0; }
+.svc-step-n {
+  position: relative; z-index: 1;
+  display: grid; place-items: center; width: 40px; height: 40px;
+  border-radius: 50%; background: var(--ink-900); color: #fff;
+  font-size: var(--fs-small); font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.svc-step-head {
+  margin: var(--sp-4) 0 0;
+  font-size: var(--fs-h4, 1.125rem); font-weight: 600; line-height: 1.2;
+  letter-spacing: -.015em; color: var(--ink-900); text-wrap: balance;
+}
+.svc-step-body {
+  margin: var(--sp-2) 0 0; max-width: 34ch;
+  font-size: var(--fs-small); line-height: 1.5; color: var(--ink-600);
+  text-wrap: pretty;
+}
+@media (max-width: 1023px) { .svc-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) {
+  .svc-steps { grid-template-columns: 1fr; gap: var(--sp-5); }
+  /* the rule is horizontal; in one column there is nothing for it to connect */
+  .svc-step-rule { display: none; }
+}
+
+/* --- service page: why Carmel -------------------------------------------
+   From @reactbits-pro/features-9, tabs dropped (see WhyCarmel.tsx). */
+.why-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-5);
+}
+.why-item {
+  padding: var(--sp-6);
+  border: var(--line); border-radius: var(--r-lg);
+  corner-shape: superellipse(2.6);
+  background: var(--paper-50);
+}
+.why-ic {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border-radius: 14px; corner-shape: superellipse(2.6);
+  background: var(--blue-50); color: var(--blue-700);
+}
+.why-head {
+  margin: var(--sp-4) 0 0;
+  font-size: var(--fs-body); font-weight: 600; line-height: 1.25;
+  letter-spacing: -.01em; color: var(--ink-900);
+}
+.why-body {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-small); line-height: 1.55; color: var(--ink-600);
+  text-wrap: pretty;
+}
+@media (max-width: 640px) { .why-grid { grid-template-columns: 1fr; } }
+
+/* --- service mastheads: headline across the whole plate -------------------
+   The default masthead splits 7/4 so the contents list sits beside the
+   headline. Service headlines are full sentences and that column put them in
+   a narrow ragged stack with half the plate empty beside it, so here the
+   headline takes all twelve and the list drops underneath. */
+.ph-grid-wide > :first-child { grid-column: 1 / span 12; }
+.ph-grid-wide .ph-toc { grid-column: 1 / span 12; }
+.ph-grid-wide .ph-lead { max-width: 62ch; }

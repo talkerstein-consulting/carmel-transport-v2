@@ -525,3 +525,25 @@
   .foot { padding-block: var(--sp-9) var(--sp-6); }
   .foot-top { padding-bottom: var(--sp-7); gap: var(--sp-7); }
 }
+
+/* --- footer globe ---------------------------------------------------------
+   From @reactbits-starter/globe-tw, painted in brand blues on the footer's own
+   navy. Positioned so roughly a third of it sits past the right edge of the
+   page: .foot is the only full-bleed dark band on the site, so it can carry
+   the bleed without a seam. Behind everything (z-index 0; .foot-top and
+   .foot-bottom are z-index 1) and inert. */
+.foot { position: relative; overflow: hidden; }
+.foot-globe {
+  position: absolute; z-index: 0; pointer-events: none;
+  top: 50%; right: 0;
+  width: clamp(420px, 44vw, 720px); aspect-ratio: 1;
+  transform: translate(32%, -50%);
+  opacity: .5;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 74%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 74%);
+}
+.foot-top, .foot-bottom { position: relative; z-index: 1; }
+/* A WebGL canvas has no business competing with the contact details for a
+   375px column, and it is the single most expensive thing on the page. */
+@media (max-width: 1023px) { .foot-globe { display: none; } }
+@media (prefers-reduced-motion: reduce) { .foot-globe { display: none; } }

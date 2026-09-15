@@ -5,6 +5,7 @@ import { MapPin, Phone, PhoneCall, Receipt, Mail, Clock, ShieldCheck, Gauge, Mes
 import { motion, AnimatePresence } from "motion/react"
 import { Cta } from "./Cta"
 import { QuoteSequence } from "./QuoteSequence"
+import Globe from "@/components/globe"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -230,6 +231,28 @@ export function Closing() {
 
       {/* contact footer */}
       <footer className="foot" id="contact" ref={foot}>
+        {/* Bleeds off the right edge on purpose: a globe fully inside the
+            column reads as a picture of a globe, and half out of frame it
+            reads as the world the network sits on. Decorative and inert —
+            aria-hidden, no pointer events, and it never renders on a phone
+            where it would be a WebGL canvas competing with the contact
+            details for a 375px column. */}
+        <div className="foot-globe" aria-hidden="true">
+          <Globe
+            width="auto"
+            height="auto"
+            primaryColor="#6AB0FF"
+            neutralColor="#3E92F5"
+            globeColor="#081D35"
+            atmosphereColor="#6AB0FF"
+            showAtmosphere
+            autoRotateSpeed={0.35}
+            enableZoom={false}
+            interactive={false}
+            arcCount={5}
+          />
+        </div>
+
         <div className="foot-top">
           <div>
             <h2 className="foot-head" data-rise>We're here to help</h2>

@@ -1,3 +1,9 @@
+import type { LucideIcon } from "lucide-react"
+import {
+  Truck, MapPin, ShieldCheck, Headset, Snowflake, Wrench, Warehouse,
+  Network, Gauge, Clock, Lock, Forklift, Thermometer,
+} from "lucide-react"
+
 /* Copy for the four service pages, supplied 2026-09-15. One table rather than
    four page files: every page is the same five movements in the same order, so
    the shape belongs in the template and only the words belong here. */
@@ -17,10 +23,11 @@ export type ServiceContent = {
   /* 02 — what is actually offered */
   offerHead: string
   offer: { head: string; body: string }[]
-  /* 03 — optional middle beat: a flow, a promise, a chain */
-  middle?: { head: string; body: string[]; chain?: string }
-  /* 04 — why Carmel */
-  why: { head: string; body: string }[]
+  /* 03 — the chain, as a stepper. Each service has one; it is the shape of
+     the service in four moves. */
+  middle: { head: string; body: string[]; steps: { title: string; copy: string }[] }
+  /* 04 — why Carmel. Icons are lucide, named here so the page stays data-driven. */
+  why: { head: string; body: string; icon: LucideIcon }[]
   /* 05 — the close */
   closeHead: string
   closeBody: string[]
@@ -48,11 +55,24 @@ export const SERVICE_PAGES: ServiceContent[] = [
       { head: "Specialized containers", body: "Our equipment supports a range of container types, including dry, overweight, refrigerated, open-top, and flat-rack containers." },
       { head: "Full-service support", body: "From scheduling and dispatch to delivery coordination, our team stays involved throughout the move." },
     ],
+    middle: {
+      head: "How a container actually moves",
+      body: [
+        "Drayage looks like one trip and behaves like four. Each handoff has its own appointment, its own paperwork and its own way of going wrong.",
+        "Carmel runs all four rather than handing you between providers at each edge.",
+      ],
+      steps: [
+        { title: "Port", copy: "We take the appointment, clear the paperwork and pull the container off the terminal." },
+        { title: "Pickup", copy: "Company-owned tractor and chassis, matched to the container type rather than to whatever is free." },
+        { title: "Transport", copy: "Monitored on the road, with dispatch reachable the whole way." },
+        { title: "Destination", copy: "Delivery coordinated against your receiving window, not just dropped at the gate." },
+      ],
+    },
     why: [
-      { head: "Asset-based operations", body: "Our own tractors, chassis, and equipment give us greater control over availability and scheduling." },
-      { head: "Close to the ports", body: "Our Kearny, New Jersey location puts our operations near major New York and New Jersey port and terminal facilities." },
-      { head: "Safety first", body: "Carmel maintains a strong focus on driver training, equipment maintenance, and safe cargo handling." },
-      { head: "24/7 support", body: "Our team is available around the clock to monitor shipments and respond when conditions change." },
+      { head: "Asset-based operations", body: "Our own tractors, chassis, and equipment give us greater control over availability and scheduling.", icon: Truck },
+      { head: "Close to the ports", body: "Our Kearny, New Jersey location puts our operations near major New York and New Jersey port and terminal facilities.", icon: MapPin },
+      { head: "Safety first", body: "Carmel maintains a strong focus on driver training, equipment maintenance, and safe cargo handling.", icon: ShieldCheck },
+      { head: "24/7 support", body: "Our team is available around the clock to monitor shipments and respond when conditions change.", icon: Headset },
     ],
     closeHead: "Less uncertainty between port and destination.",
     closeBody: [
@@ -88,13 +108,18 @@ export const SERVICE_PAGES: ServiceContent[] = [
         "Carmel brings transportation and storage together so customers have fewer moving parts to manage.",
         "Our team works around the operational requirements of your shipment while keeping safety and reliability at the center of the process.",
       ],
-      chain: "Terminal → Transportation → Storage → Delivery",
+      steps: [
+        { title: "Terminal", copy: "We collect the reefer and get it plugged and monitored as quickly as the terminal allows." },
+        { title: "Transportation", copy: "Genset chassis and drivers trained on refrigerated loads carry it from there." },
+        { title: "Storage", copy: "If it cannot move on, it holds in our yard — up to 30 reefers at once, still powered." },
+        { title: "Delivery", copy: "It leaves for its destination on your schedule rather than on the terminal's." },
+      ],
     },
     why: [
-      { head: "Specialized equipment", body: "Genset chassis help support the transportation requirements of refrigerated containers." },
-      { head: "Experienced operations", body: "Our team understands that temperature-sensitive freight requires additional attention throughout the move." },
-      { head: "Strategic location", body: "Our New Jersey location provides convenient access to major port and terminal facilities." },
-      { head: "Flexible storage", body: "When your cargo cannot move immediately, refrigerated storage provides another option without forcing the shipment into an unnecessary rush." },
+      { head: "Specialized equipment", body: "Genset chassis help support the transportation requirements of refrigerated containers.", icon: Snowflake },
+      { head: "Experienced operations", body: "Our team understands that temperature-sensitive freight requires additional attention throughout the move.", icon: Wrench },
+      { head: "Strategic location", body: "Our New Jersey location provides convenient access to major port and terminal facilities.", icon: MapPin },
+      { head: "Flexible storage", body: "When your cargo cannot move immediately, refrigerated storage provides another option without forcing the shipment into an unnecessary rush.", icon: Warehouse },
     ],
     closeHead: "Protect the cold chain from port to destination.",
     closeBody: [
@@ -130,13 +155,18 @@ export const SERVICE_PAGES: ServiceContent[] = [
         "A container arriving at a terminal does not help if the next truck is not ready. A rail arrival does not mean much if the final delivery has not been coordinated.",
         "Carmel focuses on the connections between each stage. The goal is simple: keep the handoffs moving.",
       ],
-      chain: "Port → Terminal → Rail → Warehouse → Destination",
+      steps: [
+        { title: "Port", copy: "Containers come off the ocean terminal against its appointment system." },
+        { title: "Rail", copy: "We run the trucking leg into and out of the rail terminals either side." },
+        { title: "Warehouse", copy: "Distribution centres and warehouses are booked in against their own windows." },
+        { title: "Destination", copy: "The last leg is coordinated rather than assumed, which is where most delay is lost." },
+      ],
     },
     why: [
-      { head: "Strategic location", body: "Based in Kearny, New Jersey, Carmel operates close to major port and rail infrastructure." },
-      { head: "Dedicated logistics support", body: "Our team manages the details behind each shipment so customers do not have to coordinate every movement themselves." },
-      { head: "Flexible capacity", body: "Our broader network and equipment resources allow us to support different shipment requirements." },
-      { head: "24/7 operations", body: "Freight does not stop moving after business hours. Neither does our support." },
+      { head: "Strategic location", body: "Based in Kearny, New Jersey, Carmel operates close to major port and rail infrastructure.", icon: MapPin },
+      { head: "Dedicated logistics support", body: "Our team manages the details behind each shipment so customers do not have to coordinate every movement themselves.", icon: Network },
+      { head: "Flexible capacity", body: "Our broader network and equipment resources allow us to support different shipment requirements.", icon: Gauge },
+      { head: "24/7 operations", body: "Freight does not stop moving after business hours. Neither does our support.", icon: Clock },
     ],
     closeHead: "Keep every connection on schedule.",
     closeBody: [
@@ -172,13 +202,17 @@ export const SERVICE_PAGES: ServiceContent[] = [
         "Storage becomes even more useful when it connects directly to transportation. Carmel can support the movement of your container before and after storage, helping reduce the number of separate providers involved in the process.",
         "One operation. Fewer handoffs.",
       ],
-      chain: "Port → Carmel storage → Delivery",
+      steps: [
+        { title: "Port", copy: "We collect from the terminal before demurrage starts building against you." },
+        { title: "Storage", copy: "The container holds in a secured, 24/7-monitored yard minutes from the ports." },
+        { title: "Delivery", copy: "When you are ready it leaves on our own equipment — no repositioning, no second carrier." },
+      ],
     },
     why: [
-      { head: "Near major NJ ports", body: "Strategic positioning helps keep stored containers close to the transportation network." },
-      { head: "Secure facility", body: "24/7 surveillance helps protect your cargo while it is stored." },
-      { head: "Equipment on site", body: "Company-owned tractors, lifting equipment, and multiple chassis support efficient container handling." },
-      { head: "Dry and refrigerated capability", body: "Storage options are available for different container requirements." },
+      { head: "Near major NJ ports", body: "Strategic positioning helps keep stored containers close to the transportation network.", icon: MapPin },
+      { head: "Secure facility", body: "24/7 surveillance helps protect your cargo while it is stored.", icon: Lock },
+      { head: "Equipment on site", body: "Company-owned tractors, lifting equipment, and multiple chassis support efficient container handling.", icon: Forklift },
+      { head: "Dry and refrigerated capability", body: "Storage options are available for different container requirements.", icon: Thermometer },
     ],
     closeHead: "Give your freight room to move.",
     closeBody: [
