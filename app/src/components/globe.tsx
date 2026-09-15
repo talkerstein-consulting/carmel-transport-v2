@@ -9,6 +9,10 @@ import React, {
 } from "react";
 import { cn } from "@/lib/utils";
 
+/* Pinned, and the same URL index.html preloads: an unversioned unpkg URL
+   costs a redirect on every load and can change under us. */
+export const GLOBE_SCRIPT = "https://unpkg.com/globe.gl@2.46.2/dist/globe.gl.min.js";
+
 type GlobeInstance = {
   globeImageUrl: (url: string) => GlobeInstance;
   backgroundColor: (color: string) => GlobeInstance;
@@ -298,7 +302,7 @@ export const Globe: React.FC<GlobeProps> = ({
 
     const loadScripts = async () => {
       try {
-        await loadScript("https://unpkg.com/globe.gl");
+        await loadScript(GLOBE_SCRIPT);
         setIsLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load scripts");

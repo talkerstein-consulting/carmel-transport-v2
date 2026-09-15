@@ -7,6 +7,7 @@ import { ServicesIntro } from "@/components/site/ServicesIntro"
 import { Differentiator } from "@/components/site/Differentiator"
 import HowItWorks4 from "@/components/how-it-works-4"
 import { Closing } from "@/components/site/Closing"
+import { Preloader } from "@/components/site/Preloader"
 
 export default function App() {
   return (
@@ -33,6 +34,9 @@ export default function App() {
 
       {/* film grain — sits over everything, masks compression in the footage */}
       <div className="grain" aria-hidden="true" />
+
+      {/* homepage only: the navy screen that becomes the nav bar */}
+      <Preloader />
     </>
   )
 }

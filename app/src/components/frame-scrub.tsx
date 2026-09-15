@@ -464,6 +464,16 @@ export const FrameScrub = ({
           ? Math.min(1, pulled.n / total)
           : 0;
 
+  /* Progress is broadcast on the window so something outside the component
+     (the homepage preloader) can wait on a sequence without a prop chain
+     through Stage. `src` identifies which scrub is reporting. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(
+      new CustomEvent("framescrub:progress", { detail: { src, ready } }),
+    );
+  }, [src, ready]);
+
   /* Frame fetching is gated on proximity. Every FrameScrub on the page used to
      request its whole sequence the moment it mounted, so the homepage's three
      scrubs pulled 243 webp -- 4.6 MB -- before the hero had finished painting,
