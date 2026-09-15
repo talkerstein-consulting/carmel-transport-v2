@@ -142,7 +142,7 @@ export function Stats() {
            for a year. That is what mixes old and new footage in one scrub:
            some frames come from cache, the rest come fresh. Immutable is the
            right header; changing the URL is how you ship new frames under it. */
-        src="/seq/ship/f-{i}.webp?v=2"
+        src="/seq/ship/f-{i}.webp?v=3"
         count={151}
         pad={3}
         start={1}
