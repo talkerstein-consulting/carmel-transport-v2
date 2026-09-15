@@ -384,15 +384,26 @@
 .foot .foot-wm { background: none; -webkit-text-fill-color: #fff; color: #fff; }
 .foot-brand { display: inline-flex; align-items: center; gap: 10px; }
 .foot-mark { width: 30px; height: 30px; flex: none; object-fit: contain; }
-.foot-nav { display: flex; flex-wrap: wrap; gap: var(--sp-5); margin-inline: auto; }
+.foot-nav {
+  max-width: var(--maxw); margin-inline: auto;
+  display: flex; flex-wrap: wrap; gap: var(--sp-4) var(--sp-5);
+  padding-bottom: var(--sp-5);
+}
 .foot-nav a { font-size: var(--fs-small); color: rgba(255, 255, 255, .74); }
 .foot-nav a:hover { color: #fff; }
-.foot-legal { margin: 0; font-size: var(--fs-caption); color: rgba(255, 255, 255, .54); }
+/* The Talkerstein badge sits where the copyright line was. Its own wrapper
+   is a full-bleed dark band for standalone use; inside this footer it is
+   just an inline block on the row, painted in the footer's muted white. */
+.foot .tcg-footer {
+  --tcg-brand: rgba(255, 255, 255, .62);
+  display: inline-grid; padding: 0; background: none;
+  margin-left: auto;
+}
 
 @media (max-width: 900px) { .foot-details { grid-template-columns: 1fr; } }
 @media (max-width: 767px) {
   .foot-top { grid-template-columns: 1fr; gap: var(--sp-8); }
-  .foot-nav { margin-inline: 0; }
+  .foot-nav { gap: var(--sp-3) var(--sp-4); }
 }
 
 /* --- clouds -> gradient handoff ------------------------------------------ */
@@ -552,7 +563,7 @@
   -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 74%);
   mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 74%);
 }
-.foot-top, .foot-bottom { position: relative; z-index: 1; }
+.foot-top, .foot-nav, .foot-bottom { position: relative; z-index: 1; }
 /* On a phone there is no right column for it to sit behind, so it sits on
    the bottom edge instead: centred, enlarged past the column, most of the
    sphere bled off the bottom. It sits BELOW the copyright line, not behind

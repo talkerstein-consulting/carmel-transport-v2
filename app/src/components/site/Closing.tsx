@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react"
 import { Cta } from "./Cta"
 import { QuoteSequence } from "./QuoteSequence"
 import Globe from "@/components/globe"
+import { TcgBadge } from "./TcgBadge"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -310,20 +311,23 @@ export function Closing() {
           )}
         </div>
 
+        {/* the page links sit above the rule, left; below it, brand and credit */}
+        <nav className="foot-nav" aria-label="Footer">
+          <a href="/services/drayage">Drayage</a>
+          <a href="/services/refrigerated">Refrigerated Containers</a>
+          <a href="/services/intermodal">Intermodal Trucking</a>
+          <a href="/services/storage">Storage Facility</a>
+          <a href="/company">Company</a>
+          <a href="/careers">Careers</a>
+        </nav>
+
         <div className="foot-bottom">
           <a className="foot-brand" href="/" aria-label="Carmel — home">
             <img className="foot-mark" src="/img/carmel-mark.png" alt="" width="30" height="30" decoding="async" />
             <span className="wm foot-wm">Carmel</span>
           </a>
-          <nav className="foot-nav" aria-label="Footer">
-            <a href="/services/drayage">Drayage</a>
-            <a href="/services/refrigerated">Refrigerated Containers</a>
-            <a href="/services/intermodal">Intermodal Trucking</a>
-            <a href="/services/storage">Storage Facility</a>
-            <a href="/company">Company</a>
-            <a href="/careers">Careers</a>
-          </nav>
-          <p className="foot-legal">© 2026 Carmel Transport Inc.</p>
+          {/* the studio credit, in place of the copyright line */}
+          <TcgBadge />
         </div>
       </footer>
     </div>

@@ -1,0 +1,150 @@
+.tcg-footer {
+  --tcg-brand: #c9a961;              /* ← brand colour of this context; static text inherits it */
+  display: grid;
+  place-items: center;
+  padding: 4rem 1rem;
+  background: #0f0f0f;
+  color: var(--tcg-brand);
+  font-family: "Jost", system-ui, sans-serif;
+}
+
+.tcg-plaque {
+  --w: min(520px, 88vw);
+  --pad-x: 18px;
+  --pad-y: 11px;
+  /* timeline */
+  --t1: .22s;                          /* top/bottom hairlines grow from centre */
+  --t2: .16s;                          /* side hairlines drop                    */
+  --t3: .32s;                         /* metal pours in from the frame          */
+  --ease: cubic-bezier(.65,0,.35,1);
+  position: relative;
+  display: block;
+  width: var(--w);
+  padding: var(--pad-y) var(--pad-x);
+  box-sizing: border-box;
+  color: inherit;
+  text-decoration: none;
+  isolation: isolate;
+}
+
+/* text: glyph SVG as mask, painted with currentColor → centred by construction */
+.tcg-text {
+  position: relative; z-index: 3;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1101.46 / 34.94;     /* viewBox of tcg-outline.svg */
+  -webkit-mask: url("/tcg-outline.svg") center / contain no-repeat;
+          mask: url("/tcg-outline.svg") center / contain no-repeat;
+  background: currentColor;
+  filter: none;
+  transition: background-color .22s ease 0s, filter .22s ease 0s;
+}
+
+/* hairlines ---------------------------------------------------------------- */
+.tcg-line { position: absolute; z-index: 2; background: currentColor; pointer-events: none; visibility: hidden; opacity: 1; }
+.tcg-line-top, .tcg-line-bottom {
+  left: 50%; width: 0; height: 1px;
+  transform: translateX(-50%);
+  transition: width var(--t1) var(--ease) var(--t2), visibility 0s linear calc(var(--t1) + var(--t2)), opacity 0s linear 0s;
+}
+.tcg-line-top    { top: 0; }
+.tcg-line-bottom { bottom: 0; }
+.tcg-line-left, .tcg-line-right {
+  top: 0; width: 1px; height: 0;
+  transition: height var(--t2) var(--ease) 0s, visibility 0s linear var(--t2), opacity 0s linear 0s;
+}
+.tcg-line-left  { left: 0; }
+.tcg-line-right { right: 0; }
+
+/* corner dots -------------------------------------------------------------- */
+.tcg-dot {
+  position: absolute; z-index: 2;
+  --in: 5px;                         /* inset from the corner, onto the steel */
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity .12s ease 0s, transform .12s ease 0s, background-color .2s ease 0s;
+  pointer-events: none;
+}
+.tcg-dot-tl { top: var(--in);    left: var(--in); }
+.tcg-dot-tr { top: var(--in);    right: var(--in); }
+.tcg-dot-bl { bottom: var(--in); left: var(--in); }
+.tcg-dot-br { bottom: var(--in); right: var(--in); }
+
+/* metal: full-rect mask minus a centred hole; the hole shrinks to nothing */
+.tcg-metal {
+  position: absolute; inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 5px;
+  visibility: hidden;
+  -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+          mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  -webkit-mask-repeat: no-repeat;  mask-repeat: no-repeat;
+  -webkit-mask-position: 0 0, 50% 50%;  mask-position: 0 0, 50% 50%;
+  -webkit-mask-size: 100% 100%, 104% 120%;  mask-size: 100% 100%, 104% 120%;   /* hole > rect → nothing visible */
+  -webkit-mask-composite: xor;  mask-composite: exclude;
+  transition: mask-size var(--t3) cubic-bezier(.4,0,.2,1) 0s, -webkit-mask-size var(--t3) cubic-bezier(.4,0,.2,1) 0s, visibility 0s linear var(--t3);
+}
+/* MetallicPaint renders a square canvas with the plate letterboxed in the
+   middle strip (mask 1000×72 ≈ plate ratio) — size so the strip == plate */
+.tcg-metal-canvas {
+  position: absolute; left: 0; top: 50%;
+  width: 100%; aspect-ratio: 1 / 1;
+  transform: translateY(-50%);
+}
+.tcg-metal-canvas canvas { width: 100%; height: 100%; display: block; }
+/* faint scrim so the brightest sheen never washes the letters out */
+.tcg-metal::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.22));
+  pointer-events: none;
+}
+
+/* hover: frame draws → dots → metal pours in → text engraves ---------------- */
+.tcg-plaque:hover .tcg-line-top, .tcg-plaque.is-active .tcg-line-top,    .tcg-plaque:focus-visible .tcg-line-top,
+.tcg-plaque:hover .tcg-line-bottom, .tcg-plaque.is-active .tcg-line-bottom, .tcg-plaque:focus-visible .tcg-line-bottom {
+  width: 100%; visibility: visible; opacity: 0;
+  transition-delay: 0s, 0s, calc(var(--t1) + var(--t2));            /* dissolve once the frame closes */
+  transition-duration: var(--t1), 0s, var(--t3);
+}
+.tcg-plaque:hover .tcg-line-left, .tcg-plaque.is-active .tcg-line-left,   .tcg-plaque:focus-visible .tcg-line-left,
+.tcg-plaque:hover .tcg-line-right, .tcg-plaque.is-active .tcg-line-right,  .tcg-plaque:focus-visible .tcg-line-right {
+  height: 100%; visibility: visible; opacity: 0;
+  transition-delay: var(--t1), 0s, calc(var(--t1) + var(--t2));
+  transition-duration: var(--t2), 0s, var(--t3);
+}
+.tcg-plaque:hover .tcg-dot, .tcg-plaque.is-active .tcg-dot, .tcg-plaque:focus-visible .tcg-dot {
+  opacity: 1; transform: scale(1);
+  background-color: #14161a;         /* end dark on the steel */
+  transition:
+    opacity .15s ease var(--t1),
+    transform .2s cubic-bezier(.2,.9,.3,1.6) var(--t1),
+    background-color .2s ease calc(var(--t1) + var(--t2) + var(--t3) * .8);
+}
+.tcg-plaque:hover .tcg-dot-bl, .tcg-plaque.is-active .tcg-dot-bl, .tcg-plaque:hover .tcg-dot-br, .tcg-plaque.is-active .tcg-dot-br {
+  transition-delay: calc(var(--t1) + var(--t2)), calc(var(--t1) + var(--t2)), calc(var(--t1) + var(--t2) + var(--t3) * .8);
+}
+.tcg-plaque:hover .tcg-metal, .tcg-plaque.is-active .tcg-metal, .tcg-plaque:focus-visible .tcg-metal {
+  -webkit-mask-size: 100% 100%, 0% 0%;  mask-size: 100% 100%, 0% 0%;   /* hole gone → all visible */
+  visibility: visible;
+  transition-delay: calc(var(--t1) + var(--t2)), calc(var(--t1) + var(--t2)), 0s;
+}
+.tcg-plaque:hover .tcg-text, .tcg-plaque.is-active .tcg-text, .tcg-plaque:focus-visible .tcg-text {
+  background-color: #ffffff;
+  /* debossed: tight dark shadow guarantees contrast on any metal shade */
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.85)) drop-shadow(0 0 1px rgba(0,0,0,.6));
+  transition-delay: calc(var(--t1) + var(--t2) + var(--t3) * .6);
+}
+
+@media (max-width: 640px) {
+  .tcg-plaque { --w: min(520px, 94vw); --pad-x: 10px; }
+  .tcg-dot { --in: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tcg-line, .tcg-dot, .tcg-metal, .tcg-text { transition: none !important; }
+}
