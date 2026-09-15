@@ -22,7 +22,9 @@ export type ServiceContent = {
   openBody: string[]
   /* 02 — what is actually offered */
   offerHead: string
-  offer: { head: string; body: string }[]
+  /* Each offer card carries its own photograph. img is the rendered file;
+     prompt is kept beside it so a re-roll does not need the prompt doc. */
+  offer: { head: string; body: string; img: string; prompt: string }[]
   /* 03 — the chain, as a stepper. Each service has one; it is the shape of
      the service in four moves. */
   middle: { head: string; body: string[]; steps: { title: string; copy: string }[] }
@@ -50,10 +52,10 @@ export const SERVICE_PAGES: ServiceContent[] = [
     ],
     offerHead: "Built for everyday container movement",
     offer: [
-      { head: "Import and export drayage", body: "Move containers between ports, terminals, rail facilities, warehouses, and final destinations with a carrier that understands the demands of container transportation." },
-      { head: "Port-to-destination delivery", body: "We handle the critical first and final miles between major terminals and your receiving location." },
-      { head: "Specialized containers", body: "Our equipment supports a range of container types, including dry, overweight, refrigerated, open-top, and flat-rack containers." },
-      { head: "Full-service support", body: "From scheduling and dispatch to delivery coordination, our team stays involved throughout the move." },
+      { head: "Import and export drayage", body: "Move containers between ports, terminals, rail facilities, warehouses, and final destinations with a carrier that understands the demands of container transportation.", img: "/img/services/cards/drayage-1.jpg", prompt: "Two brand new shipping containers being exchanged on a port apron, one lifting onto a gleaming new chassis by a reach stacker, the other already seated." },
+      { head: "Port-to-destination delivery", body: "We handle the critical first and final miles between major terminals and your receiving location.", img: "/img/services/cards/drayage-2.jpg", prompt: "A brand new day-cab tractor and container chassis pulling away from a terminal gate down a freshly paved access road, open road ahead." },
+      { head: "Specialized containers", body: "Our equipment supports a range of container types, including dry, overweight, refrigerated, open-top, and flat-rack containers.", img: "/img/services/cards/drayage-3.jpg", prompt: "Four brand new specialised containers square to camera: a standard dry, an open-top with its tarpaulin furled, a flat-rack, and a white refrigerated unit." },
+      { head: "Full-service support", body: "From scheduling and dispatch to delivery coordination, our team stays involved throughout the move.", img: "/img/services/cards/drayage-4.jpg", prompt: "Close three-quarter detail of a brand new tractor cab and the head of its container chassis, king pin and air lines crisp and clean." },
     ],
     middle: {
       head: "How a container actually moves",
@@ -96,10 +98,10 @@ export const SERVICE_PAGES: ServiceContent[] = [
     ],
     offerHead: "Refrigerated transportation, built around the load",
     offer: [
-      { head: "Genset chassis", body: "Our fleet includes Genset-equipped chassis designed to support refrigerated container transportation." },
-      { head: "Trained drivers", body: "Our drivers are trained to handle refrigerated cargo and the operational requirements that come with it." },
-      { head: "Refrigerated storage", body: "Through Carmel USA Intermodal Logistics Inc., refrigerated containers can be stored securely when additional time is needed between transportation steps." },
-      { head: "Up to 30 refrigerated containers", body: "Our storage facility is equipped to accommodate up to 30 refrigerated containers simultaneously." },
+      { head: "Genset chassis", body: "Our fleet includes Genset-equipped chassis designed to support refrigerated container transportation.", img: "/img/services/cards/refrigerated-1.jpg", prompt: "Close detail of a spotless stainless steel Genset power pack on a brand new refrigerated container chassis, control panel and gauges crisp." },
+      { head: "Trained drivers", body: "Our drivers are trained to handle refrigerated cargo and the operational requirements that come with it.", img: "/img/services/cards/refrigerated-2.jpg", prompt: "A brand new white refrigerated container seated on a Genset chassis at a clean yard bay, reefer plug connected, faint cold vapour at the vents." },
+      { head: "Refrigerated storage", body: "Through Carmel USA Intermodal Logistics Inc., refrigerated containers can be stored securely when additional time is needed between transportation steps.", img: "/img/services/cards/refrigerated-3.jpg", prompt: "A row of brand new white refrigerated containers in a storage yard, each plugged into clean power posts, receding in perspective." },
+      { head: "Up to 30 refrigerated containers", body: "Our storage facility is equipped to accommodate up to 30 refrigerated containers simultaneously.", img: "/img/services/cards/refrigerated-4.jpg", prompt: "Elevated wide of a refrigerated storage yard: roughly thirty brand new white reefer containers in neat ranks with power posts between them." },
     ],
     middle: {
       head: "A complete refrigerated solution",
@@ -143,10 +145,10 @@ export const SERVICE_PAGES: ServiceContent[] = [
     ],
     offerHead: "Built around your network",
     offer: [
-      { head: "Ocean terminal drayage", body: "Move containers between ocean terminals and warehouses, distribution centers, and other destinations." },
-      { head: "Rail terminal transportation", body: "Coordinate the critical trucking connection between rail terminals and the next stage of your shipment." },
-      { head: "Container delivery", body: "Get freight where it needs to go with dependable transportation and delivery coordination." },
-      { head: "Shipment monitoring", body: "Our team keeps track of shipments and works proactively to address issues before they become larger problems." },
+      { head: "Ocean terminal drayage", body: "Move containers between ocean terminals and warehouses, distribution centers, and other destinations.", img: "/img/services/cards/intermodal-1.jpg", prompt: "A brand new container chassis leaving an ocean terminal under ship-to-shore gantry cranes, the crane legs framing the exit lane." },
+      { head: "Rail terminal transportation", body: "Coordinate the critical trucking connection between rail terminals and the next stage of your shipment.", img: "/img/services/cards/intermodal-2.jpg", prompt: "A brand new tractor and chassis alongside well-maintained intermodal rail cars stacked with immaculate containers, the rail line running away." },
+      { head: "Container delivery", body: "Get freight where it needs to go with dependable transportation and delivery coordination.", img: "/img/services/cards/intermodal-3.jpg", prompt: "A brand new container chassis backing onto a clean distribution centre dock, dock doors and levellers crisp and new." },
+      { head: "Shipment monitoring", body: "Our team keeps track of shipments and works proactively to address issues before they become larger problems.", img: "/img/services/cards/intermodal-4.jpg", prompt: "Wide elevated view of an intermodal yard at dusk, ordered rows of brand new containers and chassis lanes, discreet LED mast lighting." },
     ],
     middle: {
       head: "More control between every handoff",
@@ -190,10 +192,10 @@ export const SERVICE_PAGES: ServiceContent[] = [
     ],
     offerHead: "Secure storage for different container needs",
     offer: [
-      { head: "Dry containers", body: "Storage solutions for standard dry containers when your freight needs additional time before delivery." },
-      { head: "Refrigerated containers", body: "Dedicated capacity for refrigerated containers, supported by Carmel's refrigerated transportation capabilities." },
-      { head: "Short- and long-term storage", body: "Keep containers on-site when schedules change or additional storage time is required." },
-      { head: "Easy access to transportation", body: "Our location near major New Jersey ports helps reduce unnecessary repositioning when your container is ready to move." },
+      { head: "Dry containers", body: "Storage solutions for standard dry containers when your freight needs additional time before delivery.", img: "/img/services/cards/storage-1.jpg", prompt: "Neat ranks of brand new dry shipping containers stacked two high in a clean storage yard, bright new line markings on fresh asphalt." },
+      { head: "Refrigerated containers", body: "Dedicated capacity for refrigerated containers, supported by Carmel's refrigerated transportation capabilities.", img: "/img/services/cards/storage-2.jpg", prompt: "Brand new white refrigerated containers in a dedicated bay of a storage yard, plugged into clean power posts, dry containers behind." },
+      { head: "Short- and long-term storage", body: "Keep containers on-site when schedules change or additional storage time is required.", img: "/img/services/cards/storage-3.jpg", prompt: "Wide of a container storage yard behind a clean palisade security fence with a modern camera mast, brand new containers in ordered rows." },
+      { head: "Easy access to transportation", body: "Our location near major New Jersey ports helps reduce unnecessary repositioning when your container is ready to move.", img: "/img/services/cards/storage-4.jpg", prompt: "A brand new reach stacker lifting an immaculate container in a storage yard, a waiting tractor and chassis in the foreground." },
     ],
     middle: {
       head: "Storage and transportation under one roof",

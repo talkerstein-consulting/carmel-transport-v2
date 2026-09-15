@@ -16,30 +16,35 @@ import { PageShell, PageBlock } from "./PageShell"
 const OPENINGS = [
   {
     title: "CDL-A Container Driver",
+    img: "/img/careers/driver.jpg",
     type: "Full time",
     place: "Kearny, NJ",
     body: "Local port runs to NY/NJ terminals, home daily. Class A CDL, TWIC card, and two years of drayage or intermodal experience.",
   },
   {
     title: "Dispatcher",
+    img: "/img/careers/dispatcher.jpg",
     type: "Full time",
     place: "Kearny, NJ",
     body: "Build the day's moves, work the terminal appointment systems, and keep drivers and customers ahead of the delays. Drayage experience strongly preferred.",
   },
   {
     title: "Diesel Mechanic",
+    img: "/img/careers/mechanic.jpg",
     type: "Full time",
     place: "Kearny, NJ",
     body: "Preventative maintenance and repair across our tractors, chassis and Genset units. Own tools, brake certification an advantage.",
   },
   {
     title: "Customer Service Representative",
+    img: "/img/careers/csr.jpg",
     type: "Full time",
     place: "Kearny, NJ",
     body: "First point of contact for accounts: quotes, status calls and problem-solving. Freight or logistics background welcome, not required.",
   },
   {
     title: "Owner-Operator",
+    img: "/img/careers/owner-operator.jpg",
     type: "Contract",
     place: "NY / NJ ports",
     body: "Bring your own tractor and run consistent port work off our chassis pool. Settlement weekly, fuel card and plates available.",
@@ -85,20 +90,32 @@ export default function Careers() {
               anyway — we hire ahead of the posting more often than not.
             </p>
 
-            <div className="pg-list pg-jobs">
+            {/* Full cards, not list rows. A role is a thing someone decides
+                about, and a row of text gave the photograph nowhere to go and
+                the two facts that actually filter the list — where it is and
+                whether it is a job or a contract — no prominence at all.
+                Those two are badges now, above the title where they are read
+                before the prose rather than after it. */}
+            <div className="job-grid">
               {OPENINGS.map((o) => (
                 <a
-                  className="pg-list-row pg-job"
+                  className="job-card"
                   href={"mailto:quotes@carmel-usa.com?subject=" + encodeURIComponent("Application — " + o.title)}
                   key={o.title}
                   data-rise
                 >
-                  <span className="pg-list-name">
-                    {o.title}
-                    <span className="pg-job-meta">{o.type} · {o.place}</span>
+                  <span className="job-media">
+                    <img src={o.img} alt="" loading="lazy" decoding="async" />
                   </span>
-                  <span className="pg-list-body">{o.body}</span>
-                  <span className="pg-list-go pg-job-go">Apply</span>
+                  <span className="job-body">
+                    <span className="job-badges">
+                      <span className={"job-badge" + (o.type === "Contract" ? " is-contract" : "")}>{o.type}</span>
+                      <span className="job-badge is-place">{o.place}</span>
+                    </span>
+                    <span className="job-title">{o.title}</span>
+                    <span className="job-copy">{o.body}</span>
+                    <span className="job-go">Apply</span>
+                  </span>
                 </a>
               ))}
             </div>

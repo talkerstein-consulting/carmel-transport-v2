@@ -578,3 +578,50 @@
 .ph-grid-wide > :first-child { grid-column: 1 / span 12; }
 .ph-grid-wide .ph-toc { grid-column: 1 / span 12; }
 .ph-grid-wide .ph-lead { max-width: 62ch; }
+
+/* --- careers: openings as full cards -------------------------------------
+   Picture, then the two filtering facts as badges, then the role. The badges
+   sit above the title because "Kearny, NJ" and "Contract" are what someone
+   scans for before they read a word of the description. */
+.job-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-5);
+}
+.job-card {
+  display: flex; flex-direction: column; min-width: 0;
+  border: var(--line); border-radius: var(--r-lg);
+  corner-shape: superellipse(2.6);
+  background: var(--paper-50); overflow: hidden;
+  color: inherit;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.job-card:hover { border-color: var(--ink-900); transform: translateY(-2px); }
+.job-card:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 3px; }
+.job-media { display: block; aspect-ratio: 16 / 10; background: var(--paper-200); overflow: hidden; }
+.job-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.job-body { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-5); }
+.job-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.job-badge {
+  display: inline-flex; align-items: center; padding: 4px 10px;
+  border-radius: 999px; border: 1px solid var(--blue-200);
+  background: var(--blue-50); color: var(--blue-700);
+  font-size: var(--fs-caption); font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+/* a contract is a different proposition from a job; it should not look the same */
+.job-badge.is-contract { border-color: var(--paper-300); background: var(--paper-200); color: var(--ink-700); }
+.job-badge.is-place { border-color: var(--paper-300); background: transparent; color: var(--ink-600); text-transform: none; letter-spacing: 0; }
+.job-title {
+  margin-top: 2px;
+  font-size: var(--fs-body); font-weight: 600; line-height: 1.25;
+  letter-spacing: -.01em; color: var(--ink-900); text-wrap: balance;
+}
+.job-copy { font-size: var(--fs-small); line-height: 1.55; color: var(--ink-600); text-wrap: pretty; }
+.job-go {
+  margin-top: auto; padding-top: var(--sp-3);
+  font-size: var(--fs-small); font-weight: 600; color: var(--blue-700);
+}
+.job-card:hover .job-go { color: var(--ink-900); }
+@media (max-width: 1023px) { .job-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px)  { .job-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .job-card, .job-card:hover { transition: none; transform: none; } }
