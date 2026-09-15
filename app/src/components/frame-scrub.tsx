@@ -44,6 +44,10 @@ export interface FrameScrubProps {
       value is clamped to whatever overflow the crop actually has. Used to
       line a subject up with the subject of the sequence that follows it. */
   offsetX?: number;
+  /** Extra scale on top of the cover fit (1 = none). A cover crop of a 16:9
+      frame on a 16:9 viewport has no slack at all, so `offsetX` clamps to
+      nothing; a few percent of overscan buys the room the pan needs. */
+  overscan?: number;
   /** Fraction of the scrub over which `offsetX` eases in, measured from the
       end. 0.25 means the pan is nil until 75% and fully applied at the last
       frame, so it reads as drift rather than as a shifted picture. */
@@ -368,6 +372,7 @@ export const FrameScrub = ({
   frameStart = 0,
   offsetX = 0,
   offsetXRamp = 0.25,
+  overscan = 1,
   width = 1020,
   height = 0.72,
   borderRadius = 20,
@@ -692,9 +697,9 @@ export const FrameScrub = ({
         const f = pick(i);
         if (!f || alpha <= 0.002) return;
         const scale =
-          fit === "contain"
+          (fit === "contain"
             ? Math.min(cw / f.w, ch / f.h)
-            : Math.max(cw / f.w, ch / f.h);
+            : Math.max(cw / f.w, ch / f.h)) * Math.max(1, overscan);
         const dw = f.w * scale;
         const dh = f.h * scale;
         // Pan, eased in over the tail of the scrub, then clamped to the slack
@@ -855,6 +860,7 @@ export const FrameScrub = ({
       lag,
       offsetX,
       offsetXRamp,
+      overscan,
       punch,
       slices,
       feed,

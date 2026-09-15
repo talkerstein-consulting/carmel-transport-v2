@@ -46,6 +46,36 @@ export function Stage() {
   // resize because the intro's height is a breakpoint away from changing.
   const [span, setSpan] = useState(1.9 / STAGE_RUNWAY_VH)
 
+  /* MATCH CUT into the ship, measured per viewport rather than written down.
+     The truck's container sits at 51.76% of frame width on the last hero
+     frame; the Carmel container on the ship's deck sits at 46.37% and holds
+     there through the handoff. That gap is a fraction of the DRAWN frame,
+     and the drawn frame is wider than the viewport by whatever the cover
+     crop overshoots -- so the pan expressed as a fraction of the viewport
+     changes with the aspect ratio, and a single number was only right on the
+     screen it was measured on. Worse, on a 16:9 screen the crop has no slack
+     at all and the pan clamped to nothing: the truck sat 5% right of the ship
+     at 1440p. So: compute the pan in pixels from the real draw size, and ask
+     for just enough overscan that the crop has room to carry it. The +0.8%
+     is the deliberate nudge right that was asked for (2% of the drawn frame,
+     about 29px at 1440p), not a measurement. */
+  const [cut, setCut] = useState({ offsetX: -0.0459, overscan: 1 })
+  useLayoutEffect(() => {
+    const FRAME_W = 1920, FRAME_H = 1080
+    const TRUCK_X = 0.5176, SHIP_X = 0.4637, NUDGE = 0.02
+    const read = () => {
+      const cw = window.innerWidth, ch = window.innerHeight
+      if (cw < 1 || ch < 1) return
+      const dw = FRAME_W * Math.max(cw / FRAME_W, ch / FRAME_H)
+      const pan = (SHIP_X - TRUCK_X + NUDGE) * dw
+      const overscan = Math.max(1, (cw + 2 * Math.abs(pan)) / dw)
+      setCut({ offsetX: pan / cw, overscan })
+    }
+    read()
+    window.addEventListener("resize", read)
+    return () => window.removeEventListener("resize", read)
+  }, [])
+
   useLayoutEffect(() => {
     const read = () => {
       const copy = document.querySelector<HTMLElement>(".reveal")
@@ -120,15 +150,9 @@ export function Stage() {
         start={1}
         variant="plain"
         fit="cover"
-        /* MATCH CUT into the ship. The truck's container sits at 51.76% of
-           frame width on the last frame; the Carmel container on the ship's
-           deck sits at 46.37% and holds there right through the handoff. Both
-           are static, so the gap is a constant 5.39%. Dead-centre alignment is
-           therefore -0.0539; this sits 0.8% to the right of that by choice,
-           which is the nudge that was asked for, not a measurement error.
-           Re-measure both if either sequence is re-rendered; the number is
-           footage-specific, not a magic constant. */
-        offsetX={-0.0459}
+        /* see `cut` above */
+        offsetX={cut.offsetX}
+        overscan={cut.overscan}
         offsetXRamp={0.25}
         height={0.95}
         width={4000}
