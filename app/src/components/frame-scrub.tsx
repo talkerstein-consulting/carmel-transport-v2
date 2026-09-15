@@ -29,6 +29,15 @@ export interface FrameScrubProps {
   smooth?: number;
   /** How each frame fills the stage. */
   fit?: "cover" | "contain";
+  /** Pan the frame horizontally, as a fraction of stage width (+ = right).
+      Shifts INSIDE the cover crop, so nothing is exposed at the edge: the
+      value is clamped to whatever overflow the crop actually has. Used to
+      line a subject up with the subject of the sequence that follows it. */
+  offsetX?: number;
+  /** Fraction of the scrub over which `offsetX` eases in, measured from the
+      end. 0.25 means the pan is nil until 75% and fully applied at the last
+      frame, so it reads as drift rather than as a shifted picture. */
+  offsetXRamp?: number;
   /** Maximum stage width in pixels. */
   width?: number;
   /** Stage height as a fraction of the viewport. */
@@ -345,6 +354,8 @@ export const FrameScrub = ({
   scrollLength = 3,
   smooth = 0.18,
   fit = "cover",
+  offsetX = 0,
+  offsetXRamp = 0.25,
   width = 1020,
   height = 0.72,
   borderRadius = 20,
@@ -666,8 +677,16 @@ export const FrameScrub = ({
             : Math.max(cw / f.w, ch / f.h);
         const dw = f.w * scale;
         const dh = f.h * scale;
+        // Pan, eased in over the tail of the scrub, then clamped to the slack
+        // the cover crop leaves. Without the clamp a wide viewport (less
+        // overflow) would slide the picture off its own edge and show the
+        // background colour down one side.
+        const ramp = clamp(offsetXRamp, 0.0001, 1);
+        const lead = clamp((clamp(p, 0, 1) - (1 - ramp)) / ramp, 0, 1);
+        const slack = Math.max(0, (dw - cw) / 2);
+        const pan = clamp(offsetX * lead * cw, -slack, slack);
         ctx.globalAlpha = clamp(alpha, 0, 1);
-        ctx.drawImage(f.img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+        ctx.drawImage(f.img, (cw - dw) / 2 + pan, (ch - dh) / 2, dw, dh);
         ctx.globalAlpha = 1;
       };
 
@@ -812,6 +831,8 @@ export const FrameScrub = ({
       fit,
       grain,
       lag,
+      offsetX,
+      offsetXRamp,
       punch,
       slices,
       feed,

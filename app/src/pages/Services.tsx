@@ -18,7 +18,7 @@ const SERVICES = [
     id: "drayage",
     n: "01",
     name: "Drayage",
-    img: "/img/services/drayage.jpg",
+    img: "/img/covers/drayage.jpg",
     body: [
       "We pride ourselves on our superior drayage services. Our goal is to ensure seamless and prompt transportation of your goods, by making sure they arrive at destination in the same condition they left the port, thus reducing the level of concern to a minimum.",
       "Trust in our expertise to keep your goods safe and deliver them with a minimum cost to you.",
@@ -28,7 +28,7 @@ const SERVICES = [
     id: "refrigerated",
     n: "02",
     name: "Refrigerated Containers",
-    img: "/img/services/refrigerated.jpg",
+    img: "/img/covers/refrigerated.jpg",
     body: [
       "Carmel USA delivers a comprehensive solution for both storage and transport of refrigerated containers. Our drivers are proficiently trained in transporting refrigerated items, we hold a substantial number of Genset chassis, and through our associates at Carmel USA Intermodal Logistics Inc, we also extend storage solutions for refrigerated containers. The storage facility is outfitted to accommodate up to 30 refrigerated containers simultaneously.",
     ],
@@ -37,7 +37,7 @@ const SERVICES = [
     id: "intermodal",
     n: "03",
     name: "Intermodal Trucking",
-    img: "/img/services/intermodal.jpg",
+    img: "/img/covers/intermodal.jpg",
     body: [
       "At Carmel USA, we specialize in seamless logistics for ocean and rail container terminals, ensuring your goods reach their destination timely and securely. Our logistics experts manage each shipment with precision, guaranteeing safe handling and prompt deliveries. With our expansive network and custom solutions, we connect you to vital commercial hubs effortlessly. With us, your cargo isn't just delivered - it's handled with care and reliability.",
     ],
@@ -46,7 +46,7 @@ const SERVICES = [
     id: "storage",
     n: "04",
     name: "Storage Facility",
-    img: "/img/services/storage.jpg",
+    img: "/img/covers/storage.jpg",
     body: [
       "Carmel USA offers integrated storage for all types of containers, promising notable savings on storage fees. Situated conveniently near NJ ports, our fully-secured site with 24/7 surveillance offers customers peace of mind against cargo theft. Leveraging a broad fleet featuring company-owned tractors, advanced lifting equipment, and a variety of chassis, we assure prompt, secure services.",
     ],

@@ -86,6 +86,15 @@ export function Stage() {
         start={1}
         variant="plain"
         fit="cover"
+        /* MATCH CUT into the ship. The truck's container sits at 51.76% of
+           frame width on the last frame; the Carmel container on the ship's
+           deck sits at 46.37% and holds there right through the handoff. Both
+           are static, so the gap is a constant 5.39% — pan the hero left by
+           exactly that and the container the truck is carrying becomes the
+           container on the ship. Re-measure both if either sequence is
+           re-rendered; the number is footage-specific, not a magic constant. */
+        offsetX={-0.0539}
+        offsetXRamp={0.25}
         height={0.95}
         width={4000}
         borderRadius={0}

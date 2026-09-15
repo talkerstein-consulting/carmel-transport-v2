@@ -14,10 +14,10 @@ gsap.registerPlugin(ScrollTrigger)
    backdrop is dropped — the footage is the backdrop here. */
 
 const SERVICES = [
-  { icon: Truck,      title: "Drayage",       description: "Port to door, same day",            href: "/services/drayage",    img: "/img/services/drayage.jpg" },
-  { icon: Snowflake,  title: "Refrigerated",  description: "Reefer transport and 30-slot yard", href: "/services/refrigerated", img: "/img/services/refrigerated.jpg" },
-  { icon: TrainFront, title: "Intermodal",    description: "Ocean and rail terminals",          href: "/services/intermodal",   img: "/img/services/intermodal.jpg" },
-  { icon: Warehouse,  title: "Storage",       description: "Secured container yard in Kearny",  href: "/services/storage",      img: "/img/services/storage.jpg" },
+  { icon: Truck,      title: "Drayage",       description: "Port to door, same day",            href: "/services/drayage",    img: "/img/covers/drayage.jpg" },
+  { icon: Snowflake,  title: "Refrigerated",  description: "Reefer transport and 30-slot yard", href: "/services/refrigerated", img: "/img/covers/refrigerated.jpg" },
+  { icon: TrainFront, title: "Intermodal",    description: "Ocean and rail terminals",          href: "/services/intermodal",   img: "/img/covers/intermodal.jpg" },
+  { icon: Warehouse,  title: "Storage",       description: "Secured container yard in Kearny",  href: "/services/storage",      img: "/img/covers/storage.jpg" },
 ]
 
 const LINKS = [

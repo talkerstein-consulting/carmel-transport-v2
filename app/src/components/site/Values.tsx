@@ -13,19 +13,19 @@ import { ShieldCheck, Gauge, MessagesSquare } from "lucide-react"
 const VALUES = [
   {
     icon: ShieldCheck,
-    img: "/img/services/storage.jpg",
+    img: "/img/covers/storage.jpg",
     head: "Reliable & Protected",
     body: "You benefit from our history of delivering effective solutions, regardless of complexity. Our proven track record speaks for our ability to handle any situation with proficiency and expertise.",
   },
   {
     icon: Gauge,
-    img: "/img/services/drayage.jpg",
+    img: "/img/covers/drayage.jpg",
     head: "Fast Delivery",
     body: "Take advantage of our strategic location near the New York and New Jersey ports. Rely on our skilled drivers for timely and secure delivery of your cargo.",
   },
   {
     icon: MessagesSquare,
-    img: "/img/services/intermodal.jpg",
+    img: "/img/covers/intermodal.jpg",
     head: "Outstanding Client Support",
     body: "We are prepared to channel our enthusiasm for problem-solving towards enhancing your business operations.",
   },

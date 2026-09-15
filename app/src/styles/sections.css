@@ -335,6 +335,16 @@
 }
 .foot-actions { margin: var(--sp-6) 0 0; }
 
+/* The contact facts sit in the left column and the heading in the right: the
+   details are what someone came to the footer for, and on the left they are
+   clear of the globe bleeding in off the right edge. DOM order stays
+   heading-first for reading order; only the two-column layout reorders, so
+   the single-column stack below still leads with the heading. */
+@media (min-width: 901px) {
+  .foot-top > :first-child { order: 2; }
+  .foot-top > .foot-details { order: 1; }
+}
+
 /* contact: a grid of equal facts, icon + label + value */
 .foot-details {
   margin: 0; padding: 0; list-style: none;

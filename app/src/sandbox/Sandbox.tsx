@@ -17,7 +17,7 @@ function SquircleCard() {
     <article className="sb-card">
       <div className="sb-card-stage">
         <div className="sb-card-frame">
-          <img src="/img/services/drayage.jpg" alt="" />
+          <img src="/img/covers/drayage.jpg" alt="" />
         </div>
         <div className="sb-card-pill">
           <span className="sb-card-pill-icon" aria-hidden="true">

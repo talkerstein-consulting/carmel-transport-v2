@@ -241,7 +241,9 @@ export function Closing() {
           <Globe
             width="auto"
             height="auto"
-            primaryColor="#6AB0FF"
+            /* arcs (and labels) take the brand orange; the sphere, land dots
+               and atmosphere stay in the footer's blues */
+            primaryColor="#FE9B23"
             neutralColor="#3E92F5"
             globeColor="#081D35"
             atmosphereColor="#6AB0FF"

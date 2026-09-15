@@ -42,10 +42,10 @@ const SECTIONS = [
 ]
 
 const SERVICES = [
-  { name: "Drayage",                 img: "/img/services/drayage.jpg",      href: "/services#drayage",      body: "We provide a full range asset-based drayage and full transload services" },
-  { name: "Refrigerated Containers", img: "/img/services/refrigerated.jpg", href: "/services#refrigerated", body: "We offer all-encompassing storage and transit of refrigerated containers" },
-  { name: "Intermodal Trucking",     img: "/img/services/intermodal.jpg",   href: "/services#intermodal",   body: "We operate to ocean and rail container terminals, ensuring your goods reach their destination" },
-  { name: "Storage Facility",        img: "/img/services/storage.jpg",      href: "/services#storage",      body: "We provide an all-inclusive storage solution for all sizes of dry-box and refrigerated containers" },
+  { name: "Drayage",                 img: "/img/covers/drayage.jpg",      href: "/services/drayage",      body: "We provide a full range asset-based drayage and full transload services" },
+  { name: "Refrigerated Containers", img: "/img/covers/refrigerated.jpg", href: "/services/refrigerated", body: "We offer all-encompassing storage and transit of refrigerated containers" },
+  { name: "Intermodal Trucking",     img: "/img/covers/intermodal.jpg",   href: "/services/intermodal",   body: "We operate to ocean and rail container terminals, ensuring your goods reach their destination" },
+  { name: "Storage Facility",        img: "/img/covers/storage.jpg",      href: "/services/storage",      body: "We provide an all-inclusive storage solution for all sizes of dry-box and refrigerated containers" },
 ]
 
 export default function Company() {
