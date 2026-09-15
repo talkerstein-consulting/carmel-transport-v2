@@ -2,9 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { MapPin, Phone, PhoneCall, Receipt, Mail, Clock, ShieldCheck, Gauge, MessagesSquare, ChevronDown } from "lucide-react"
-import { motion, AnimatePresence } from "motion/react"
 import { Cta } from "./Cta"
-import { QuoteSequence } from "./QuoteSequence"
 import Globe from "@/components/globe"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -85,9 +83,6 @@ export function Closing() {
      four of the six facts from assistive tech for no reason. */
   const [phone, setPhone] = useState(false)
   const [open, setOpen] = useState(0)
-  /* The CTA opens the form in place rather than handing off to mailto or to
-     another page. The ask and the answer share one container. */
-  const [asking, setAsking] = useState(false)
   useEffect(() => {
     const q = window.matchMedia("(max-width: 767px)")
     const sync = () => setPhone(q.matches)
@@ -169,48 +164,14 @@ export function Closing() {
           <img src="/img/hero.jpg" alt="" loading="lazy" decoding="async" />
         </div>
         <div className="cta-inner">
-          {/* The pitch and the form are the same container: the button does not
-              navigate, it swaps what the plate is showing. Height animates from
-              the measured content on both sides so the plate grows into the
-              form rather than snapping, and AnimatePresence with mode="wait"
-              keeps the two from overlapping mid-swap. */}
-          <AnimatePresence mode="wait" initial={false}>
-            {!asking ? (
-              <motion.div
-                key="pitch"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <p className="eyebrow cta-eyebrow" data-rise>Let's keep moving.</p>
-                <h2 className="cta-head" data-rise>Ready to move freight forward?</h2>
-                <p className="cta-lead" data-rise>
-                  Tell us where your cargo needs to go. We'll help you get it there.
-                </p>
-                <p className="cta-actions" data-rise>
-                  <Cta onClick={(e) => { e.preventDefault(); setAsking(true) }}>Request a quote</Cta>
-                </p>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="form"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                className="cta-form"
-              >
-                <div className="cta-form-top">
-                  <p className="eyebrow cta-eyebrow">Request a quote</p>
-                  <button type="button" className="cta-form-back" onClick={() => setAsking(false)}>
-                    Back
-                  </button>
-                </div>
-                <QuoteSequence />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <p className="eyebrow cta-eyebrow" data-rise>Let's keep moving.</p>
+          <h2 className="cta-head" data-rise>Ready to move freight forward?</h2>
+          <p className="cta-lead" data-rise>
+            Tell us where your cargo needs to go. We'll help you get it there.
+          </p>
+          <p className="cta-actions" data-rise>
+            <Cta href="/contact">Request a quote</Cta>
+          </p>
 
           <ul className="cta-reasons" data-rise>
             {REASONS.map((r) => {
@@ -263,7 +224,7 @@ export function Closing() {
               services? Our knowledgeable team is ready to help.
             </p>
             <p className="foot-actions" data-rise>
-              <Cta href="mailto:quotes@carmel-usa.com">Get in touch</Cta>
+              <Cta href="/contact">Get in touch</Cta>
             </p>
           </div>
 

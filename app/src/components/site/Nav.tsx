@@ -28,6 +28,11 @@ const LINKS = [
 
 const EASE = [0.4, 0, 0.2, 1] as const
 
+/* Every "Request a quote" on the site goes to /contact, which leads with the
+   quote form in its masthead. The hero's scroll cue is the one CTA that stays
+   an in-page anchor -- it is a scroll cue, not an offer. */
+const QUOTE_HREF = "/contact"
+
 export function Nav() {
   const bar = useRef<HTMLElement>(null)
   const [servicesOpen, setServicesOpen] = useState(false)
@@ -184,7 +189,7 @@ export function Nav() {
               >
                 <Phone size={18} strokeWidth={2} aria-hidden="true" />
               </a>
-              <Cta href="#quote" size="sm">Request a quote</Cta>
+              <Cta href={QUOTE_HREF} size="sm">Request a quote</Cta>
             </div>
           </div>
 
@@ -301,7 +306,7 @@ export function Nav() {
                       one action in the drawer, and sitting mid-list it read as
                       another row. At the bottom, off on its own, it is the
                       thing your thumb lands on after reading the menu. */}
-                  <Cta href="#quote" className="nav-mobile-cta">Request a quote</Cta>
+                  <Cta href={QUOTE_HREF} className="nav-mobile-cta">Request a quote</Cta>
                 </div>
               </motion.div>
             )}

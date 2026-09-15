@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import FrameScrub from "@/components/frame-scrub"
@@ -13,16 +13,60 @@ gsap.registerPlugin(ScrollTrigger)
 
    It renders its own runway with a sticky canvas inside, so this wrapper is
    ABSOLUTE, not fixed: a fixed element's rect never changes as you scroll,
-   which would freeze the component's progress. */
+   which would freeze the component's progress.
+
+   HOW ACT ONE ENDS. The footage is WIPED away, not scrolled away: the canvas
+   stays pinned and its bottom edge travels up, uncovering the ship that has
+   been sitting underneath the whole time.
+
+   That needs two things to happen at different moments, which is why
+   scrollLength and frameSpan are not the same number:
+
+     - the FRAMES must run out at 1.9vh, the instant the intro copy unpins and
+       starts moving up (measured: the copy holds at innerTop 0 until 2388px
+       on a 1257px viewport, then tracks scroll 1:1). That is frameSpan.
+     - the CANVAS must stay pinned past that point, or it would scroll away
+       instead of being wiped. A sticky canvas unpins at scrollLength * 100vh,
+       so the runway has to outlast the wipe. That is scrollLength.
+
+   The span is therefore MEASURED, not written down. The intro is 190svh wide
+   and 170svh at the 900px breakpoint, so a hardcoded 1.9/2.9 was right on a
+   desktop and wrong on a phone — the wipe was a fifth of the way through
+   before the footage had finished. Deriving it from the section's real height
+   keeps the two honest at every width. */
+const STAGE_RUNWAY_VH = 2.9
+
 export function Stage() {
   const stage = useRef<HTMLDivElement>(null)
 
+  // Fraction of the runway the frames get. The copy unpins one viewport before
+  // the intro section's bottom, and the scrub's own progress runs over
+  // STAGE_RUNWAY_VH screens, so the release lands at that ratio. Remeasured on
+  // resize because the intro's height is a breakpoint away from changing.
+  const [span, setSpan] = useState(1.9 / STAGE_RUNWAY_VH)
+
+  useLayoutEffect(() => {
+    const read = () => {
+      const copy = document.querySelector<HTMLElement>(".reveal")
+      const vh = window.innerHeight
+      if (!copy || vh < 1) return
+      const bottom = copy.getBoundingClientRect().bottom + window.scrollY
+      const next = (bottom - vh) / (STAGE_RUNWAY_VH * vh)
+      if (Number.isFinite(next) && next > 0.05 && next <= 1) {
+        setSpan((prev) => (Math.abs(prev - next) > 0.002 ? next : prev))
+      }
+    }
+    read()
+    window.addEventListener("resize", read)
+    return () => window.removeEventListener("resize", read)
+  }, [])
+
   useEffect(() => {
     const el = stage.current
-    // Act one's copy. Nothing is anchored to it any more (see the wipe below),
-    // but its presence is still what tells us act one rendered at all.
-    const actOneEnd = document.querySelector<HTMLElement>(".reveal")
-    if (!el || !actOneEnd) return
+    // The intro copy. Its sticky release is what the wipe is timed to, so it
+    // is the trigger rather than anything belonging to the stage itself.
+    const copy = document.querySelector<HTMLElement>(".reveal")
+    if (!el || !copy) return
 
     const mm = gsap.matchMedia()
 
@@ -32,21 +76,10 @@ export function Stage() {
       const pinned = el.querySelector<HTMLElement>(".stage-scrub > div > div")
       if (!pinned) return
 
-      // The bottom edge travels upward and takes act one with it. The ship has
-      // been sitting underneath the whole time, so this uncovers it rather
-      // than sliding anything over it.
-      //
-      // START IS ANCHORED TO THE SCRUB, NOT TO THE COPY. It used to fire at
-      // the bottom of .reveal, which happened to land 0.9vh before the scrub
-      // finished — so the wipe ate the last quarter of the sequence, and the
-      // footage was still moving as it slid away. The scrub's runway ends one
-      // viewport short of its own bottom (its canvas is sticky), so that
-      // point is where the last frame settles. Anything that changes the
-      // frame count, scrollLength, or the height of act one now moves both
-      // ends together instead of silently re-opening that gap.
-      const scrub = el.querySelector<HTMLElement>(".stage-scrub")
-      if (!scrub) return
-
+      // "bottom bottom" on the intro section fires exactly where its sticky
+      // inner lets go — the frame the paragraph starts moving. The wipe then
+      // runs over one viewport, which is the distance the copy travels to
+      // clear the screen, so the two finish together.
       const wipe = gsap.fromTo(
         pinned,
         { clipPath: "inset(0% 0% 0% 0%)" },
@@ -54,9 +87,9 @@ export function Stage() {
           clipPath: "inset(0% 0% 100% 0%)",
           ease: "none",
           scrollTrigger: {
-            trigger: scrub,
+            trigger: copy,
             start: () => "bottom bottom",
-            end: () => "+=" + window.innerHeight * 0.9,
+            end: () => "+=" + window.innerHeight,
             scrub: true,
             invalidateOnRefresh: true,
           },
@@ -89,16 +122,19 @@ export function Stage() {
         /* MATCH CUT into the ship. The truck's container sits at 51.76% of
            frame width on the last frame; the Carmel container on the ship's
            deck sits at 46.37% and holds there right through the handoff. Both
-           are static, so the gap is a constant 5.39% — pan the hero left by
-           exactly that and the container the truck is carrying becomes the
-           container on the ship. Re-measure both if either sequence is
-           re-rendered; the number is footage-specific, not a magic constant. */
-        offsetX={-0.0539}
+           are static, so the gap is a constant 5.39%. Dead-centre alignment is
+           therefore -0.0539; this sits 0.8% to the right of that by choice,
+           which is the nudge that was asked for, not a measurement error.
+           Re-measure both if either sequence is re-rendered; the number is
+           footage-specific, not a magic constant. */
+        offsetX={-0.0459}
         offsetXRamp={0.25}
         height={0.95}
         width={4000}
         borderRadius={0}
-        scrollLength={2.9}
+        /* See the note above — these two are a pair, not duplicates. */
+        scrollLength={STAGE_RUNWAY_VH}
+        frameSpan={span}
         smooth={0.12}
         grain={0}
         vignette={0}

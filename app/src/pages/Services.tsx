@@ -141,7 +141,7 @@ export default function Services() {
                   <p className="pg-body" key={p.slice(0, 24)} data-rise>{p}</p>
                 ))}
                 <p className="pg-cta" data-rise>
-                  <Cta href="#quote" size="sm">Request a quote</Cta>
+                  <Cta href="/contact" size="sm">Request a quote</Cta>
                 </p>
                 <div className="pg-media" data-rise>
                   <img src={s.img} alt="" loading="lazy" decoding="async" />

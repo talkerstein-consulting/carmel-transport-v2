@@ -29,6 +29,11 @@ export interface FrameScrubProps {
   smooth?: number;
   /** How each frame fills the stage. */
   fit?: "cover" | "contain";
+  /** Fraction of the runway the FRAMES advance across, measured from the
+      start. 1 spreads them over the whole runway. Below 1 they finish early
+      and the last frame is then held for the remainder — which is how the
+      canvas can stay pinned (and be wiped) after the footage has ended. */
+  frameSpan?: number;
   /** Pan the frame horizontally, as a fraction of stage width (+ = right).
       Shifts INSIDE the cover crop, so nothing is exposed at the edge: the
       value is clamped to whatever overflow the crop actually has. Used to
@@ -354,6 +359,7 @@ export const FrameScrub = ({
   scrollLength = 3,
   smooth = 0.18,
   fit = "cover",
+  frameSpan = 1,
   offsetX = 0,
   offsetXRamp = 0.25,
   width = 1020,
@@ -643,7 +649,13 @@ export const FrameScrub = ({
       if (cw < 2 || ch < 2) return;
 
       const last = Math.max(0, total - 1);
-      const at = clamp(p, 0, 1) * last;
+      // Frame progress, which is the scroll progress compressed into the
+      // leading `frameSpan` of the runway. Everything that should finish WITH
+      // the footage (the frame index, the pan) reads this rather than raw
+      // scroll progress, so shortening the span moves them together.
+      const span = clamp(frameSpan, 0.05, 1);
+      const fp = clamp(clamp(p, 0, 1) / span, 0, 1);
+      const at = fp * last;
 
       const pick = (i: number) => {
         const k = clamp(Math.round(i), 0, last);
@@ -682,7 +694,7 @@ export const FrameScrub = ({
         // overflow) would slide the picture off its own edge and show the
         // background colour down one side.
         const ramp = clamp(offsetXRamp, 0.0001, 1);
-        const lead = clamp((clamp(p, 0, 1) - (1 - ramp)) / ramp, 0, 1);
+        const lead = clamp((fp - (1 - ramp)) / ramp, 0, 1);
         const slack = Math.max(0, (dw - cw) / 2);
         const pan = clamp(offsetX * lead * cw, -slack, slack);
         ctx.globalAlpha = clamp(alpha, 0, 1);
@@ -830,6 +842,7 @@ export const FrameScrub = ({
       cells,
       fit,
       grain,
+      frameSpan,
       lag,
       offsetX,
       offsetXRamp,

@@ -25,7 +25,7 @@ export function ServicePage({ s }: { s: ServiceContent }) {
           <ol>
             <li><a href="#what">What we do</a></li>
             <li><a href="#why">Why Carmel</a></li>
-            <li><a href="#quote">Request a quote</a></li>
+            <li><a href="/contact">Request a quote</a></li>
           </ol>
         </div>
       }
@@ -63,7 +63,7 @@ export function ServicePage({ s }: { s: ServiceContent }) {
           <p className="pg-body" data-rise key={p.slice(0, 24)}>{p}</p>
         ))}
         <p className="pg-cta" data-rise>
-          <Cta href="#quote">{s.closeCta}</Cta>
+          <Cta href="/contact">{s.closeCta}</Cta>
         </p>
       </PageBlock>
     </PageShell>

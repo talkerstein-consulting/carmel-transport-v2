@@ -134,7 +134,7 @@ export default function HowItWorks4() {
             critical points along the way.
           </p>
           <div className="hiw-cta">
-            <Cta href="#quote">Request a quote</Cta>
+            <Cta href="/contact">Request a quote</Cta>
           </div>
         </motion.div>
 

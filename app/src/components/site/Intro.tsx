@@ -31,7 +31,7 @@ export function Intro() {
         <div className="reveal-aside">
           <h2 className="reveal-head">Built to keep moving</h2>
           <p className="reveal-cta">
-            <Cta href="#company">More about Carmel</Cta>
+            <Cta href="/company">More about Carmel</Cta>
           </p>
         </div>
       </div>

@@ -47,6 +47,13 @@
 .ph-bg { position: absolute; inset: 0; z-index: 0; }
 .ph-bg img {
   width: 100%; height: 100%; object-fit: cover;
+  /* The badge is composed into the far right of every cover, because the plate
+     covers the left 81% of the band. On a wide screen the crop is vertical and
+     the right edge survives; as the band narrows, cover starts cropping the
+     SIDES from the centre and the badge is the first thing to go — which is
+     why it was missing entirely at phone width. Bias the crop right so the
+     part of the picture that carries the mark is the part that is kept. */
+  object-position: 78% center;
   /* The source frames are warm; §4 keeps this palette near-monochrome cool
      with blue as the only colour. Held back, not washed out — the picture
      still reads as a picture. */
@@ -625,3 +632,9 @@
 @media (max-width: 1023px) { .job-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px)  { .job-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .job-card, .job-card:hover { transition: none; transform: none; } }
+
+/* Narrower still: hold the right edge outright. Below this the band is close
+   enough to square that centring would cut the badge off completely. */
+@media (max-width: 767px) {
+  .ph-bg img { object-position: 88% center; }
+}

@@ -281,25 +281,6 @@
 }
 .cta-actions { margin: var(--sp-8) 0 0; display: flex; justify-content: center; }
 
-/* --- the CTA in its asking state ----------------------------------------
-   Same plate, different contents. The form is left-aligned even though the
-   pitch is centred: a centred form reads as a poster, and these are fields
-   you fill in order. */
-.cta-form { text-align: left; }
-.cta-form-top {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: var(--sp-4); margin-bottom: var(--sp-5);
-}
-.cta-form-back {
-  border: 0; background: none; padding: 6px 2px; cursor: pointer;
-  font-family: inherit; font-size: var(--fs-small); font-weight: 600;
-  color: var(--ink-600);
-  transition: color var(--dur) var(--ease);
-}
-.cta-form-back:hover { color: var(--ink-900); }
-.cta-form-back:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 3px; }
-@media (max-width: 767px) { .cta-form-top { margin-bottom: var(--sp-4); } }
-
 /* --- footer --------------------------------------------------------------
    Inverted, at the client's direction. This is a deliberate exception to
    BRANDING §4 (light-only) and the "footer is not inverted" line in §7 — the
