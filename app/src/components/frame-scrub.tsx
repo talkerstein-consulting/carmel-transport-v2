@@ -1006,7 +1006,7 @@ export const FrameScrub = ({
       className={cn("relative w-full", className)}
       style={{ height: `${runway}vh` }}
     >
-      <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center gap-4 overflow-hidden px-4 sm:px-8">
+      <div className="sticky top-0 flex h-lvh w-full flex-col items-center justify-center gap-4 overflow-hidden px-4 sm:px-8">
         <div
           className="relative w-full overflow-hidden"
           style={{

@@ -70,8 +70,8 @@ export function TruckScene({ scrollLength, frameSpan, className }: Props) {
       className={"relative w-full " + (className ?? "")}
       style={{ height: `${100 + scrollLength * 100}vh` }}
     >
-      <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
-        <div className="relative w-full overflow-hidden" style={{ height: "100svh", backgroundColor: PAPER }}>
+      <div className="sticky top-0 flex h-lvh w-full flex-col items-center justify-center overflow-hidden">
+        <div className="relative w-full overflow-hidden" style={{ height: "100lvh", backgroundColor: PAPER }}>
           <canvas
             ref={canvas}
             className="block h-full w-full"

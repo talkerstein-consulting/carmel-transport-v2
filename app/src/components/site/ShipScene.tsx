@@ -65,7 +65,7 @@ export function ShipScene({ scrollLength, frameStart = 0, className }: Props) {
       style={{ height: `${100 + scrollLength * 100}vh` }}
     >
       <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
-        <div className="relative w-full overflow-hidden" style={{ height: "100svh", backgroundColor: "#F7F9FC" }}>
+        <div className="relative w-full overflow-hidden" style={{ height: "100lvh", backgroundColor: "#F7F9FC" }}>
           <canvas
             ref={canvas}
             className="block h-full w-full"

@@ -44,8 +44,9 @@ export const BOX = { CL: 12.2, CH: 2.59, CW: 2.44, CY: 1.38, CZ: 2.6 } // CY: de
 export const overheadFrame = (aspect: number) => {
   const portrait = aspect < 1
   // On a tall screen the copy takes the top of the frame, so the camera aims
-  // 16m ahead of the rig and the box settles in the lower third instead.
-  return { fov: portrait ? 44 : 30, dist: portrait ? 70 : 60, elev: 89.5, ahead: BOX.CZ - 0.4 + (portrait ? 16 : 0) }
+  // 6m ahead of the rig, so the box settles just under the CTA and clear of
+  // the floating browser toolbar at the bottom.
+  return { fov: portrait ? 44 : 30, dist: portrait ? 70 : 60, elev: 89.5, ahead: BOX.CZ - 0.4 + (portrait ? 6 : 0) }
 }
 
 /* The two-tone pass, shared with ship-world.ts. Uniforms: tScene, res,

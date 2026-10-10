@@ -160,7 +160,7 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
    here. Without these three rules every scrub sequence sits inside a 32px
    frame instead of filling the screen. */
 .fs-fill>div{padding-left:0!important;padding-right:0!important;gap:0!important}
-.fs-fill>div>div{height:100svh!important;max-width:none!important}
+.fs-fill>div>div{height:100lvh!important;max-width:none!important}
 /* The ship scrub runs full height on a phone like every other sequence. It
    was briefly letterboxed to soften the cover crop -- a landscape frame in a
    portrait box scales ~4.5x and shows a narrow vertical slice of it -- but
