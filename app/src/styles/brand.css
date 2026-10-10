@@ -731,8 +731,8 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 
    The section carries margin-top:-530svh to underlap the one above it, so
    the content still has to be pushed back down or it lands on top of the
-   stats. That stays as padding on .svc-overlay: the cards start two screens
-   in and then simply scroll.
+   stats. That stays as padding on .svc-overlay: the headline starts 0.8 of a
+   screen in (about one screen after the stats) and then simply scroll.
 
    The overlay is in flow here, not absolute, and the 430vh runway is gone:
    the section's height is whatever the cards need. Absolute over a fixed
@@ -742,7 +742,7 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
    which still ends inside the 7.7-screen canvas pin. */
 @media(max-width:1023px){
   .svc-runway{display:none}
-  .svc-overlay{position:relative;inset:auto;padding-top:200svh}
+  .svc-overlay{position:relative;inset:auto;padding-top:80svh}
   .svc-pin{
     position:static;
     height:auto;overflow:visible;

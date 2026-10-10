@@ -181,7 +181,7 @@ export function Nav() {
                   link already has its own label, so alt="" keeps a screen
                   reader from reading the company name twice. */}
               <img className="nav-mark" src="/img/carmel-mark.png" alt="" width="28" height="28" decoding="async" />
-              <span className="wm">Carmel</span>
+              <span className="nav-lockup"><span className="wm">Carmel</span><span className="nav-sub">Transport</span></span>
             </a>
 
             <nav className="nav-links" aria-label="Primary">
@@ -288,7 +288,7 @@ export function Nav() {
                   link already has its own label, so alt="" keeps a screen
                   reader from reading the company name twice. */}
               <img className="nav-mark" src="/img/carmel-mark.png" alt="" width="28" height="28" decoding="async" />
-              <span className="wm">Carmel</span>
+              <span className="nav-lockup"><span className="wm">Carmel</span><span className="nav-sub">Transport</span></span>
             </a>
             <button
               type="button"

@@ -1,4 +1,6 @@
-import { useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import ScrollReveal from "@/components/ScrollReveal"
 import { Cta } from "./Cta"
 
@@ -7,12 +9,32 @@ import { Cta } from "./Cta"
    The copy block is sticky, so it does not travel through the viewport itself.
    ScrollReveal is therefore pointed at the section as its trigger: that is what
    supplies the scroll distance the word-by-word stagger runs across. */
+gsap.registerPlugin(ScrollTrigger)
+
 export function Intro() {
   const section = useRef<HTMLElement>(null)
+  const inner = useRef<HTMLDivElement>(null)
+
+  /* Phone: the copy runs full width on its paper wash, so rising up from the
+     bottom it slid over the truck. Instead the whole block -- wash and all --
+     drops in from the top of the screen while the section scrolls up to meet
+     it. Its on-screen top is -sectionTop, i.e. -100vh -> 0. */
+  useLayoutEffect(() => {
+    const sec = section.current, el = inner.current
+    if (!sec || !el) return
+    const mm = gsap.matchMedia()
+    mm.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+      gsap.fromTo(el, { y: () => -2 * window.innerHeight }, {
+        y: 0, ease: "none",
+        scrollTrigger: { trigger: sec, start: "top bottom", end: "top top", scrub: true, invalidateOnRefresh: true },
+      })
+    })
+    return () => mm.revert()
+  }, [])
 
   return (
     <section className="reveal" id="about" ref={section}>
-      <div className="reveal-inner">
+      <div className="reveal-inner" ref={inner}>
         <ScrollReveal
           triggerRef={section}
           enableBlur={false}
