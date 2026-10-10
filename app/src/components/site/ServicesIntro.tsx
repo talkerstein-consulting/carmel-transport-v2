@@ -22,7 +22,7 @@ const SERVICES = [
     body: "Comprehensive refrigerated container transport and storage, supported by experienced drivers and Genset chassis, up to 30 units at once.",
     img: "/img/covers/refrigerated.jpg",
     href: "/services/refrigerated",
-    cta: "Explore Refrigerated Logistics",
+    cta: "Explore Refrigerated",
   },
   {
     n: "03",
@@ -31,7 +31,7 @@ const SERVICES = [
     body: "Ocean and rail container terminals, pre-arranged rail reservations, documentation and border clearance support.",
     img: "/img/covers/intermodal.jpg",
     href: "/services/intermodal",
-    cta: "Explore Intermodal Trucking",
+    cta: "Explore Intermodal",
   },
   {
     n: "04",
@@ -40,7 +40,7 @@ const SERVICES = [
     body: "Secure short- and long-term storage for dry-box and refrigerated containers, in yards near major seaports and rail terminals.",
     img: "/img/covers/storage.jpg",
     href: "/services/storage",
-    cta: "Explore Storage Solutions",
+    cta: "Explore Storage",
   },
 ]
 
@@ -90,7 +90,7 @@ export function ServicesIntro() {
           scrollTrigger: {
             trigger: el,
             start: "top top",
-            end: () => "+=" + Math.round(window.innerHeight * 0.7),
+            end: () => "+=" + Math.round(window.innerHeight * 0.6),
             scrub: true,
             invalidateOnRefresh: true,
           },
@@ -114,8 +114,8 @@ export function ServicesIntro() {
             ease: "none",
             scrollTrigger: {
               trigger: el,
-              start: () => "top top-=" + Math.round(window.innerHeight * (0.9 + i * 0.22)),
-              end: () => "+=" + Math.round(window.innerHeight * 0.45),
+              start: () => "top top-=" + Math.round(window.innerHeight * (0.7 + i * 0.16)),
+              end: () => "+=" + Math.round(window.innerHeight * 0.4),
               scrub: true,
               toggleActions: "play none none reverse",
               invalidateOnRefresh: true,
@@ -127,9 +127,9 @@ export function ServicesIntro() {
       // The tail of the clouds resolves into the flat #D5E7F2 the next section
       // opens on, so the footage hands off to colour rather than cutting.
       //
-      // The last card is open at 2.0 screens and this begins at 2.2, running
-      // to 3.2. It MUST be finished before act three's top edge enters the
-      // viewport, which on a 430vh runway is 3.3 screens in: act three slides
+      // The last card is in at 1.6 screens and this begins at 1.65, running
+      // to 2.25. It MUST be finished before act three's top edge enters the
+      // viewport, which on the 330vh runway is 2.3 screens in: act three slides
       // up over the pinned footage, and while the veil was still coming up
       // its top edge met a picture with the dark edge gradient still on it —
       // a dark band sitting right over "More than transportation". With the
@@ -148,8 +148,8 @@ export function ServicesIntro() {
                 // cards and the walkthrough use. "bottom bottom+=X" resolves
                 // in the opposite direction to what it reads like and kept
                 // starting this early.
-                start: () => "top top-=" + Math.round(window.innerHeight * 2.2),
-                end: () => "+=" + Math.round(window.innerHeight * 1),
+                start: () => "top top-=" + Math.round(window.innerHeight * 1.65),
+                end: () => "+=" + Math.round(window.innerHeight * 0.6),
                 scrub: true,
                 invalidateOnRefresh: true,
               },
@@ -166,8 +166,8 @@ export function ServicesIntro() {
         ease: "none",
         scrollTrigger: {
           trigger: el,
-          start: () => "top top-=" + Math.round(window.innerHeight * 2.2),
-          end: () => "+=" + Math.round(window.innerHeight * 1),
+          start: () => "top top-=" + Math.round(window.innerHeight * 1.65),
+          end: () => "+=" + Math.round(window.innerHeight * 0.6),
           scrub: true,
           invalidateOnRefresh: true,
         },

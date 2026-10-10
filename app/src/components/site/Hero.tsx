@@ -32,7 +32,7 @@ export function Hero() {
           around your business.
         </p>
         <div className="hero-actions">
-          <Cta href="#about" variant="outline" dir="down" live onClick={toIntro}>
+          <Cta href="#about" dir="down" live onClick={toIntro}>
             Scroll to learn more
           </Cta>
         </div>

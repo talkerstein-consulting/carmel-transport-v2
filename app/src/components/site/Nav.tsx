@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from "react"
+import { squirclePath } from "@/lib/squircle"
 import { motion, AnimatePresence } from "motion/react"
 import { Menu, X, Phone, ChevronDown, ChevronRight, Truck, Snowflake, TrainFront, Warehouse } from "lucide-react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Cta } from "./Cta"
 import "./nav.css"
 
-gsap.registerPlugin(ScrollTrigger)
 
 /* Adapted from @reactbits-pro/navigation-2: a floating translucent pill with a
    hover panel for Services and a collapsing mobile menu. The block's Tailwind
@@ -118,26 +116,52 @@ export function Nav() {
     }
   }, [mobileOpen])
 
-  /* Over footage the pill is a dark translucent plate with white type; once
-     the light sections arrive it flips to a white plate with ink type. The
-     homepage marks that handoff with .act-three; interior pages mark it with
-     [data-nav-light] on whatever follows their dark masthead. */
+  /* The progress stroke's outline is the pill's own: its measured size and
+     radius with the same superellipse corners (lib/squircle.ts), rebuilt
+     whenever a pill changes size. */
   useEffect(() => {
     const el = bar.current
-    const light = document.querySelector<HTMLElement>(".act-three, [data-nav-light]")
-    if (!el || !light) return
-    const st = ScrollTrigger.create({
-      trigger: light,
-      start: "top top+=96",
-      end: "bottom top",
-      onToggle: (self) => el.classList.toggle("is-light", self.isActive),
-      invalidateOnRefresh: true,
-    })
-    return () => st.kill()
+    if (!el) return
+    const fit = (pill: HTMLElement) => {
+      const path = pill.querySelector<SVGPathElement>(".nav-progress path")
+      const svg = path?.ownerSVGElement
+      if (!path || !svg) return
+      const { width: w, height: h } = pill.getBoundingClientRect()
+      if (w < 1 || h < 1) return
+      const r = parseFloat(getComputedStyle(pill).borderTopLeftRadius) || 0
+      svg.setAttribute("viewBox", `0 0 ${w} ${h}`)
+      path.setAttribute("d", squirclePath(w, h, r))
+    }
+    const pills = [...el.querySelectorAll<HTMLElement>(".nav-pill")]
+    const ro = new ResizeObserver((es) => es.forEach((e) => fit(e.target as HTMLElement)))
+    pills.forEach((p) => { fit(p); ro.observe(p) })
+    return () => ro.disconnect()
   }, [])
 
+  /* Scroll progress for the stroke under the pill (nav.css .nav-pill::after).
+     One rAF per scroll burst; set on the header so both pills inherit it. */
+  useEffect(() => {
+    const el = bar.current
+    if (!el) return
+    let raf = 0
+    const set = () => {
+      raf = 0
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      el.style.setProperty("--read", max > 0 ? (window.scrollY / max).toFixed(4) : "0")
+    }
+    const on = () => { if (!raf) raf = requestAnimationFrame(set) }
+    set()
+    window.addEventListener("scroll", on, { passive: true })
+    window.addEventListener("resize", on)
+    return () => { window.removeEventListener("scroll", on); window.removeEventListener("resize", on); cancelAnimationFrame(raf) }
+  }, [])
+
+  /* The pill is always the light plate -- white with ink type -- on every
+     page, over the drawn scenes and the dark mastheads alike. (It used to
+     flip from navy glass to white at .act-three / [data-nav-light].) */
+
   return (
-    <header className={"nav" + (hovered || servicesOpen || mobileOpen ? " is-active" : "")} ref={bar}>
+    <header className={"nav is-light" + (hovered || servicesOpen || mobileOpen ? " is-active" : "")} ref={bar}>
       {/* desktop */}
       <motion.div
         className="nav-desk"
@@ -149,6 +173,8 @@ export function Nav() {
         onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) closeNow() }}
       >
         <div className="nav-pill">
+          {/* Scroll progress, traced around the pill's outline (nav.css). */}
+          <svg className="nav-progress" aria-hidden="true"><path pathLength={1} /></svg>
           <div className="nav-bar">
             <a className="nav-brand" href="/" aria-label="Carmel — home">
               {/* The mark sits before the wordmark and is decorative here: the
@@ -197,7 +223,7 @@ export function Nav() {
               >
                 <Phone size={18} strokeWidth={2} aria-hidden="true" />
               </a>
-              <Cta href={QUOTE_HREF} size="sm">Request a quote</Cta>
+              <Cta href={QUOTE_HREF} size="sm" tone="accent">Request a quote</Cta>
             </div>
           </div>
 
@@ -254,6 +280,8 @@ export function Nav() {
         onMouseLeave={() => setHovered(false)}
       >
         <div className="nav-pill">
+          {/* Scroll progress, traced around the pill's outline (nav.css). */}
+          <svg className="nav-progress" aria-hidden="true"><path pathLength={1} /></svg>
           <div className="nav-bar">
             <a className="nav-brand" href="/" aria-label="Carmel — home">
               {/* The mark sits before the wordmark and is decorative here: the
@@ -356,7 +384,7 @@ export function Nav() {
                     >
                       <Phone size={22} strokeWidth={2} aria-hidden="true" />
                     </a>
-                    <Cta href={QUOTE_HREF} className="nav-mobile-cta">Request a quote</Cta>
+                    <Cta href={QUOTE_HREF} tone="accent" className="nav-mobile-cta">Request a quote</Cta>
                   </div>
                 </div>
               </motion.div>

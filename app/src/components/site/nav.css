@@ -110,6 +110,17 @@
    .is-active is set by Nav.tsx from React state (hovered || panel open) rather
    than from :hover/:has() — one source of truth, so the plate can't flip back
    to translucent mid-transition while a panel is still mounted. */
+/* Scroll progress: a navy stroke traced all the way round the pill, from
+   its top-left corner clockwise. The path is the pill's own outline -- same
+   size, radius and superellipse corners -- built in Nav.tsx from
+   lib/squircle.ts; pathLength=1 lets the dash follow --read (0..1). */
+/* inset:-1px: absolute boxes start inside the 1px border, but the path is
+   built from the pill's border box, so the layer has to cover that box. */
+.nav-progress{position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);pointer-events:none;overflow:visible;z-index:1}
+.nav-progress path{
+  fill:none;stroke:var(--ink-900);stroke-opacity:.4;stroke-width:2;stroke-linejoin:round;
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--read,0));
+}
 .nav.is-active .nav-pill{
   background:var(--nav-plate-solid);
   box-shadow:0 1px 2px rgba(8,29,53,.08),0 16px 40px rgba(8,29,53,.14);

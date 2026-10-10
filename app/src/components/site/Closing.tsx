@@ -188,7 +188,7 @@ export function Closing() {
                   Tell us where your cargo needs to go. We'll help you get it there.
                 </p>
                 <p className="cta-actions" data-rise>
-                  <Cta href="/contact" onClick={(e) => { e.preventDefault(); setAsking(true) }}>Request a quote</Cta>
+                  <Cta href="/contact" tone="accent" onClick={(e) => { e.preventDefault(); setAsking(true) }}>Request a quote</Cta>
                 </p>
               </motion.div>
             ) : (

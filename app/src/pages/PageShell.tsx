@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Nav } from "@/components/site/Nav"
+import { CookieNotice } from "@/components/site/CookieNotice"
 import { PlateBg } from "@/components/site/PlateBg"
 import { Closing } from "@/components/site/Closing"
 
@@ -87,6 +88,7 @@ export function PageShell({ crumb, head, accent, lead, cover, aside, plate, wide
   return (
     <div ref={root}>
       <Nav />
+      <CookieNotice />
 
       <a className="skip-link" href="#main">Skip to content</a>
       <main id="main" tabIndex={-1}>

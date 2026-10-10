@@ -234,6 +234,11 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
 }
 .stage-scrub{width:100%}
 
+/* The drawn act one (TruckScene) is light paper and blue; a dark margin
+   gradient only muddied it, so it is off there. The copy over it carries
+   itself instead: navy type straight on the sky and the plains, no plates. */
+.stage-drawn>div>div::after{display:none}
+
 /* --- section 01 · hero --------------------------------------------------- */
 /* 01. Absolute so it is not picked up as a grid item; inset:0 covers the
    section box, which is full-bleed, so it reaches both screen edges without
@@ -391,6 +396,56 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   .reveal-cta{grid-row:3;margin:var(--sp-2) 0 0;position:relative;z-index:2}
 }
 
+/* --- act one, drawn: copy on the picture ---------------------------------
+   Hero: one centred column in the sky above the truck -- headline, lead,
+   CTA. Intro: the paragraph on the plains at the left, the heading and CTA
+   at the right, each held to a third of the screen so the road and the rig
+   between them stay clear. Navy on paper/sky; no glass. */
+.hero.hero{
+  grid-template-columns:1fr;justify-items:center;align-content:start;align-items:start;
+  text-align:center;gap:var(--sp-6);
+  padding-top:calc(62px + var(--sp-4) + env(safe-area-inset-top,0px) + clamp(16px,3svh,40px));
+}
+/* One line where it fits, at the headline's own size. */
+.hero .hero-head{
+  grid-column:1;grid-row:1;align-self:start;justify-self:stretch;
+  flex-direction:row;flex-wrap:wrap;justify-content:center;column-gap:.24em;
+  font-size:var(--fs-display-2);line-height:.9;
+}
+.hero .hero-head span{color:var(--ink-900);-webkit-text-fill-color:var(--ink-900)}
+.hero .hero-head .l3{background:none;color:var(--blue-700);-webkit-text-fill-color:var(--blue-700)}
+.hero .hero-aside{grid-column:1;grid-row:2;justify-self:stretch;text-align:center;max-width:none}
+.hero .hero-lead{color:var(--ink-800);font-size:var(--fs-lead);line-height:1.5;max-width:none;text-wrap:balance} /* = .diff-lead */
+.hero .hero-actions{justify-content:center;margin-top:var(--sp-6)}
+
+.reveal .reveal-inner{grid-template-columns:1fr 1fr;align-items:center}
+/* Held to ~a quarter of the width each, so the copy stays on the plains
+   outside the guard rails; it grows taller rather than wider. */
+.reveal .reveal-body-wrap{justify-self:start;max-width:26vw}
+.reveal .reveal-aside{justify-self:end;max-width:26vw}
+.reveal .reveal-body{color:var(--ink-900);max-width:none;font-size:var(--fs-h3)}
+.reveal .reveal-head{color:var(--ink-900);font-size:var(--fs-h2)}
+@media(max-width:767px){
+  /* One column on the phone; the desktop two-column rule above is more
+     specific than the phone grid, so it has to be undone here. */
+  .reveal .reveal-inner{grid-template-columns:1fr}
+  .reveal .reveal-body-wrap,.reveal .reveal-aside{max-width:none;justify-self:stretch}
+  /* The paragraph runs full width over the road and the truck, so it sits on
+     a soft paper wash -- not a card, just enough to hold navy type. */
+  /* Copy at the top, under the nav, so the truck reads below it (the camera
+     frames the rig in the lower third on tall screens; see overheadFrame). */
+  .reveal .reveal-inner{align-content:start;padding-top:calc(62px + var(--sp-6) + env(safe-area-inset-top,0px))}
+  .reveal .reveal-body{font-size:var(--fs-h4)}
+  .reveal-inner::after{
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(247,249,252,.86) 0%,rgba(247,249,252,.86) 52%,rgba(247,249,252,0) 64%);
+  }
+  /* Hero: the CTA keeps its own width instead of spanning the screen, and
+     the lead steps down so the column ends above the horizon. */
+  .hero .hero-actions .cta-btn{width:auto}
+  .hero .hero-lead{font-size:var(--fs-body)}
+}
+
 /* --- section 03 · stats --------------------------------------------------- */
 /* Scrolls up OVER the sticky section above it. FrameScrub provides this
    section's height (its own runway) and pins the ship canvas inside it;
@@ -529,22 +584,25 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
    FrameScrub pins its canvas for scrollLength x 100vh and only lets it travel
    over the final 100vh, so this whole section has to sit INSIDE that pinned
    range or the footage scrolls away and leaves the cards on a blank ground.
-   Stats is scrollLength 7.7 => 870vh tall; -530svh starts this section 3.4
-   screens into the pin (the figures release at 3.0) and its 430vh ends at
-   7.7, exactly where the pin releases. */
+   Desktop: Stats is scrollLength 6.2 => 720vh tall; -430svh starts this
+   section 2.9 screens into the pin (the figures release at 2.9) and its 330vh
+   ends at 6.2, exactly where the pin releases. (Was 7.7 / -530 / 430: the
+   stretch from the intro to "More than transportation" ran long.) Phones keep
+   the 7.7 runway, which their stacked, in-flow cards need -- see below. */
 .intro-services{
   position:relative;z-index:3;
-  margin-top:-530svh;
+  margin-top:-430svh;
   background:transparent;
 }
+@media(max-width:1023px){.intro-services{margin-top:-530svh}}
 /* Scroll runway only — no canvas of its own.
-   The cards are all open by 2.0 screens in and the #D5E7F2 handoff veil runs
-   2.2 to 3.2. At 430vh, act three's top edge enters the viewport at 3.3 — a
-   tenth of a screen after the veil is complete, so "More than transportation"
+   The cards are all in by 1.6 screens and the #D5E7F2 handoff veil runs
+   1.65 to 2.25. At 330vh, act three's top edge enters the viewport at 2.3 — a
+   twentieth of a screen after the veil is complete, so "More than transportation"
    rises onto flat colour and never meets the footage. Everything inside this
    section is triggered at explicit offsets from its top (0.9 to 3.2 screens),
    so none of it moves. */
-.svc-runway{width:100%;height:430vh}
+.svc-runway{width:100%;height:330vh}
 
 .svc-overlay{position:absolute;inset:0;z-index:1;pointer-events:none}
 
@@ -688,11 +746,11 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
   .svc-pin{
     position:static;
     height:auto;overflow:visible;
-    /* 50svh below the last card: the #D5E7F2 veil starts the moment
-       .act-three's top enters the viewport, so without this gap the
-       storage card whitened out while it was still being read. Keeps the
-       section's end (~7.6 screens) inside the 7.7-screen canvas pin. */
-    padding:clamp(56px,8vh,92px) clamp(16px,5vw,28px) 50svh;
+    /* A normal margin below the last card. (Was 50svh, to keep the old
+       footage's white veil off the storage card; the drawn ship now hazes
+       out by .act-three's actual position -- see ShipScene -- so the gap is
+       no longer needed.) */
+    padding:clamp(56px,8vh,92px) clamp(16px,5vw,28px) clamp(40px,7svh,72px);
     gap:clamp(20px,3vh,32px);
   }
   .svc-row{grid-template-columns:1fr;gap:12px;align-content:start}
@@ -745,3 +803,73 @@ a:hover .wb,a:focus-visible .wb{transform:translateY(0)}
     to{opacity:1;transform:none}
   }
 }
+
+/* --- one card, everywhere -------------------------------------------------
+   Every card on the homepage takes the Why Carmel format (.diff-card): white
+   plate, paper hairline, the same radius, ink heading, muted body. The stat
+   and service cards used to be navy glass with white type, built for the
+   dark footage; over the drawn scenes the light plate reads cleaner, and one
+   format reads as one system. Interaction sizing (open/closed padding) is
+   kept; only the skin changes. */
+.stat-card,.svc-card,.svc-card.is-open{
+  background:var(--paper-50);
+  border:var(--line);
+  border-radius:var(--r-lg);corner-shape:superellipse(2.6);
+  box-shadow:0 1px 2px rgba(8,29,53,.04),0 12px 32px rgba(8,29,53,.08);
+  color:var(--ink-900);
+}
+.svc-card.is-open{border-color:var(--paper-300);box-shadow:0 2px 4px rgba(8,29,53,.06),0 20px 44px rgba(8,29,53,.14)}
+.stat-card-ic{background:var(--blue-50);color:var(--blue-700)}
+.stat-figure{color:var(--ink-900)}
+.stat-label{color:var(--ink-700)}
+.svc-card-n{color:var(--ink-500)}
+.svc-card-head{color:var(--ink-900)}
+.svc-card-body{color:var(--ink-700)}
+.svc-card-media{background:var(--paper-200);border-radius:12px}
+
+/* No sideways scroll on any width. clip, not hidden: hidden would make
+   html/body a scroll container and break every position:sticky stage. */
+html,body{overflow-x:clip}
+
+/* --- phones: compact stats, smaller intro body -----------------------------
+   The four figures were a full-height column of large cards that hid the
+   ship. On a phone they become a tight 2x2 grid of small plates, so the ship
+   reads around and between them. */
+@media(max-width:767px){
+  /* .stats scoping: sections.css's phone rule for .stats-group loads later
+     and would put it back to one column. */
+  .stats .stats-group{grid-template-columns:1fr 1fr;gap:10px}
+  .stats .stats-col{display:contents}
+  .stat-card,.stat-card-right{
+    padding:12px 14px;border-radius:14px;
+    align-items:flex-start;margin-left:0;
+  }
+  .stat-card-ic{display:none}
+  .stat-figure{font-size:clamp(1.75rem,1.1rem + 3vw,2.25rem)}
+  .stat-label{font-size:.8125rem;margin-top:6px;max-width:none;margin-left:0}
+  .stats-col-right .stat-label{margin-left:0}
+  .stats-col-right{text-align:left}
+  .reveal .reveal-body{font-size:var(--fs-body)}
+}
+
+/* Card photographs: a cool grade, not a duotone. Real colour kept, eased
+   down a little and lifted, with a soft-light wash of brand blue on top, so
+   the photos sit in the same cool palette as the drawn scenes. */
+.svc-card .svc-card-media,.diff-card .diff-card-media{position:relative}
+.svc-card .svc-card-media img,.diff-card .diff-card-media img{filter:saturate(.9) contrast(1.03) brightness(1.02)} /* half strength */
+.svc-card .svc-card-media::after,.diff-card .diff-card-media::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(160deg,#6AB0FF 0%,#1F4E8C 100%);
+  mix-blend-mode:soft-light;opacity:.28;
+}
+
+/* Four equal columns that may shrink below their content. Without minmax(0,..)
+   the one-line card headings set each column's minimum, and around 1050px the
+   four plus gaps outgrew the row and pushed the last card off-screen. */
+.svc-row{grid-template-columns:repeat(4,minmax(0,1fr))}
+.svc-card{min-width:0}
+@media(max-width:1023px){.svc-row{grid-template-columns:1fr}}
+/* Headings wrap instead of truncating; two lines are reserved on every card
+   so the four bodies still start on the same line. */
+.svc-card-head{white-space:normal;overflow:visible;text-overflow:clip;min-height:2.3em;text-wrap:balance}
+@media(max-width:1023px){.svc-card-head{min-height:0}}

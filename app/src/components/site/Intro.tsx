@@ -20,7 +20,7 @@ export function Intro() {
              sits over footage for most of the section, and at 10% it read as a
              rendering fault rather than as copy waiting its turn. */
           baseRotation={0}
-          baseOpacity={0.3}
+          baseOpacity={0.45}
           wordAnimationEnd="bottom bottom"
           containerClassName="reveal-body-wrap"
           textClassName="reveal-body"

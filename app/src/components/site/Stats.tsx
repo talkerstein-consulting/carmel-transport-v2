@@ -6,6 +6,10 @@ import { hasSmoothScroll } from "@/lib/smooth-scroll"
 import { StatCard } from "@/components/site/StatCard"
 import type { StatSpec } from "@/components/site/StatCard"
 import { CalendarClock, Truck, Container, Headset } from "lucide-react"
+import { ShipScene } from "@/components/site/ShipScene"
+
+// Prototype switch, as in Stage: ?film brings the ship footage back.
+const FILM = typeof location !== "undefined" && new URLSearchParams(location.search).has("film")
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -27,7 +31,10 @@ const STATS: StatSpec[] = [
 
    The footage plays as shot — no scale on the canvas. It used to enter at
    2.8x and pull back, which was magnifying 960px frames on a full screen. */
-const STATS_RUNWAY_VH = 7.7
+// Desktop runs a tighter 6.2-screen runway; phones keep 7.7 for their
+// stacked in-flow service cards (brand.css .intro-services). Read once at load.
+const STATS_RUNWAY_VH =
+  typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches ? 7.7 : 6.2
 
 export function Stats() {
   const section = useRef<HTMLElement>(null)
@@ -80,7 +87,7 @@ export function Stats() {
       const hold = ScrollTrigger.create({
         trigger: el,
         start: () => "top top-=" + Math.round(window.innerHeight * 1.9),
-        end: () => "+=" + Math.round(window.innerHeight * 1.1),
+        end: () => "+=" + Math.round(window.innerHeight * (STATS_RUNWAY_VH < 7 ? 1.0 : 1.1)),
         pin: box,
         pinSpacing: false,
         anticipatePin: 1,
@@ -133,6 +140,9 @@ export function Stats() {
 
   return (
     <section className="stats" id="stats" ref={section}>
+      {!FILM ? (
+        <ShipScene scrollLength={STATS_RUNWAY_VH} frameStart={hold} className="fs-fill stats-scrub stage-drawn" />
+      ) : (
       <FrameScrub
         /* ?v= is a CACHE BUSTER and it MUST be bumped whenever the frames
            behind it are rebuilt. vercel.json serves /seq/* with
@@ -142,7 +152,7 @@ export function Stats() {
            for a year. That is what mixes old and new footage in one scrub:
            some frames come from cache, the rest come fresh. Immutable is the
            right header; changing the URL is how you ship new frames under it. */
-        src="/seq/ship/f-{i}.webp?v=3"
+        src="/seq/ship/f-{i}.webp?v=4"
         count={151}
         pad={3}
         start={1}
@@ -177,6 +187,7 @@ export function Stats() {
         background="#0A0A09"
         className="fs-fill stats-scrub"
       />
+      )}
 
       <div className="stats-overlay">
         <div className="stats-vig-range" aria-hidden="true">

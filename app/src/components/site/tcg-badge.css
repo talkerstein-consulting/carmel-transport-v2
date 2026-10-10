@@ -104,41 +104,7 @@
   pointer-events: none;
 }
 
-/* hover: frame draws → dots → metal pours in → text engraves ---------------- */
-.tcg-plaque:hover .tcg-line-top, .tcg-plaque.is-active .tcg-line-top,    .tcg-plaque:focus-visible .tcg-line-top,
-.tcg-plaque:hover .tcg-line-bottom, .tcg-plaque.is-active .tcg-line-bottom, .tcg-plaque:focus-visible .tcg-line-bottom {
-  width: 100%; visibility: visible; opacity: 0;
-  transition-delay: 0s, 0s, calc(var(--t1) + var(--t2));            /* dissolve once the frame closes */
-  transition-duration: var(--t1), 0s, var(--t3);
-}
-.tcg-plaque:hover .tcg-line-left, .tcg-plaque.is-active .tcg-line-left,   .tcg-plaque:focus-visible .tcg-line-left,
-.tcg-plaque:hover .tcg-line-right, .tcg-plaque.is-active .tcg-line-right,  .tcg-plaque:focus-visible .tcg-line-right {
-  height: 100%; visibility: visible; opacity: 0;
-  transition-delay: var(--t1), 0s, calc(var(--t1) + var(--t2));
-  transition-duration: var(--t2), 0s, var(--t3);
-}
-.tcg-plaque:hover .tcg-dot, .tcg-plaque.is-active .tcg-dot, .tcg-plaque:focus-visible .tcg-dot {
-  opacity: 1; transform: scale(1);
-  background-color: #14161a;         /* end dark on the steel */
-  transition:
-    opacity .15s ease var(--t1),
-    transform .2s cubic-bezier(.2,.9,.3,1.6) var(--t1),
-    background-color .2s ease calc(var(--t1) + var(--t2) + var(--t3) * .8);
-}
-.tcg-plaque:hover .tcg-dot-bl, .tcg-plaque.is-active .tcg-dot-bl, .tcg-plaque:hover .tcg-dot-br, .tcg-plaque.is-active .tcg-dot-br {
-  transition-delay: calc(var(--t1) + var(--t2)), calc(var(--t1) + var(--t2)), calc(var(--t1) + var(--t2) + var(--t3) * .8);
-}
-.tcg-plaque:hover .tcg-metal, .tcg-plaque.is-active .tcg-metal, .tcg-plaque:focus-visible .tcg-metal {
-  -webkit-mask-size: 100% 100%, 0% 0%;  mask-size: 100% 100%, 0% 0%;   /* hole gone → all visible */
-  visibility: visible;
-  transition-delay: calc(var(--t1) + var(--t2)), calc(var(--t1) + var(--t2)), 0s;
-}
-.tcg-plaque:hover .tcg-text, .tcg-plaque.is-active .tcg-text, .tcg-plaque:focus-visible .tcg-text {
-  background-color: #ffffff;
-  /* debossed: tight dark shadow guarantees contrast on any metal shade */
-  filter: drop-shadow(0 1px 1px rgba(0,0,0,.85)) drop-shadow(0 0 1px rgba(0,0,0,.6));
-  transition-delay: calc(var(--t1) + var(--t2) + var(--t3) * .6);
-}
+/* No hover state: the badge is static (see TcgBadge.tsx). */
 
 @media (max-width: 640px) {
   .tcg-plaque { --w: min(520px, 94vw); --pad-x: 10px; }

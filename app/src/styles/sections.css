@@ -588,3 +588,8 @@
   }
 }
 @media (prefers-reduced-motion: reduce) { .foot-globe { display: none; } }
+
+/* The services headline is white over the blue sea. */
+.svc-head,.svc-head .svc-left,.svc-head .svc-right{color:#fff;-webkit-text-fill-color:#fff}
+/* A soft ink halo so the white holds over the pale glints on the sea. */
+.svc-head span{text-shadow:0 1px 2px rgba(8,29,53,.35),0 0 24px rgba(8,29,53,.28)}

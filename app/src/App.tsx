@@ -1,5 +1,6 @@
 import { Stage } from "@/components/site/Stage"
 import { Nav } from "@/components/site/Nav"
+import { CookieNotice } from "@/components/site/CookieNotice"
 import { Hero } from "@/components/site/Hero"
 import { Intro } from "@/components/site/Intro"
 import { Stats } from "@/components/site/Stats"
@@ -19,6 +20,7 @@ export default function App() {
 
       <Stage />
       <Nav />
+      <CookieNotice />
       <main id="main" tabIndex={-1}>
         <Hero />
         <Intro />

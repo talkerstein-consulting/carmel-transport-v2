@@ -3,6 +3,11 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import FrameScrub from "@/components/frame-scrub"
 import { hasSmoothScroll } from "@/lib/smooth-scroll"
+import { TruckScene } from "@/components/site/TruckScene"
+
+// Prototype switch: the drawn 3D truck shot is the default; ?film brings the
+// old footage back for side-by-side review.
+const FILM = typeof location !== "undefined" && new URLSearchParams(location.search).has("film")
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -135,6 +140,9 @@ export function Stage() {
 
   return (
     <div className="stage" aria-hidden="true" ref={stage}>
+      {!FILM ? (
+        <TruckScene scrollLength={STAGE_RUNWAY_VH} frameSpan={span} className="fs-fill stage-scrub stage-drawn" />
+      ) : (
       <FrameScrub
         /* ?v= is a CACHE BUSTER and it MUST be bumped whenever the frames
            behind it are rebuilt. vercel.json serves /seq/* with
@@ -144,7 +152,7 @@ export function Stage() {
            for a year. That is what mixes old and new footage in one scrub:
            some frames come from cache, the rest come fresh. Immutable is the
            right header; changing the URL is how you ship new frames under it. */
-        src="/seq/hero/f-{i}.webp?v=5"
+        src="/seq/hero/f-{i}.webp?v=6"
         count={151}
         pad={3}
         start={1}
@@ -169,6 +177,7 @@ export function Stage() {
         background="#F7F7F6"
         className="fs-fill stage-scrub"
       />
+      )}
     </div>
   )
 }
