@@ -216,3 +216,17 @@ button.cta-btn:focus-visible{outline:2px solid var(--blue-600);outline-offset:3p
 /* outline small stays light — its tile never becomes a light plate */
 .cta-btn-sm.cta-btn-outline:hover .cta-btn-label,
 .cta-btn-sm.cta-btn-outline:focus-visible .cta-btn-label{ color:#fff; }
+
+/* --- one line, always --------------------------------------------------------
+   A CTA label never wraps ("Request a quote" broke onto two lines on a 320px
+   phone, beside the call button in the menu and in the closing section). On
+   narrow screens the button gives up a little size instead: a smaller tile,
+   tighter padding and gap, and slightly smaller type. The service-card CTAs
+   opt back into wrapping on phones (brand.css), where their labels are long. */
+.cta-btn-label{white-space:nowrap}
+@media(max-width:420px){
+  .cta-btn{--tile:50px;height:56px;padding-right:18px;gap:var(--sp-3);font-size:.9375rem}
+  .cta-btn-sm{--tile:38px;height:44px;padding-right:14px;font-size:.875rem}
+  .nav-mobile-actions .nav-phone{width:56px;height:56px}
+  .nav .nav-mobile-cta.cta-btn{font-size:.9375rem;padding-right:14px}
+}
