@@ -80,22 +80,30 @@ export function ServicesIntro() {
       const cards = gsap.utils.toArray<HTMLElement>(".svc-card", el)
       if (!copy) return
 
-      const copyIn = gsap.fromTo(
-        copy,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: el,
-            start: "top top",
-            end: () => "+=" + Math.round(window.innerHeight * 0.6),
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        }
-      )
+      /* The headline follows the stat cards up. It is held a fixed gap under
+         the bottom of the stats block, so as the released block scrolls away
+         the headline rises with it at the same speed, and stops at its own
+         resting place. Measured each update rather than tweened: a tween over
+         a guessed range drifted against the pin and ran into the cards. */
+      const statsBox = document.querySelector<HTMLElement>(".stats-group")
+      const follow = () => {
+        if (!statsBox) return
+        gsap.set(copy, { y: 0 })
+        const rest = copy.getBoundingClientRect().top
+        const below = statsBox.getBoundingClientRect().bottom + window.innerHeight * 0.12
+        gsap.set(copy, { y: Math.max(0, below - rest) })
+      }
+      const copyIn = ScrollTrigger.create({
+        trigger: el,
+        start: () => "top bottom",
+        end: () => "top top-=" + Math.round(window.innerHeight * 0.9),
+        onUpdate: follow,
+        onRefresh: follow,
+        onLeave: () => gsap.set(copy, { y: 0 }),
+        onLeaveBack: follow,
+        invalidateOnRefresh: true,
+      })
+      gsap.set(copy, { opacity: 1 })
 
       // The cards wait below the fold and rise into frame only after the
       // clouds have filled the screen — the dissolve above runs for 0.9 of a
@@ -181,7 +189,9 @@ export function ServicesIntro() {
         window.removeEventListener("load", refresh)
         window.clearTimeout(settle)
         document.documentElement.style.removeProperty("--vig-o")
-        ;[copyIn, fadeOut, vigOut, ...tweens].forEach((t) => {
+        copyIn.kill()
+        gsap.set(copy, { clearProps: "transform,opacity" })
+        ;[fadeOut, vigOut, ...tweens].forEach((t) => {
           if (!t) return
           t.scrollTrigger?.kill()
           t.kill()

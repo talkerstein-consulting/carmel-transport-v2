@@ -41,3 +41,6 @@
 @keyframes cookie-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes cookie-out{to{opacity:0;transform:translateY(12px)}}
 @media(prefers-reduced-motion:reduce){.cookie,.cookie.is-leaving{animation:none}}
+/* Hidden while the phone menu is open: it sat right on the drawer's call and
+   quote buttons. It comes back, unanswered, when the menu closes. */
+.menu-open .cookie{display:none}

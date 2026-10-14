@@ -370,3 +370,27 @@
   .nav-pill,.nav-link,.nav-item{transition:none}
   .nav-item-media img,.nav-item:hover .nav-item-media img{transition:none;transform:none}
 }
+
+/* --- phone action bar: Call | Get a quote -------------------------------- */
+.mbar{display:none}
+@media (max-width:767px){
+  .mbar{
+    position:fixed;z-index:55;left:0;right:0;bottom:0;
+    display:grid;grid-template-columns:1fr 1.4fr;gap:var(--sp-2);
+    padding:var(--sp-2) 16px calc(var(--sp-2) + env(safe-area-inset-bottom,0px));
+    background:rgba(255,255,255,.92);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-top:1px solid var(--paper-300);
+  }
+  .mbar-btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    min-height:48px;border-radius:14px;corner-shape:superellipse(2.6);
+    font-weight:600;font-size:1rem;text-decoration:none;
+  }
+  .mbar-call{background:var(--paper-100);color:var(--ink-900);border:1px solid var(--paper-300)}
+  .mbar-quote{background:var(--ink-900);color:#fff}
+  /* room under the last thing on the page so the bar never sits on it */
+  body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  /* the cookie card rides above the bar instead of on it */
+  body .cookie{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+}

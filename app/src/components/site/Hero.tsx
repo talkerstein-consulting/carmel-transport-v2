@@ -1,22 +1,7 @@
-import type { MouseEvent } from "react"
 import { Cta } from "./Cta"
-import { scrollPageTo } from "@/lib/smooth-scroll"
+import { QUOTE_HREF, CALL } from "@/lib/contact"
 
 export function Hero() {
-  /* The hero's only action is "keep reading", so the button drives the scroll
-     itself rather than jumping. GSAP owns the scroll position everywhere else
-     on this page; handing the glide to it keeps the pinned sections from being
-     yanked past by a native smooth-scroll they do not know about. */
-  const toIntro = (e: MouseEvent<HTMLAnchorElement>) => {
-    const target = document.querySelector("#about")
-    if (!target) return
-    e.preventDefault()
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    // Through Lenis when it is running, so the glide and the smooth scroll
-    // are the same clock rather than two drivers fighting for scrollTop.
-    scrollPageTo(target, reduced ? 0 : 1.1)
-  }
-
   return (
     <section className="hero">
       <h1 className="hero-head">
@@ -31,10 +16,10 @@ export function Hero() {
           transportation, refrigerated logistics, and storage solutions built
           around your business.
         </p>
+        {/* The two things a buyer arrives to do, in the first screen. */}
         <div className="hero-actions">
-          <Cta href="#about" dir="down" live onClick={toIntro}>
-            Scroll to learn more
-          </Cta>
+          <Cta href={QUOTE_HREF} tone="accent">Get a quote</Cta>
+          <Cta href={CALL.href}>Call {CALL.label}</Cta>
         </div>
       </div>
     </section>

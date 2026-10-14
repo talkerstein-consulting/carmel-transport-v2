@@ -8,6 +8,8 @@ import Company from "./pages/Company.tsx"
 import Careers from "./pages/Careers.tsx"
 import Contact from "./pages/Contact.tsx"
 import Sandbox from "./sandbox/Sandbox.tsx"
+import NotFound from "./pages/NotFound.tsx"
+import META from "./pages/meta.json"
 import { SERVICE_PAGES } from "./pages/services-content"
 import { makeServicePage } from "./pages/ServicePage"
 import { initSmoothScroll } from "./lib/smooth-scroll"
@@ -35,7 +37,14 @@ const ROUTES: Record<string, () => ReactElement> = {
 if ("scrollRestoration" in history) history.scrollRestoration = "manual"
 
 const path = window.location.pathname.replace(/\/+$/, "")
-const Page = ROUTES[path] ?? App
+/* Unknown paths get a real not-found page, not the homepage. In production
+   Vercel serves these from 404.html with a 404 status (scripts/prerender.mjs). */
+const Page = ROUTES[path] ?? NotFound
+
+/* The prerendered HTML already carries each page's title and description;
+   this keeps them right in dev and on any client-side fallback. */
+const meta = (META.pages as Record<string, { title: string }>)[path || "/"] ?? META.notFound
+document.title = meta.title
 
 /* The entry animation is opt-in from here so it can always be taken back off.
    A CSS animation does not run while the tab is in the background, and its

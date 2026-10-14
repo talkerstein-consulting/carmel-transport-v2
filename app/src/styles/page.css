@@ -589,8 +589,14 @@
    headline. Service headlines are full sentences and that column put them in
    a narrow ragged stack with half the plate empty beside it, so here the
    headline takes all twelve and the list drops underneath. */
-.ph-grid-wide > :first-child { grid-column: 1 / span 12; }
-.ph-grid-wide .ph-toc { grid-column: 1 / span 12; }
+/* Desktop only. Unscoped, these came after the phone block and put "span 12"
+   back on a one-track grid, which made eleven 0px implicit tracks and ran the
+   service headline off the right edge of the screen. */
+@media (min-width: 768px) {
+  .ph-grid-wide > :first-child { grid-column: 1 / span 12; }
+  .ph-grid-wide .ph-toc { grid-column: 1 / span 12; }
+}
+.ph-grid-wide > * { min-width: 0; }
 .ph-grid-wide .ph-lead { max-width: 62ch; }
 
 /* --- careers: openings as full cards -------------------------------------
@@ -640,3 +646,6 @@
 @media (max-width: 767px) {
   .ph-bg img { object-position: 88% center; }
 }
+
+/* --- masthead actions: Get a quote + Call -------------------------------- */
+.ph-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-4) var(--sp-5);margin-top:var(--sp-6)}

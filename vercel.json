@@ -27,10 +27,5 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/((?!assets/|seq/|img/|.*\\.[a-z0-9]+$).*)",
-      "destination": "/index.html"
-    }
-  ]
+  "trailingSlash": false
 }

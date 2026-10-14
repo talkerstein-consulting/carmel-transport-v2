@@ -1,0 +1,65 @@
+{
+  "site": "https://carmel-transport-v2.vercel.app",
+  "image": "/img/hero.jpg",
+  "pages": {
+    "/": {
+      "title": "Carmel Transport | NY/NJ Port Drayage, Intermodal & Reefer, Kearny NJ",
+      "description": "Drayage, intermodal trucking, refrigerated containers and container storage from Kearny, NJ, minutes from the New York and New Jersey ports. Dispatch 24/7.",
+      "h1": "Move freight forward",
+      "lead": "From port to destination, Carmel delivers reliable drayage, intermodal transportation, refrigerated logistics, and storage solutions built around your business."
+    },
+    "/services": {
+      "title": "Services | Drayage, Intermodal, Reefer & Storage | Carmel Transport",
+      "description": "Four services off one asset-based fleet, minutes from the New York and New Jersey ports: drayage, refrigerated containers, intermodal trucking and storage.",
+      "h1": "Services. Port to door.",
+      "lead": "Four services off one asset-based fleet, minutes from the New York and New Jersey ports."
+    },
+    "/services/drayage": {
+      "title": "NY/NJ Port Drayage | Carmel Transport, Kearny NJ",
+      "description": "Asset-based drayage for importers, exporters and brokers moving containers through the New York and New Jersey ports: dry, overweight, reefer, open-top and flat-rack.",
+      "h1": "Move freight forward. Port to destination.",
+      "lead": "Dependable, asset-based drayage for importers, exporters, brokers, and businesses moving containerized freight through the New York and New Jersey market."
+    },
+    "/services/intermodal": {
+      "title": "Intermodal Trucking, Port to Rail | Carmel Transport, Kearny NJ",
+      "description": "Trucking legs that connect NY/NJ ocean terminals and rail terminals with warehouses, distribution centers and final destinations.",
+      "h1": "Connect ports, rail, and destination. Every handoff on schedule.",
+      "lead": "Carmel connects ocean and rail terminals with the facilities and destinations that keep your supply chain moving."
+    },
+    "/services/refrigerated": {
+      "title": "Refrigerated Container Drayage | Carmel Transport, Kearny NJ",
+      "description": "Reefer container moves on Genset chassis with trained drivers, plus powered yard storage for up to 30 refrigerated containers near the NY/NJ ports.",
+      "h1": "Keep temperature-sensitive freight moving. Terminal to destination.",
+      "lead": "Trained drivers, Genset chassis, and refrigerated container storage to help temperature-sensitive cargo move safely through the supply chain."
+    },
+    "/services/storage": {
+      "title": "Container Storage Near the NY/NJ Ports | Carmel Transport",
+      "description": "Secure, monitored storage for dry and refrigerated containers near the New York and New Jersey ports, to cut demurrage and keep cargo close to the network.",
+      "h1": "Space when your freight needs it. Secure, near the ports.",
+      "lead": "Convenient, secure storage for dry and refrigerated containers, helping customers reduce unnecessary storage costs while keeping cargo close to the transportation network."
+    },
+    "/company": {
+      "title": "Company | Carmel Transport, Kearny NJ",
+      "description": "Carmel Transport is a New Jersey drayage carrier based in Kearny, run by people who have been in the transportation industry a long time.",
+      "h1": "Company",
+      "lead": "A new name in New Jersey drayage, run by people who have been doing this a long time."
+    },
+    "/careers": {
+      "title": "Careers: Drivers, Dispatch & Mechanics | Carmel Transport",
+      "description": "Open roles at Carmel Transport in Kearny, NJ: owner-operators, dispatchers, mechanics and customer service.",
+      "h1": "Careers. Drive with us.",
+      "lead": "Experienced people in the transportation industry, joining a company that is still growing fast."
+    },
+    "/contact": {
+      "title": "Request a Quote | Contact Carmel Transport, Kearny NJ",
+      "description": "Request a drayage, intermodal, reefer or storage quote, or call (201) 299-5416. 78 John Miller Way, Kearny, NJ 07032.",
+      "h1": "Get in touch",
+      "lead": "Request a quote or call (201) 299-5416."
+    }
+  },
+  "notFound": {
+    "title": "Page not found | Carmel Transport",
+    "description": "This page doesn't exist. Find drayage, intermodal, refrigerated and storage services from Carmel Transport.",
+    "h1": "Page not found"
+  }
+}

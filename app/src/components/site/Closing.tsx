@@ -137,7 +137,12 @@ export function Closing() {
        never fired at all and the section simply stayed invisible. Nothing on
        a phone needs a dealt entrance; the content is there and it scrolls. */
     mm.add("(min-width: 901px) and (prefers-reduced-motion: no-preference)", () => {
-      const items = gsap.utils.toArray<HTMLElement>("[data-rise]", el)
+      /* The CTA only. The footer sits stuck under it and is uncovered as the
+         CTA scrolls off, so a trigger on its rows measures a position the
+         sticky footer never actually passes; on /services they never fired
+         and the contact block stayed at opacity 0. Being uncovered is its
+         entrance -- it doesn't need a second one. */
+      const items = gsap.utils.toArray<HTMLElement>(".cta [data-rise]", el)
       const tweens = items.map((item) =>
         gsap.fromTo(
           item,

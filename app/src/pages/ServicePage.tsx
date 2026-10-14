@@ -19,6 +19,7 @@ export function ServicePage({ s }: { s: ServiceContent }) {
       accent={s.accent}
       lead={s.lead}
       wideHead
+      actions
       aside={
         <div className="ph-toc" aria-label="On this page">
           <p className="eyebrow ph-toc-label">On this page</p>

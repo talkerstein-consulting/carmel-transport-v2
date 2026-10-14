@@ -6,6 +6,8 @@ import { Nav } from "@/components/site/Nav"
 import { CookieNotice } from "@/components/site/CookieNotice"
 import { PlateBg } from "@/components/site/PlateBg"
 import { Closing } from "@/components/site/Closing"
+import { Cta } from "@/components/site/Cta"
+import { QUOTE_HREF, CALL } from "@/lib/contact"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -30,10 +32,13 @@ type Props = {
      beneath it rather than sitting in the right-hand columns */
   wideHead?: boolean
   plate?: ReactNode
+  /* Get a quote + Call under the lead. Off on /contact, whose masthead is
+     already the form and the direct lines. */
+  actions?: boolean
   children: ReactNode
 }
 
-export function PageShell({ crumb, head, accent, lead, cover, aside, plate, wideHead, children }: Props) {
+export function PageShell({ crumb, head, accent, lead, cover, aside, plate, wideHead, actions, children }: Props) {
   const root = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -42,7 +47,9 @@ export function PageShell({ crumb, head, accent, lead, cover, aside, plate, wide
 
     const mm = gsap.matchMedia()
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const items = gsap.utils.toArray<HTMLElement>("[data-rise]", el)
+      const items = gsap.utils.toArray<HTMLElement>("[data-rise]:not(.foot [data-rise])", el)
+      /* not the footer: it sits stuck under the CTA and is uncovered rather
+         than scrolled past, so its triggers never fired (see Closing.tsx) */
       const tweens = items.map((item) =>
         gsap.fromTo(
           item,
@@ -109,6 +116,12 @@ export function PageShell({ crumb, head, accent, lead, cover, aside, plate, wide
                     <span className="accent">{accent}</span>
                   </h1>
                   <p className="ph-lead">{lead}</p>
+                  {actions && (
+                    <div className="ph-actions">
+                      <Cta href={QUOTE_HREF} tone="accent" size="sm">Get a quote</Cta>
+                      <Cta href={CALL.href} size="sm">Call {CALL.label}</Cta>
+                    </div>
+                  )}
                 </div>
 
                 {aside}

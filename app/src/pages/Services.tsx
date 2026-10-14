@@ -65,7 +65,9 @@ export default function Services() {
 
     const mm = gsap.matchMedia()
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const items = gsap.utils.toArray<HTMLElement>("[data-rise]", el)
+      const items = gsap.utils.toArray<HTMLElement>("[data-rise]:not(.foot [data-rise])", el)
+      /* not the footer: it sits stuck under the CTA and is uncovered rather
+         than scrolled past, so its triggers never fired (see Closing.tsx) */
       const tweens = items.map((item) =>
         gsap.fromTo(
           item,

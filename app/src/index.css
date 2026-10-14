@@ -10,3 +10,8 @@ html.lenis,html.lenis body{height:auto}
 html.lenis{scroll-behavior:auto!important}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:clip}
+
+/* scripts/prerender.mjs puts each page's headline and links in #root for
+   crawlers without JavaScript. React replaces it on mount; until then it stays
+   out of sight so the unstyled copy doesn't flash. */
+.prerender{opacity:0}

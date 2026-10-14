@@ -3,6 +3,7 @@ import { squirclePath } from "@/lib/squircle"
 import { motion, AnimatePresence } from "motion/react"
 import { Menu, X, Phone, ChevronDown, ChevronRight, Truck, Snowflake, TrainFront, Warehouse } from "lucide-react"
 import { Cta } from "./Cta"
+import { QUOTE_HREF, CALL } from "@/lib/contact"
 import "./nav.css"
 
 
@@ -26,10 +27,6 @@ const LINKS = [
 
 const EASE = [0.4, 0, 0.2, 1] as const
 
-/* Every "Request a quote" on the site goes to /contact, which leads with the
-   quote form in its masthead. The hero's scroll cue is the one CTA that stays
-   an in-page anchor -- it is a scroll cue, not an offer. */
-const QUOTE_HREF = "/contact"
 
 export function Nav() {
   const bar = useRef<HTMLElement>(null)
@@ -110,7 +107,11 @@ export function Nav() {
     const prevGutter = root.style.scrollbarGutter
     root.style.overflow = "hidden"
     root.style.scrollbarGutter = "stable"
+    /* The cookie card is fixed above the nav and sat right on the drawer's
+       call and quote buttons; cookie.css hides it while this class is on. */
+    root.classList.add("menu-open")
     return () => {
+      root.classList.remove("menu-open")
       root.style.overflow = prevOverflow
       root.style.scrollbarGutter = prevGutter
     }
@@ -161,6 +162,7 @@ export function Nav() {
      flip from navy glass to white at .act-three / [data-nav-light].) */
 
   return (
+    <>
     <header className={"nav is-light" + (hovered || servicesOpen || mobileOpen ? " is-active" : "")} ref={bar}>
       {/* desktop */}
       <motion.div
@@ -216,9 +218,9 @@ export function Nav() {
             <div className="nav-end">
               <a
                 className="nav-phone"
-                href="tel:+12012995416"
-                aria-label="Call sales: (201) 299-5416"
-                title="(201) 299-5416"
+                href={CALL.href}
+                aria-label={"Call sales: " + CALL.label}
+                title={CALL.label}
                 onMouseEnter={closeSoon}
               >
                 <Phone size={18} strokeWidth={2} aria-hidden="true" />
@@ -378,9 +380,9 @@ export function Nav() {
                   <div className="nav-mobile-actions">
                     <a
                       className="nav-phone"
-                      href="tel:+12012995416"
-                      aria-label="Call sales: (201) 299-5416"
-                      title="(201) 299-5416"
+                      href={CALL.href}
+                      aria-label={"Call sales: " + CALL.label}
+                      title={CALL.label}
                     >
                       <Phone size={22} strokeWidth={2} aria-hidden="true" />
                     </a>
@@ -393,5 +395,20 @@ export function Nav() {
         </div>
       </motion.div>
     </header>
+
+    {/* Phones only: the two actions every visitor is here for, always one tap
+        away instead of at the bottom of the menu. Outside the header, which
+        is transformed, so position:fixed is relative to the screen. Off
+        while the menu is open, since the drawer carries the same pair. */}
+    {!mobileOpen && (
+      <div className="mbar" role="group" aria-label="Contact Carmel">
+        <a className="mbar-btn mbar-call" href={CALL.href} aria-label={"Call " + CALL.label}>
+          <Phone size={18} strokeWidth={2} aria-hidden="true" />
+          Call
+        </a>
+        <a className="mbar-btn mbar-quote" href={QUOTE_HREF}>Get a quote</a>
+      </div>
+    )}
+    </>
   )
 }
