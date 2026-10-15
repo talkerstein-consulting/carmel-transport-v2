@@ -29,7 +29,7 @@ type GlobeInstance = {
   pointsMerge: (merge: boolean) => GlobeInstance;
   arcColor: (fn: () => string) => GlobeInstance;
   arcStroke: (stroke: number) => GlobeInstance;
-  arcDashInitialGap: (gap: number) => GlobeInstance;
+  arcDashInitialGap: (gap: number | ((d: Arc) => number)) => GlobeInstance;
   arcDashLength: (length: number) => GlobeInstance;
   arcDashGap: (gap: number) => GlobeInstance;
   arcDashAnimateTime: (time: number) => GlobeInstance;
@@ -165,6 +165,8 @@ interface Arc {
   startLng: number;
   endLat: number;
   endLng: number;
+  /** Launch order, in arc-lengths of delay before its dash sets off */
+  gap: number;
 }
 
 interface Label {
@@ -513,7 +515,7 @@ export const Globe: React.FC<GlobeProps> = ({
           .pointsMerge(true)
           .arcColor(() => deferredPrimaryColor)
           .arcStroke(0.25)
-          .arcDashInitialGap(1)
+          .arcDashInitialGap((d: Arc) => d.gap)
           .arcDashLength(2)
           .arcDashGap(2)
           .arcDashAnimateTime(arcAnimationDuration)
@@ -575,35 +577,39 @@ export const Globe: React.FC<GlobeProps> = ({
             const currentDots = dotsRef.current;
             const selectedDots = getRandomSample(currentDots, arcCount * 2);
 
+            /* One after another, not all at once: each arc's dash waits a
+               little longer than the last (STAGGER arc-lengths, i.e.
+               STAGGER × arcAnimationDuration), and its label and ring land
+               when that arc arrives rather than together at the end. */
+            const STAGGER = 0.4;
             const arcs: Arc[] = Array.from({ length: arcCount }, (_, i) => ({
               startLat: selectedDots[i].lat,
               startLng: selectedDots[i].lng,
               endLat: selectedDots[i + arcCount].lat,
               endLng: selectedDots[i + arcCount].lng,
+              gap: 1 + i * STAGGER,
             }));
 
-            const labels: Label[] = Array.from(
-              { length: arcCount },
-              (_, i) => ({
-                lat: selectedDots[i + arcCount].lat,
-                lng: selectedDots[i + arcCount].lng,
-              }),
-            );
+            const labels: Label[] = [];
+            const rings: Ring[] = [];
 
-            const rings: Ring[] = Array.from({ length: arcCount }, (_, i) => ({
-              lat: selectedDots[i + arcCount].lat,
-              lng: selectedDots[i + arcCount].lng,
-            }));
+            globeRef.current.arcsData(arcs).labelsData([]).ringsData([]);
 
-            globeRef.current.arcsData(arcs).labelsData(labels);
-
-            const ringTimeout = setTimeout(() => {
-              if (globeRef.current) {
-                globeRef.current.ringsData(rings);
-              }
-              isAnimatingRef.current = false;
-            }, arcAnimationDuration * 1.5);
-            animationTimeoutsRef.current.push(ringTimeout);
+            arcs.forEach((arc, i) => {
+              const landed = setTimeout(
+                () => {
+                  if (!globeRef.current) return;
+                  labels.push({ lat: arc.endLat, lng: arc.endLng });
+                  rings.push({ lat: arc.endLat, lng: arc.endLng });
+                  globeRef.current
+                    .labelsData([...labels])
+                    .ringsData([...rings]);
+                  if (i === arcs.length - 1) isAnimatingRef.current = false;
+                },
+                arcAnimationDuration * (1.5 + i * STAGGER),
+              );
+              animationTimeoutsRef.current.push(landed);
+            });
           });
         };
 
